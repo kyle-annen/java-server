@@ -1,0 +1,7 @@
+/.idea
+.idea
+target
+/target/*
+/target
+javaserver.iml
+pom.xml
