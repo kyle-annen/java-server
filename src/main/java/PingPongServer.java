@@ -26,8 +26,6 @@ class PingPongServer implements Runnable{
                 DataOutputStream sendToClient =
                         new DataOutputStream(pingPongSocket.getOutputStream());
                 String messageFromClient = readFromClient.readLine().split(" ")[0];
-                System.out.println(messageFromClient);
-                System.out.println(messageFromClient.equals("PING"));
                 Boolean validPingMessage = messageFromClient.equals("PING");
                 if (validPingMessage) {
                     sendToClient.writeBytes("PONG \n");
