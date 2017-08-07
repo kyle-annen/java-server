@@ -10,14 +10,14 @@ class PingPongServerTest {
   @Test
   void SendsCorrectResponseToPings() throws IOException {
     String message = "";
-    PingPongServer testServer = new PingPongServer(new String[] {"3000"});
+    PingPongServer testServer = new PingPongServer(new String[] {"4000"});
     Thread serverThread = new Thread(testServer);
     serverThread.start();
     Boolean responseReceived = false;
 
     while(!responseReceived) {
 
-      Socket testSocket = new Socket("localhost",3000);
+      Socket testSocket = new Socket("localhost",4000);
 
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
@@ -27,6 +27,9 @@ class PingPongServerTest {
               new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
       message = readFromServer.readLine().split(" ")[0];
       responseReceived = message.equals("PONG");
+      sendToServer.flush();
+      sendToServer.close();
+      readFromServer.close();
       testSocket.close();
     }
 
