@@ -18,7 +18,6 @@ class PingPongServerTest {
     while(!responseReceived) {
 
       Socket testSocket = new Socket("localhost",4000);
-
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
       sendToServer.writeBytes("PING\n");
