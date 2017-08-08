@@ -13,7 +13,6 @@ class PingPongServerTest {
     PingPongServer testServer = new PingPongServer(new String[] {"2324"});
     Thread serverThread = new Thread(testServer);
     serverThread.start();
-    Boolean responseReceived = false;
 
     Socket testSocket = new Socket("localhost",2324);
     DataOutputStream sendToServer =
@@ -23,7 +22,6 @@ class PingPongServerTest {
     BufferedReader readFromServer =
             new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
     message = readFromServer.readLine().split(" ")[0];
-    responseReceived = message.equals("PONG");
     sendToServer.flush();
     sendToServer.close();
     readFromServer.close();
@@ -35,12 +33,11 @@ class PingPongServerTest {
   }
 
   @Test
-  void SendsCorrectResponseToIncorrectMessage() throws IOException {
+  void SendsCorrectResponseToIncorrectMessage() throws IOException, InterruptedException {
     String message = "";
     PingPongServer testServer2 = new PingPongServer(new String[] {"2323"});
     Thread serverThread2 = new Thread(testServer2);
     serverThread2.start();
-
 
     Socket testSocket2 = new Socket("localhost",2323);
 
