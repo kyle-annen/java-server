@@ -10,12 +10,12 @@ class PingPongServerTest {
   @Test
   void SendsCorrectResponseToPings() throws IOException {
     String message = "";
-    PingPongServer testServer = new PingPongServer(new String[] {"4001"});
+    PingPongServer testServer = new PingPongServer(new String[] {"3000"});
     Thread serverThread = new Thread(testServer);
     serverThread.start();
     Boolean responseReceived = false;
 
-    Socket testSocket = new Socket("localhost",4001);
+    Socket testSocket = new Socket("localhost",3000);
     DataOutputStream sendToServer =
             new DataOutputStream(testSocket.getOutputStream());
     sendToServer.writeBytes("PING\n");
