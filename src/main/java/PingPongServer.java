@@ -3,6 +3,7 @@ import java.net.*;
 
 class PingPongServer implements Runnable{
   private Integer portNumber = 3300;
+  private Boolean serverRunning = true;
 
   PingPongServer(String[] args) {
     if (args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
@@ -16,7 +17,6 @@ class PingPongServer implements Runnable{
     try {
       listeningSocket = new ServerSocket(portNumber);
 
-      Boolean serverRunning = true;
       while (serverRunning) {
         Socket pingPongSocket = listeningSocket.accept();
         BufferedReader readFromClient =
@@ -36,5 +36,9 @@ class PingPongServer implements Runnable{
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+
+  public void stop() {
+    serverRunning = false;
   }
 }

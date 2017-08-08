@@ -28,6 +28,7 @@ class PingPongServerTest {
     sendToServer.close();
     readFromServer.close();
     testSocket.close();
+    testServer.stop();
 
     assertEquals("PONG", message);
     serverThread.interrupt();
@@ -36,8 +37,8 @@ class PingPongServerTest {
   @Test
   void SendsCorrectResponseToIncorrectMessage() throws IOException {
     String message = "";
-    PingPongServer testServer = new PingPongServer(new String[] {"2323"});
-    Thread serverThread2 = new Thread(testServer);
+    PingPongServer testServer2 = new PingPongServer(new String[] {"2323"});
+    Thread serverThread2 = new Thread(testServer2);
     serverThread2.start();
 
 
@@ -51,7 +52,7 @@ class PingPongServerTest {
             new BufferedReader(new InputStreamReader(testSocket2.getInputStream()));
     message = readFromServer.readLine().split(" ")[0];
     testSocket2.close();
-
+    testServer2.stop();
     assertNotEquals("PONG", message);
     serverThread2.interrupt();
   }
