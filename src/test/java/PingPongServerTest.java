@@ -42,7 +42,8 @@ class PingPongServerTest {
     PingPongServer testServer = new PingPongServer(new String[] {"2323"});
     Thread serverThread = new Thread(testServer);
     serverThread.start();
-    Boolean responseReceived = false;
+    Boolean responseReceived = false
+            ;
 
     while(!responseReceived) {
 

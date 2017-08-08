@@ -8,8 +8,6 @@ class PingPongServer implements Runnable{
         if (args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
     }
 
-
-
     public void run() {
 
         System.out.println("Server Started");
