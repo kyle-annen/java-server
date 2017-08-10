@@ -3,7 +3,7 @@ import java.net.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-public class Server {
+public class Server implements Runnable {
   private int portNumber = 3300;
   private Boolean serverRunning = true;
 
@@ -11,7 +11,7 @@ public class Server {
     if (args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
   }
 
-  void run() {
+  public void run() {
     System.out.println("Server started at: http://localhost:" + Integer.toString(portNumber));
     ServerSocket defaultServerSocket;
 
