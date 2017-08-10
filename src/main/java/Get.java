@@ -1,38 +1,61 @@
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.*;
-import java.text.SimpleDateFormat;
 
 
 class Get {
   public ArrayList<String> get(ArrayList<String> httpMessage) throws ParseException {
-    String urlRelativePath = httpMessage.get(0).split(" ")[2];
+    String urlRelativePath = httpMessage.get(0).split(" ")[1];
     ArrayList<String> response = new ArrayList<String>();
-    String d = getServerTime();
+    String lineEnd = "\r\n";
+    ServerUtils utils = new ServerUtils();
+    String d = utils.getHttpHeaderDate();
 
-    String responseBody = "Hello world!";
-    Integer responseLength = responseBody.length();
+    String responseBody = "Hello world!\r\n";
+    String contentLength = utils.getHttpHeaderContentLength(responseBody);
 
     //refactor to a response class
-    //if(urlRelativePath.equals("/")) {
-    if(true) {
-      response.add("HTTP/1.1 200 OK");
-      response.add("Date: " + d);
-      response.add("Content-Length: " + Integer.toString(responseLength));
-      response.add("Connection: Close");
-      response.add("Content-Type: text/html");
+    if(urlRelativePath.equals("/helloworld")) {
+      response.add("HTTP/1.1 200 OK\r\n");
+      response.add("Date: " + d + "\r\n");
+      response.add("Content-Length: " + contentLength + "\r\n");
+      response.add("Connection: Close\r\n");
+      response.add("Content-Type: text/plain\r\n");
+      response.add(lineEnd);
       response.add(responseBody);
+    } else if(urlRelativePath.equals("/")) {
+      String rootPathBody = "root path\r\n";
+      String rootPathBodyLength = utils.getHttpHeaderContentLength(rootPathBody);
+      response.add("HTTP/1.1 200 OK\r\n");
+      response.add("Date: " + d + "\r\n");
+      response.add("Content-Length: " + rootPathBodyLength + "\r\n");
+      response.add("Connection: Close\r\n");
+      response.add("Content-Type: text/plain\r\n");
+      response.add(lineEnd);
+      response.add(rootPathBody);
+    } else if (urlRelativePath.equals("/ping")) {
+      String pongPathBody = "pong\r\n";
+
+      String rootPathBodyLength = utils.getHttpHeaderContentLength(pongPathBody);
+      response.add("HTTP/1.1 200 OK\r\n");
+      response.add("Date: " + d + "\r\n");
+      response.add("Content-Length: " + rootPathBodyLength + "\r\n");
+      response.add("Connection: Close\r\n");
+      response.add("Content-Type: text/plain\r\n");
+      response.add(lineEnd);
+      response.add(pongPathBody);
+
+
     } else {
-      response.add("HTTP/1.1 404 Not Found");
+      response.add("HTTP/1.1 404 Not Found\r\n");
+      response.add("Connection: Close\r\n");
+      response.add("Content-Type: text/plain\r\n");
+      response.add("404: Page not found\r\n");
+      response.add("This is not the page you are looking for.\r\n");
     }
+    response.add("\r\n");
+
     return response;
   }
 
-  String getServerTime() {
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat dateFormat = new SimpleDateFormat(
-            "EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    return dateFormat.format(calendar.getTime());
-  }
+
 }

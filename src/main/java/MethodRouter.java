@@ -12,10 +12,8 @@ class MethodRouter {
 
   ArrayList<String> getResponse() throws ParseException {
     ArrayList<String> response;
-
     if (httpMethod.equals("GET")) {
       response = get();
-
     } else {
       response = error();
     }
@@ -29,7 +27,7 @@ class MethodRouter {
 
   private ArrayList<String> error() {
      ArrayList<String> unavailableMessage = new ArrayList<String>();
-     unavailableMessage.add("HTTP/1.1 404 Not Found");
+     unavailableMessage.add("HTTP/1.1 404 Not Found\r\n");
      return unavailableMessage;
   }
 }
