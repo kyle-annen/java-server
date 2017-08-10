@@ -1,45 +1,66 @@
-import com.sun.deploy.util.StringUtils;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-
 import java.io.*;
 import java.net.*;
+import java.text.ParseException;
+import java.util.ArrayList;
 
+public class Server implements Runnable {
+  private int portNumber = 3300;
+  private Boolean serverRunning = true;
 
-public class Server {
-    @SuppressWarnings("InfiniteLoopStatement")
-    public static void main(String [] args) throws Exception {
-        Integer portNumber = 3300;
+  Server(String[] args) {
+    if (args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
+  }
 
-        if(args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
+  public void run() {
+    System.out.println("Server started at: http://localhost:" + Integer.toString(portNumber));
+    ServerSocket defaultServerSocket;
 
+    try {
+      defaultServerSocket = new ServerSocket(portNumber);
 
-        System.out.println("Server Started");
-        System.out.println("Listening on http://localhost:" + Integer.toString(portNumber));
+      while(serverRunning) {
+        Socket defaultSocket = defaultServerSocket.accept();
+        BufferedReader readFromClient =
+                new BufferedReader(new InputStreamReader(defaultSocket.getInputStream()));
+        DataOutputStream sendToClient =
+                new DataOutputStream(defaultSocket.getOutputStream());
+        Boolean reading = true;
 
-        ServerSocket listeningSocket = new ServerSocket(portNumber);
+        ArrayList<String> httpMessage = new ArrayList<String>();
+        String line;
 
-        while (true) {
-            Socket pingPongSocket = listeningSocket.accept();
-
-            BufferedReader readFromClient =
-                    new BufferedReader(new InputStreamReader(pingPongSocket.getInputStream()));
-
-            DataOutputStream sendToClient =
-                    new DataOutputStream(pingPongSocket.getOutputStream());
-
-            String messageFromClient = readFromClient.readLine().split("\\ ")[0];
-
-
-            System.out.println(messageFromClient);
-            System.out.println(messageFromClient.equals("PING"));
-            Boolean validPingMessage = messageFromClient.equals("PING");
-            if(validPingMessage) {
-                sendToClient.writeBytes("PONG \n");
-
-            } else {
-                sendToClient.writeBytes("Invalid Message. Valid Message is 'PING'.\n");
-            }
-            pingPongSocket.close();
+        while(reading) {
+          line = readFromClient.readLine();
+          if (line.equals("")) {
+            reading = false;
+          } else {
+            httpMessage.add(line);
+          }
         }
+
+        MethodRouter httpRouter = new MethodRouter(httpMessage);
+
+        ArrayList<String> httpResponse = httpRouter.getResponse();
+
+        for( String responseLine : httpResponse) {
+          sendToClient.writeBytes(responseLine);
+        }
+
+        sendToClient.flush();
+        readFromClient.close();
+        sendToClient.close();
+        defaultSocket.close();
+
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
+    } catch (ParseException e) {
+      e.printStackTrace();
     }
+  }
+
+  public void stop() {
+    serverRunning = false;
+  }
+
 }
