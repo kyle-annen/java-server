@@ -44,7 +44,6 @@ class Get {
       response.add(lineEnd);
       response.add(pongPathBody);
 
-
     } else {
       response.add("HTTP/1.1 404 Not Found\r\n");
       response.add("Connection: Close\r\n");
@@ -56,6 +55,5 @@ class Get {
 
     return response;
   }
-
 
 }
