@@ -58,8 +58,10 @@ class GetTest {
     testGet = new Get();
     ArrayList<String> response = testGet.get(pingRoute);
 
-    String actualResponseContent = response.get(5);
-    String exepectedResponseContent = "pong\r\n";
+    String actualResponseContent = response.get(6);
+    String expectedResponseContent = "pong\r\n";
+    assertEquals(actualResponseContent, expectedResponseContent);
   }
+
 
 }
