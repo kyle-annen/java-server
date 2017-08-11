@@ -1,3 +1,5 @@
+import java.io.IOException;
+import java.net.URLConnection;
 import java.util.*;
 import java.text.SimpleDateFormat;
 
@@ -12,5 +14,10 @@ class ServerUtils {
 
   String getHttpHeaderContentLength(String messageBody) {
      return Integer.toString(messageBody.getBytes().length);
+  }
+
+  String getFileMimeType(String _filePath) throws IOException {
+     return URLConnection.guessContentTypeFromName(_filePath);
+
   }
 }

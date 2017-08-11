@@ -32,6 +32,4 @@ class ServerTest {
     assertEquals(actualResponse, expectedResponse);
     testServerThread.interrupt();
   }
-
-
 }

@@ -1,55 +1,60 @@
 import org.junit.jupiter.api.Test;
-
+import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.*;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class MethodRouterTest {
-  MethodRouter testRouter;
-  private ArrayList<String> testGetRoot = new ArrayList<String>();
-  private ArrayList<String> testGetBadRoot = new ArrayList<String>();
-  private ArrayList<String> testBadHttpVerb = new ArrayList<String>();
-
+class MethodRouterTest extends TestDirectorySetup {
+  private RequestParameters requestParameters;
 
   MethodRouterTest() {
-    testGetRoot.add("GET / HTTP/1.1\r\n");
-    testGetRoot.add("Host: localhost:2323\r\n");
-    testGetRoot.add("User-Agent: curl/7.51.0\r\n");
-    testGetRoot.add("Accept: */*\r\n");
-    testGetRoot.add("\r\n");
-
-    testGetBadRoot.add("GET // HTTP/1.1\r\n\r\n");
-
-    testBadHttpVerb.add("DANCEINTHERAIN /danceitup HTTP/1.1\r\n\r\n");
-  }
-
-
-  @Test
-  void getResponseRespondsToCorrectGetRouteWith200OK() throws ParseException {
-    testRouter = new MethodRouter(testGetRoot);
-    ArrayList<String> testResponse = testRouter.getResponse();
-    String actual = testResponse.get(0);
-    String expected = "HTTP/1.1 200 OK\r\n";
-    assertEquals(expected, actual);
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
+    String directoryPath = System.getProperty("user.dir");
+    Socket testSocket = new Socket();
+    requestParameters = new RequestParameters(httpMessage, directoryPath, testSocket);
   }
 
   @Test
-  void getResonseRespondsToIncorrectGetRouteWith404NotFound() throws ParseException {
-    testRouter = new MethodRouter(testGetBadRoot);
-    ArrayList<String> testResponse = testRouter.getResponse();
-    String actual = testResponse.get(0);
-    String expected = "HTTP/1.1 404 Not Found\r\n";
-    assertEquals(actual, expected);
+  void MethodRouterCorrectlyRoutesGetRoute() throws IOException, ParseException {
+    MethodRouter methodRouter = new MethodRouter();
+    ResponseParameters responseParams = methodRouter.getResponse(requestParameters);
+
+    String actualHttpHeader = responseParams.responseHeader.get(0);
+    String expectedHttpHeader = "HTTP/1.1 200 OK\r\n";
+    assertEquals(expectedHttpHeader, actualHttpHeader);
+
   }
 
   @Test
-  void getResponseRespondsToIncorrectHttpVerbWith404NotFound() throws ParseException {
-    testRouter = new MethodRouter(testBadHttpVerb);
-    ArrayList<String> testResponse = testRouter.getResponse();
-    String actual = testResponse.get(0);
-    String expected = "HTTP/1.1 404 Not Found\r\n";
-    assertEquals(actual, expected);
+  void MethodRouterCorrectlyRoutesBadRoute() throws IOException, ParseException {
+    MethodRouter methodRouter = new MethodRouter();
+    RequestParameters invalidPathRequestParams = requestParameters;
+    String invalidRoute = "GET /thisIsABadRoute HTTP/1.1\r\n";
+    invalidPathRequestParams.httpMessage.set(0, invalidRoute);
+
+    ResponseParameters responseParams =
+            methodRouter.getResponse(invalidPathRequestParams);
+
+    String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
+    String actualHttpHeader = responseParams.responseHeader.get(0);
+    assertEquals(expectedHttpHeader, actualHttpHeader);
   }
 
+  @Test
+  void methodRouterRespondsCorrectlyToBadHttpVerb() throws IOException, ParseException {
+    MethodRouter methodRouter = new MethodRouter();
+    RequestParameters invalidPathRequestParams = requestParameters;
+    String invalidRoute = "BADVERB /thisIsABadRoute HTTP/1.1\r\n";
+    invalidPathRequestParams.httpMessage.set(0, invalidRoute);
+
+    ResponseParameters responseParams =
+            methodRouter.getResponse(invalidPathRequestParams);
+
+    String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
+    String actualHttpHeader = responseParams.responseHeader.get(0);
+    assertEquals(expectedHttpHeader, actualHttpHeader);
+  }
 }

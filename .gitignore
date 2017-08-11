@@ -4,3 +4,4 @@ target
 /target/*
 /target
 javaserver.iml
+.DS_Store
