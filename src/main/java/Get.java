@@ -1,59 +1,57 @@
-import java.text.ParseException;
 import java.util.ArrayList;
+import java.io.*;
+
+public class Get {
+  private ArrayList<String> response = new ArrayList<String>();
+  private String webRootDirectory = "/resources";
+  private String headerDate;
+  private Boolean pathExists;
+  private Boolean isDirectory;
+  private String relativePath;
+  private String lineEnd = "\r\n";
 
 
-class Get {
-  public ArrayList<String> get(ArrayList<String> httpMessage) throws ParseException {
-    String urlRelativePath = httpMessage.get(0).split(" ")[1];
+  ArrayList<String> get(ArrayList<String> httpMessage) throws IOException {
     ArrayList<String> response = new ArrayList<String>();
-    String lineEnd = "\r\n";
     ServerUtils utils = new ServerUtils();
-    String d = utils.getHttpHeaderDate();
+    headerDate = utils.getHttpHeaderDate();
+    relativePath = httpMessage.get(0).split(" ")[1];
+    String webRootRelativePath = "." + webRootDirectory + relativePath;
+    File relativeFilePath = new File(webRootRelativePath);
+    pathExists = relativeFilePath.exists();
+    isDirectory = relativeFilePath.isDirectory();
+    String responseDate = "Date: " + utils.getHttpHeaderDate() + "\r\n";
 
-    String responseBody = "Hello world!\r\n";
-    String contentLength = utils.getHttpHeaderContentLength(responseBody);
+    //The HTTP header building here will be refactored after file serving is added.
 
-    //refactor to a response class
-    if(urlRelativePath.equals("/helloworld")) {
+    if (pathExists && isDirectory) {
+      GetDirectory directory = new GetDirectory();
+      String directoryMessageBody = directory.getDirectoryListing(relativePath);
       response.add("HTTP/1.1 200 OK\r\n");
-      response.add("Date: " + d + "\r\n");
+      response.add(responseDate);
+      response.add("Content-Length: " + utils.getHttpHeaderContentLength(directoryMessageBody) + "\r\n");
+      response.add("Connection: Close\r\n");
+      response.add("Content-Type: text/html\r\n");
+      response.add("\r\n");
+      response.add(directoryMessageBody + "\r\n");
+    } else if (pathExists) {
+      String fileServingBody = "<h1>File Serving Functionality Coming Soon!";
+      response.add("HTTP/1.1 200 OK\r\n");
+      response.add(responseDate);
+      String contentLength = utils.getHttpHeaderContentLength(fileServingBody);
       response.add("Content-Length: " + contentLength + "\r\n");
-      response.add("Connection: Close\r\n");
-      response.add("Content-Type: text/plain\r\n");
-      response.add(lineEnd);
-      response.add(responseBody);
-    } else if(urlRelativePath.equals("/")) {
-      String rootPathBody = "root path\r\n";
-      String rootPathBodyLength = utils.getHttpHeaderContentLength(rootPathBody);
-      response.add("HTTP/1.1 200 OK\r\n");
-      response.add("Date: " + d + "\r\n");
-      response.add("Content-Length: " + rootPathBodyLength + "\r\n");
-      response.add("Connection: Close\r\n");
-      response.add("Content-Type: text/plain\r\n");
-      response.add(lineEnd);
-      response.add(rootPathBody);
-    } else if (urlRelativePath.equals("/ping")) {
-      String pongPathBody = "pong\r\n";
-
-      String rootPathBodyLength = utils.getHttpHeaderContentLength(pongPathBody);
-      response.add("HTTP/1.1 200 OK\r\n");
-      response.add("Date: " + d + "\r\n");
-      response.add("Content-Length: " + rootPathBodyLength + "\r\n");
-      response.add("Connection: Close\r\n");
-      response.add("Content-Type: text/plain\r\n");
-      response.add(lineEnd);
-      response.add(pongPathBody);
-
+      response.add("Content-Type: text/html\r\n");
+      response.add("\r\n");
+      response.add(fileServingBody + "\r\n");
     } else {
       response.add("HTTP/1.1 404 Not Found\r\n");
-      response.add("Connection: Close\r\n");
-      response.add("Content-Type: text/plain\r\n");
-      response.add("404: Page not found\r\n");
-      response.add("This is not the page you are looking for.\r\n");
+      response.add("\r\n");
+      response.add("<h1>404: File Not Found</h1>\r\n");
+
     }
     response.add("\r\n");
-
     return response;
   }
-
 }
+
+
