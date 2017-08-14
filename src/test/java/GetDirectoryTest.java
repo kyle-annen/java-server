@@ -41,8 +41,8 @@ class GetDirectoryTest {
   void getDirectoryListingEmptyDirectory() throws IOException {
     String relativePath = "/images/test/empty";
     GetDirectory getDirectory = new GetDirectory();
-    String actualResult = getDirectory.getDirectoryListing(relativePath);
-    String expectedResult = "<h1>/images/test/empty</h1><ul><li>There are no files in this directory</li>";
-    assertEquals(expectedResult, actualResult);
+    String actualResult2 = getDirectory.getDirectoryListing(relativePath);
+    String expectedResult2 = "<h1>/images/test/empty</h1><ul><li>There are no files in this directory</li>";
+    assertEquals(expectedResult2, actualResult2);
   }
 }
