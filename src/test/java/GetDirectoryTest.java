@@ -28,16 +28,6 @@ class GetDirectoryTest {
   }
 
   @Test
-  void getDirectoryListingTestImageTestPath() throws IOException {
-    String testRelativePath = "/";
-    GetDirectory getDirectory = new GetDirectory();
-    String actualResult = getDirectory.getDirectoryListing("/images/test");
-    String expectedResult =
-            "<h1>/images/test</h1><ul><li><a href='/images/test/empty'>empty</a></li><li>test.html</li></ul>\r\n";
-    assertEquals(expectedResult, actualResult);
-  }
-
-  @Test
   void getDirectoryListingEmptyDirectory() throws IOException {
     String relativePath = "/images/test/empty";
     GetDirectory getDirectory = new GetDirectory();
