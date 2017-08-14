@@ -23,7 +23,7 @@ class GetTest {
     pingRoute.add("GET /ping HTTP/1.1\r\n\r\n");
     imagePath.add("GET /images HTTP/1.1\r\n\r\n");
     imageTestPath.add("GET /images/test HTTP/1.1\r\n\r\n");
-    imageFilePath.add("GET /helloworld.html HTTP/1.1\r\n");
+    imageFilePath.add("GET /helloworld/helloworld.html HTTP/1.1\r\n");
   }
 
   @Test
