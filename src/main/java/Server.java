@@ -20,8 +20,9 @@ public class Server implements Runnable {
 
       while(serverRunning) {
         Socket defaultSocket = defaultServerSocket.accept();
+        InputStreamReader inputStreamReader = new InputStreamReader(defaultSocket.getInputStream());
         BufferedReader readFromClient =
-                new BufferedReader(new InputStreamReader(defaultSocket.getInputStream()));
+                new BufferedReader(inputStreamReader);
         DataOutputStream sendToClient =
                 new DataOutputStream(defaultSocket.getOutputStream());
         Boolean reading = true;
@@ -48,10 +49,12 @@ public class Server implements Runnable {
 
         sendToClient.flush();
         readFromClient.close();
+        inputStreamReader.close();
         sendToClient.close();
         defaultSocket.close();
 
       }
+      defaultServerSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
     } catch (ParseException e) {

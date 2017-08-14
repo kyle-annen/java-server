@@ -23,6 +23,7 @@ class GetDirectory {
 
   private ArrayList<String> filesList(String relativePath) {
     currentDirectoryPath = serverRelativePath + defaultWebDirectory + relativePath;
+    System.out.println(currentDirectoryPath);
     webDirectoryRelativePath = relativePath;
     File fullFilePath = new File(currentDirectoryPath);
     try {
