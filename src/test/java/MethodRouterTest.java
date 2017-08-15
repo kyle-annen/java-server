@@ -1,5 +1,6 @@
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -19,14 +20,14 @@ class MethodRouterTest {
     testGetRoot.add("Accept: */*\r\n");
     testGetRoot.add("\r\n");
 
-    testGetBadRoot.add("GET // HTTP/1.1\r\n\r\n");
+    testGetBadRoot.add("GET //im/that HTTP/1.1\r\n\r\n");
 
     testBadHttpVerb.add("DANCEINTHERAIN /danceitup HTTP/1.1\r\n\r\n");
   }
 
 
   @Test
-  void getResponseRespondsToCorrectGetRouteWith200OK() throws ParseException {
+  void getResponseRespondsToCorrectGetRouteWith200OK() throws ParseException, IOException {
     testRouter = new MethodRouter(testGetRoot);
     ArrayList<String> testResponse = testRouter.getResponse();
     String actual = testResponse.get(0);
@@ -35,7 +36,7 @@ class MethodRouterTest {
   }
 
   @Test
-  void getResonseRespondsToIncorrectGetRouteWith404NotFound() throws ParseException {
+  void getResonseRespondsToIncorrectGetRouteWith404NotFound() throws ParseException, IOException {
     testRouter = new MethodRouter(testGetBadRoot);
     ArrayList<String> testResponse = testRouter.getResponse();
     String actual = testResponse.get(0);
@@ -44,7 +45,7 @@ class MethodRouterTest {
   }
 
   @Test
-  void getResponseRespondsToIncorrectHttpVerbWith404NotFound() throws ParseException {
+  void getResponseRespondsToIncorrectHttpVerbWith404NotFound() throws ParseException, IOException {
     testRouter = new MethodRouter(testBadHttpVerb);
     ArrayList<String> testResponse = testRouter.getResponse();
     String actual = testResponse.get(0);

@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ class MethodRouter {
     httpMethod = httpMessage.get(0).split(" ")[0];
   }
 
-  ArrayList<String> getResponse() throws ParseException {
+  ArrayList<String> getResponse() throws ParseException, IOException {
     ArrayList<String> response;
     if (httpMethod.equals("GET")) {
       response = get();
@@ -20,7 +21,7 @@ class MethodRouter {
     return response;
   }
 
-  private ArrayList<String> get() throws ParseException {
+  private ArrayList<String> get() throws ParseException, IOException {
     Get httpGetter = new Get();
     return httpGetter.get(httpMessage);
   }
