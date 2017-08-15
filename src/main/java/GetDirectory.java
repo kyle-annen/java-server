@@ -41,7 +41,13 @@ class GetDirectory {
       directoryResponseMessage.add("<li>There are no files in this directory</li>");
     } else {
       for(String item: directoryList) {
-        if(item.contains(".")) {
+        if(item.contains(".html") || item.contains(".txt")) {
+          String link = webDirectoryRelativePath + "/" + item;
+          if (link.contains("//")) {
+            link = link.substring(1);
+          }
+          directoryResponseMessage.add("<li><a href='" + link + "'>" + item + "</a></li>");
+        } else if(item.contains(".")) {
           directoryResponseMessage.add("<li>" + item + "</li>");
         } else {
           String directoryLink = webDirectoryRelativePath + "/" + item;

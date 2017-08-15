@@ -22,6 +22,7 @@ public class Get {
     isDirectory = relativeFilePath.isDirectory();
     String responseDate = "Date: " + utils.getHttpHeaderDate() + "\r\n";
 
+
     //The HTTP header building here will be refactored after file serving is added.
 
     if (pathExists && isDirectory) {
@@ -35,14 +36,15 @@ public class Get {
       response.add("\r\n");
       response.add(directoryMessageBody + "\r\n");
     } else if (pathExists) {
-      String fileServingBody = "<h1>File Serving Functionality Coming Soon!";
+      GetHtmlText getHtmlText = new GetHtmlText(relativePath);
+      String htmlTextBody = getHtmlText.getFileContents();
       response.add("HTTP/1.1 200 OK\r\n");
       response.add(responseDate);
-      String contentLength = utils.getHttpHeaderContentLength(fileServingBody);
-      response.add("Content-Length: " + contentLength + "\r\n");
+      response.add("Content-Length: " + utils.getHttpHeaderContentLength(htmlTextBody) + "\r\n");
+      response.add("Connection: Close\r\n");
       response.add("Content-Type: text/html\r\n");
       response.add("\r\n");
-      response.add(fileServingBody + "\r\n");
+      response.add(htmlTextBody);
     } else {
       response.add("HTTP/1.1 404 Not Found\r\n");
       response.add("\r\n");
