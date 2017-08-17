@@ -3,7 +3,7 @@
 ## Run tests
 
 ``` bash
-mvn clean clover:setup test clover:aggregate clover:clover
+mvn clean test
 ```
 
 ## Run Server
@@ -14,9 +14,12 @@ mvn clean clover:setup test clover:aggregate clover:clover
 ``` bash
 mvn package
 ```
-- Run the server.
+- Run the server, optionally specifying the port and root directory to serve.
 ``` bash
 cd target/classes/Main
-java Main 3030
+java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve 
+
+//>java Main <port> <directory>
 ```
+
 

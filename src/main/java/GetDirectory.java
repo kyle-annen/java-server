@@ -57,6 +57,7 @@ class GetDirectory {
                 || item.contains(".png") || item.contains(".pdf")
                 || item.contains(".js") || item.contains(".css")) {
           String link = webDirectoryRelativePath + "/" + item;
+          link = link.replace("//", "/");
           directoryResponseMessage.add("<li><a href='" + link + "'>" + item + "</a></li>\n");
         } else if(item.contains(".")) {
           directoryResponseMessage.add("<li>" + item + "</li>\n");
