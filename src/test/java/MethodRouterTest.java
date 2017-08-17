@@ -2,7 +2,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
-import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,8 +12,7 @@ class MethodRouterTest extends TestDirectorySetup {
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");
-    Socket testSocket = new Socket();
-    requestParameters = new RequestParameters(httpMessage, directoryPath, testSocket);
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
   @Test

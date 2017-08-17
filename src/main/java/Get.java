@@ -25,7 +25,7 @@ class Get {
       GetFile getFile = new GetFile();
       return getFile.get(requestParams, filePath);
     } else {
-      Send404 send404 = new Send404(requestParams);
+      Send404 send404 = new Send404();
       return send404.get();
     }
   }

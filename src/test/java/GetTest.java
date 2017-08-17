@@ -13,7 +13,7 @@ class GetTest extends TestDirectorySetup {
     httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");
     Socket testSocket = new Socket();
-    requestParameters = new RequestParameters(httpMessage, directoryPath, testSocket);
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
   @Test

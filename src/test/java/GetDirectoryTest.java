@@ -12,8 +12,7 @@ class GetDirectoryTest extends TestDirectorySetup {
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
     String directoryPath = "./TestDirectory";
-    Socket testSocket = new Socket();
-    requestParameters = new RequestParameters(httpMessage, directoryPath, testSocket);
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
   @Test

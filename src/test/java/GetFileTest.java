@@ -14,7 +14,7 @@ class GetFileTest extends TestDirectorySetup {
     httpMessage.add("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");
     Socket testSocket = new Socket();
-    requestParameters = new RequestParameters(httpMessage, directoryPath, testSocket);
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
 

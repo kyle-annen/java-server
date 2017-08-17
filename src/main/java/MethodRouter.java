@@ -20,7 +20,7 @@ class MethodRouter {
   }
 
   private ResponseParameters error(RequestParameters requestParams) throws IOException {
-    Send404 send404 = new Send404(requestParams);
+    Send404 send404 = new Send404();
     return send404.get();
   }
 }

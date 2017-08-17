@@ -52,7 +52,7 @@ public class Server implements Runnable {
         }
 
         RequestParameters requestParams =
-                new RequestParameters(httpMessage, directoryPath, defaultSocket);
+                new RequestParameters(httpMessage, directoryPath);
 
         ResponseParameters responseParameters = httpRouter.getResponse(requestParams);
 
