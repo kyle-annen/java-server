@@ -1,9 +1,12 @@
 import java.io.BufferedReader;
+
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 class GetHtmlText {
+
 
   ResponseParameters get(RequestParameters requestParams, String filePath) throws IOException {
     ServerUtils utils = new ServerUtils();
@@ -19,6 +22,7 @@ class GetHtmlText {
     StringBuilder contentBuilder = new StringBuilder();
     try {
       BufferedReader in = new BufferedReader(new FileReader(fullFilePath));
+
       String str;
       while((str = in.readLine()) != null) {
         contentBuilder.append(str);

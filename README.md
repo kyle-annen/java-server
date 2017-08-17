@@ -14,6 +14,7 @@ mvn clean test
 ``` bash
 mvn package
 ```
+
 - Run the server, optionally specifying the port and root directory to serve.
 ``` bash
 cd target/classes/Main
@@ -21,5 +22,4 @@ java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve
 
 //>java Main <port> <directory>
 ```
-
 

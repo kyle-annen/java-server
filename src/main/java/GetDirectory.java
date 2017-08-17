@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 class GetDirectory {
+
   private String webDirectoryRelativePath;
 
   GetDirectory(RequestParameters _requestParams) throws IOException {
@@ -20,6 +21,7 @@ class GetDirectory {
 
   public String getDirectoryListing(String filePath) {
     ArrayList<String> directoryContents = filesList(filePath);
+
     ArrayList<String> formattedDirectory = formatDirectoryHtml(directoryContents);
     StringBuilder directoryListing = new StringBuilder();
     for(String s : formattedDirectory) {

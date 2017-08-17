@@ -7,6 +7,7 @@ class MethodRouter {
   ResponseParameters getResponse(RequestParameters requestParams) throws ParseException, IOException {
     ArrayList <String> httpMessage = requestParams.httpMessage;
     String httpMethod = httpMessage.get(0).split(" ")[0];
+
     if (httpMethod.equals("GET")) {
       return this.get(requestParams);
     } else {
@@ -15,6 +16,7 @@ class MethodRouter {
   }
 
   private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
+
     Get httpGetter = new Get();
     return httpGetter.get(requestParams);
   }

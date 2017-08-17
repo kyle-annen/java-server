@@ -28,6 +28,7 @@ class Get {
       Send404 send404 = new Send404();
       return send404.get();
     }
+
   }
 }
 
