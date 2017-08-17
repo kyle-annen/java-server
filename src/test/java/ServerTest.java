@@ -24,13 +24,12 @@ class ServerTest extends TestDirectorySetup {
     String actualResponse = String.join(" ", serverResponse);
     String expectedResponse = "HTTP/1.1 200 OK";
 
-    sendToServer.close();
-    readFromServer.close();
-    testSocket.close();
+//    sendToServer.close();
+//    readFromServer.close();
+//    testSocket.close();
     testServer.stop();
 
     assertEquals(actualResponse, expectedResponse);
-    testServerThread.interrupt();
   }
 
   @Test
@@ -53,12 +52,11 @@ class ServerTest extends TestDirectorySetup {
     String actualResponse = String.join(" ", serverResponse);
     String expectedResponse = "HTTP/1.1 200 OK";
 
-    sendToServer.close();
-    readFromServer.close();
-    testSocket.close();
+//    sendToServer.close();
+//    readFromServer.close();
+//    testSocket.close();
     testServer.stop();
 
     assertEquals(actualResponse, expectedResponse);
-    testServerThread.interrupt();
   }
 }
