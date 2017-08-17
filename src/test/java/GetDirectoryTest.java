@@ -1,38 +1,96 @@
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
+import java.util.*;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GetDirectoryTest {
+class GetDirectoryTest extends TestDirectorySetup {
+  private RequestParameters requestParameters;
 
-
-  @Test
-  void getDirectoryListingTest() throws IOException {
-    String testRelativePath = "/";
-    GetDirectory getDirectory = new GetDirectory();
-    String actualResult = getDirectory.getDirectoryListing("/");
-    String expectedResult =
-            "<h1>/</h1><ul><li><a href='/404.html'>404.html</a></li><li><a href='/helloworld'>helloworld</a></li><li><a href='/images'>images</a></li><li><a href='/ping'>ping</a></li></ul>\r\n";
-    assertEquals(expectedResult, actualResult);
+  GetDirectoryTest(){
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
+    String directoryPath = "./TestDirectory";
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
   @Test
-  void getDirectoryListingTestImagePath() throws IOException {
-    String testRelativePath = "/";
-    GetDirectory getDirectory = new GetDirectory();
-    String actualResult = getDirectory.getDirectoryListing("/images");
-    String expectedResult =
-            "<h1>/images</h1><ul><li><a href='/images/test'>test</a></li><li>turing_test.png</li></ul>\r\n";
-    assertEquals(expectedResult, actualResult);
+  void getDirectoryReturnsDirectoryContents() throws IOException {
+    GetDirectory getDirectory = new GetDirectory(requestParameters);
+    String directoryListing = getDirectory.getDirectoryListing("./TestDirectory");
+    boolean containsFile = directoryListing.contains("testFile1.txt");
+    boolean containsDirectory = directoryListing.contains("/TestDirectory");
+    boolean containsFileLink = directoryListing.contains("<li><a href='/TestDirectory/testFile1.txt'>testFile1.txt</a></li>");
+
+    assertEquals(containsFile, true);
+    assertEquals(containsDirectory, true);
+    assertEquals(containsFileLink, true);
   }
 
   @Test
-  void getDirectoryListingEmptyDirectory() throws IOException {
-    String relativePath = "/images/test/empty";
-    GetDirectory getDirectory = new GetDirectory();
-    String actualResult2 = getDirectory.getDirectoryListing(relativePath);
-    String expectedResult2 = "<h1>/images/test/empty</h1><ul><li>There are no files in this directory</li>";
-    assertEquals(expectedResult2, actualResult2);
+  void filesListReturnsListOfFiles() throws IOException {
+    GetDirectory getDirectory = new GetDirectory(requestParameters);
+    ArrayList<String> fileList = getDirectory.filesList("./TestDirectory");
+    String expected = "testFile1.txt";
+    String actual = fileList.get(0);
+    assertEquals(actual, expected);
   }
+
+  @Test
+  void formatDirectoryHtmlReturnsFormatedHtmlArrayList() throws IOException {
+    GetDirectory getDirectory = new GetDirectory(requestParameters);
+    ArrayList<String> fileList = getDirectory.filesList("./TestDirectory");
+    ArrayList<String> formatedDirectory = getDirectory.formatDirectoryHtml(fileList);
+    String docTypeActual = formatedDirectory.get(0);
+    String docTypeExpected = "<!DOCTYPE html>\n";
+    assertEquals(docTypeActual, docTypeExpected);
+
+    String actualFileLink = formatedDirectory.get(9);
+    String expectedFileLink = "<li><a href='/TestDirectory/testFile1.txt'>testFile1.txt</a></li>\n";
+    assertEquals(actualFileLink, expectedFileLink);
+  }
+
+  @Test
+  void getReturnsCorrectResponseParameter() throws IOException {
+    GetDirectory getDirectory = new GetDirectory(requestParameters);
+    ResponseParameters responseParams = getDirectory.get("./TestDirectory");
+    assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
+    assertEquals("ContentLength: 210\r\n", responseParams.responseHeader.get(2));
+    assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));
+    assertEquals("text", responseParams.bodyType);
+    assertEquals(getDirectory.getDirectoryListing("./TestDirectory"), responseParams.body);
+  }
+
+  @Test
+  void getReturnsCorrectResponseEmptyDir() throws IOException {
+    GetDirectory getDirectory = new GetDirectory(requestParameters);
+    ResponseParameters responseParams = getDirectory.get("./TestEmpty");
+    assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
+    assertEquals("ContentLength: 178\r\n", responseParams.responseHeader.get(2));
+    assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));
+    assertEquals(getDirectory.getDirectoryListing("./testEmpty"), responseParams.body);
+    assertEquals(true, responseParams.body.contains("There are no files in this directory"));
+  }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

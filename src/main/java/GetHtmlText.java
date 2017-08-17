@@ -1,24 +1,28 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
+
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 class GetHtmlText {
-  Boolean isTextFile;
-  Boolean isHtmlFile;
-  String filePath;
 
-  GetHtmlText(String relativePath) {
-    isHtmlFile = relativePath.contains(".html");
-    isTextFile = relativePath.contains(".txt");
-    filePath = "." + "/resources" + relativePath;
+
+  ResponseParameters get(RequestParameters requestParams, String filePath) throws IOException {
+    ServerUtils utils = new ServerUtils();
+    ResponseFactory responseFactory = new ResponseFactory();
+    String contentLength = Integer.toString(this.getFileContents(filePath).length());
+    String contentType = utils.getFileMimeType(filePath);
+    ArrayList<String> response =
+            responseFactory.getFileHeader(contentType, contentLength);
+    return new ResponseParameters(response, "file", filePath);
   }
 
-  String getFileContents()  {
+  String getFileContents(String fullFilePath) {
     StringBuilder contentBuilder = new StringBuilder();
     try {
-      BufferedReader in = new BufferedReader(new FileReader(filePath));
+      BufferedReader in = new BufferedReader(new FileReader(fullFilePath));
+
       String str;
       while((str = in.readLine()) != null) {
         contentBuilder.append(str);

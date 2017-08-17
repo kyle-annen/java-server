@@ -1,11 +1,11 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.sql.Time;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-class ServerUtilsTest {
+class ServerUtilsTest extends TestDirectorySetup {
   private ServerUtils utils = new ServerUtils();
   @Test
   void getHttpHeaderDate() {
@@ -24,5 +24,21 @@ class ServerUtilsTest {
     String actualLength = utils.getHttpHeaderContentLength(testMessage);
     String expectedLength = "24";
     assertEquals(actualLength, expectedLength);
+  }
+
+  @Test
+  void getFileMimeTypeReturnsCorrectTypeTxt() throws IOException {
+    String txtFilePath = System.getProperty("user.dir") + "/TestDirectory/testFile1.txt";
+    String textFileTypeActual = utils.getFileMimeType(txtFilePath);
+    String textFileTypeExpected = "text/plain";
+    assertEquals(textFileTypeExpected, textFileTypeActual);
+  }
+
+  @Test
+  void getFileMimeTypeReturnsCorrectTypePng() throws IOException {
+    String txtFilePath = System.getProperty("user.dir") + "/TestPng/test.png";
+    String textFileTypeActual = utils.getFileMimeType(txtFilePath);
+    String textFileTypeExpected = "image/png";
+    assertEquals(textFileTypeExpected, textFileTypeActual);
   }
 }

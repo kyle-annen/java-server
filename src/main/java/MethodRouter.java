@@ -3,32 +3,26 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 class MethodRouter {
-  private ArrayList<String> httpMessage;
-  private String httpMethod;
 
-  MethodRouter(ArrayList<String> clientMessage) {
-    httpMessage = clientMessage;
-    httpMethod = httpMessage.get(0).split(" ")[0];
-  }
+  ResponseParameters getResponse(RequestParameters requestParams) throws ParseException, IOException {
+    ArrayList <String> httpMessage = requestParams.httpMessage;
+    String httpMethod = httpMessage.get(0).split(" ")[0];
 
-  ArrayList<String> getResponse() throws ParseException, IOException {
-    ArrayList<String> response;
     if (httpMethod.equals("GET")) {
-      response = get();
+      return this.get(requestParams);
     } else {
-      response = error();
+      return this.error(requestParams);
     }
-    return response;
   }
 
-  private ArrayList<String> get() throws ParseException, IOException {
+  private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
+
     Get httpGetter = new Get();
-    return httpGetter.get(httpMessage);
+    return httpGetter.get(requestParams);
   }
 
-  private ArrayList<String> error() {
-     ArrayList<String> unavailableMessage = new ArrayList<String>();
-     unavailableMessage.add("HTTP/1.1 404 Not Found\r\n");
-     return unavailableMessage;
+  private ResponseParameters error(RequestParameters requestParams) throws IOException {
+    Send404 send404 = new Send404();
+    return send404.get();
   }
 }

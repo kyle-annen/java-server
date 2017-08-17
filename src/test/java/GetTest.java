@@ -1,99 +1,108 @@
 import org.junit.jupiter.api.Test;
-
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.ArrayList;
+import java.util.*;
+import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GetTest {
-  private Get testGet;
-  private ArrayList<String> rootRoute = new ArrayList<String>();
-  private ArrayList<String> helloWorldRoute = new ArrayList<String>();
-  private ArrayList<String> badRoute = new ArrayList<String>();
-  private ArrayList<String> pingRoute = new ArrayList<String>();
-  private ArrayList<String> imagePath = new ArrayList<String>();
-  private ArrayList<String> imageTestPath = new ArrayList<String>();
-  private ArrayList<String> imageFilePath = new ArrayList<String>();
+class GetTest extends TestDirectorySetup {
+  RequestParameters requestParameters;
 
   GetTest() {
-    rootRoute.add("GET / HTTP/1.1\r\n\r\n");
-    helloWorldRoute.add("GET /helloworld HTTP/1.1\r\n\r\n");
-    badRoute.add("GET /that/this HTTP/1.1\r\n\r\n");
-    pingRoute.add("GET /ping HTTP/1.1\r\n\r\n");
-    imagePath.add("GET /images HTTP/1.1\r\n\r\n");
-    imageTestPath.add("GET /images/test HTTP/1.1\r\n\r\n");
-    imageFilePath.add("GET /helloworld/helloworld.html HTTP/1.1\r\n");
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
+    String directoryPath = System.getProperty("user.dir");
+    Socket testSocket = new Socket();
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
   }
 
   @Test
-  void getServesRootPathContent() throws ParseException, IOException {
-    testGet = new Get();
-    ArrayList<String> response = testGet.get(rootRoute);
+  void getReturnsResultOfGetForDirectory() throws IOException {
+    RequestParameters validDirectoryRequest = requestParameters;
+    Get testGet = new Get();
+    ResponseParameters responseParams = testGet.get(validDirectoryRequest);
+    String actualHttpCode = responseParams.responseHeader.get(0);
 
-    String actualRequestLine = response.get(0);
-    String expectedRequestLine = "HTTP/1.1 200 OK\r\n";
-    assertEquals(actualRequestLine, expectedRequestLine);
-  }
+    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    assertEquals(expectedHttpCode, actualHttpCode);
 
-//  @Test
-//  void getServeHelloWorldContent() throws ParseException, IOException {
-//    testGet = new Get();
-//    ArrayList<String> response = testGet.get(helloWorldRoute);
-//
-//    String actualRequestLine = response.get(0);
-//    String expectedRequestLine = "HTTP/1.1 200 OK\r\n";
-//    assertEquals(actualRequestLine, expectedRequestLine);
-//
-//    String actualContent = response.get(6);
-//    String expectedContent = "Hello world!\r\n";
-//    assertEquals(actualContent, expectedContent);
-//  }
+    String expectedBodyType = "text";
+    String actualBodyType = responseParams.bodyType;
+    assertEquals(expectedBodyType, actualBodyType);
 
-  @Test
-  void getServes404onBadPath() throws ParseException, IOException {
-    testGet = new Get();
-    ArrayList<String> response = testGet.get(badRoute);
+    Boolean actualBodyContainsLink = responseParams.body.contains("<a href");
+    assertEquals(true, actualBodyContainsLink);
 
-    String actualRequestLine = response.get(0);
-    String expectedRequestLine = "HTTP/1.1 404 Not Found\r\n";
-    assertEquals(expectedRequestLine, actualRequestLine);
-  }
-
-//  @Test
-//  void getServesPingPongContent() throws ParseException, IOException {
-//    testGet = new Get();
-//    ArrayList<String> response = testGet.get(pingRoute);
-//
-//    String actualResponseContent = response.get(6);
-//    String expectedResponseContent = "pong\r\n";
-//    assertEquals(actualResponseContent, expectedResponseContent);
-//  }
-
-  @Test
-  void getServesImageDirectoryListing() throws IOException {
-    testGet = new Get();
-    ArrayList<String> response = testGet.get(imagePath);
-    String actualResponse = response.get(0);
-    String expectedResponse = "HTTP/1.1 200 OK\r\n";
-    assertEquals(actualResponse, expectedResponse);
+    Boolean actualBodyContainsFile = responseParams.body.contains("testFile1.txt");
+    assertEquals(true, actualBodyContainsFile);
   }
 
   @Test
-  void getServesImageTestDirectoryListing() throws IOException {
-    testGet = new Get();
-    ArrayList<String> response = testGet.get(imageTestPath);
-    String actualResponse = response.get(0);
-    String expectedResponse = "HTTP/1.1 200 OK\r\n";
-    assertEquals(actualResponse, expectedResponse);
+  void getReturnsResultOfGetForBadDirectoryPath() throws IOException {
+    RequestParameters invalidDirectoryRequest = requestParameters;
+    String newHeaderLine = invalidDirectoryRequest
+            .httpMessage
+            .get(0)
+            .replace("/TestDirectory", "/TTTEST");
+    invalidDirectoryRequest.httpMessage.set(0, newHeaderLine);
+
+    Get testGet = new Get();
+    ResponseParameters responseParams = testGet.get(invalidDirectoryRequest);
+
+    String expectedHttpCode = "HTTP/1.1 404 Not Found\r\n\r\n";
+    String actualHttpCode = responseParams.responseHeader.get(0);
+    assertEquals(expectedHttpCode, actualHttpCode);
   }
 
   @Test
-  void getServesFile() throws IOException {
-    testGet = new Get();
-    ArrayList<String> response = testGet.get(imageFilePath);
-    String actualResponse = response.get(0);
-    String expectedResponse = "HTTP/1.1 200 OK\r\n";
-    assertEquals(expectedResponse, actualResponse);
+  void getReturnsResultOfGetForFilePath() throws IOException {
+    RequestParameters validFileRequest = requestParameters;
+    String newHeaderLine = validFileRequest
+            .httpMessage
+            .get(0)
+            .replace("/TestDirectory", "/TestDirectory/testFile1.txt");
+    validFileRequest.httpMessage.set(0, newHeaderLine);
+
+    Get testGet = new Get();
+    ResponseParameters responseParams = testGet.get(validFileRequest);
+
+    String actualHttpCode = responseParams.responseHeader.get(0);
+    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    assertEquals(expectedHttpCode, actualHttpCode);
+
+    String expectedBodyType = "file";
+    String actualBodyType = responseParams.bodyType;
+    assertEquals(expectedBodyType, actualBodyType);
+
+    String expectedBody = System.getProperty("user.dir") + "/TestDirectory/testFile1.txt";
+    String actualBody = responseParams.body;
+    assertEquals(expectedBody, actualBody);
+  }
+
+  @Test
+  void getReturnsResultOfPngGet() throws IOException {
+    RequestParameters validFileRequest = requestParameters;
+    String newHeaderLine = validFileRequest
+            .httpMessage
+            .get(0)
+            .replace("/TestDirectory", "/TestPng/test.png");
+    validFileRequest.httpMessage.set(0, newHeaderLine);
+
+    Get testGet = new Get();
+    ResponseParameters responseParams = testGet.get(validFileRequest);
+
+    String actualHttpCode = responseParams.responseHeader.get(0);
+    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    assertEquals(expectedHttpCode, actualHttpCode);
+
+    String expectedBodyType = "file";
+    String actualBodyType = responseParams.bodyType;
+    assertEquals(expectedBodyType, actualBodyType);
+
+    String expectedBody = System.getProperty("user.dir") + "/TestPng/test.png";
+    String actualBody = responseParams.body;
+    assertEquals(expectedBody, actualBody);
+
+
   }
 }

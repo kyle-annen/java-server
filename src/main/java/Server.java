@@ -6,13 +6,27 @@ import java.util.ArrayList;
 public class Server implements Runnable {
   private int portNumber = 3300;
   private Boolean serverRunning = true;
+  private MethodRouter httpRouter;
+  private String directoryPath = System.getProperty("user.dir");
 
   Server(String[] args) {
-    if (args.length > 0 && args[0].matches("\\d+")) portNumber = Integer.parseInt(args[0]);
+    Boolean isValidDirectoryPath;
+    if (args.length > 0 && args[0].matches("\\d+")) {
+      portNumber = Integer.parseInt(args[0]);
+    }
+    isValidDirectoryPath = args.length > 1 && new File(args[1]).isDirectory();
+    if (isValidDirectoryPath) {
+      directoryPath = args[1];
+    } else {
+      System.out.println("No valid directory provided.");
+    }
+    System.out.println("Serving directory: " + directoryPath);
+    httpRouter = new MethodRouter();
   }
 
   public void run() {
-    System.out.println("Server started at: http://localhost:" + Integer.toString(portNumber));
+    System.out.println("Server started at: http://localhost:" +
+            Integer.toString(portNumber));
     ServerSocket defaultServerSocket;
 
     try {
@@ -20,13 +34,12 @@ public class Server implements Runnable {
 
       while(serverRunning) {
         Socket defaultSocket = defaultServerSocket.accept();
-        InputStreamReader inputStreamReader = new InputStreamReader(defaultSocket.getInputStream());
+        InputStreamReader inputStreamReader =
+                new InputStreamReader(defaultSocket.getInputStream());
         BufferedReader readFromClient =
                 new BufferedReader(inputStreamReader);
-        DataOutputStream sendToClient =
-                new DataOutputStream(defaultSocket.getOutputStream());
-        Boolean reading = true;
 
+        Boolean reading = true;
         ArrayList<String> httpMessage = new ArrayList<String>();
         String line;
 
@@ -39,20 +52,18 @@ public class Server implements Runnable {
           }
         }
 
-        MethodRouter httpRouter = new MethodRouter(httpMessage);
+        RequestParameters requestParams =
+                new RequestParameters(httpMessage, directoryPath);
 
-        ArrayList<String> httpResponse = httpRouter.getResponse();
+        ResponseParameters responseParameters = httpRouter.getResponse(requestParams);
 
-        for( String responseLine : httpResponse) {
-          sendToClient.writeBytes(responseLine);
-        }
+        SendResponse sendResponse = new SendResponse();
+        sendResponse.send(responseParameters, defaultSocket);
 
-        sendToClient.flush();
         readFromClient.close();
         inputStreamReader.close();
-        sendToClient.close();
+ 
         defaultSocket.close();
-
       }
       defaultServerSocket.close();
     } catch (IOException e) {
@@ -62,7 +73,7 @@ public class Server implements Runnable {
     }
   }
 
-  public void stop() {
+  void stop() {
     serverRunning = false;
   }
 
