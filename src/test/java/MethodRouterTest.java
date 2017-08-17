@@ -9,6 +9,7 @@ class MethodRouterTest extends TestDirectorySetup {
   private RequestParameters requestParameters;
 
   MethodRouterTest() {
+
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");

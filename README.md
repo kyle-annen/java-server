@@ -21,5 +21,3 @@ java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve
 
 //>java Main <port> <directory>
 ```
-
-

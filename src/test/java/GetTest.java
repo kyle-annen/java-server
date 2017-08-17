@@ -79,6 +79,7 @@ class GetTest extends TestDirectorySetup {
     assertEquals(expectedBody, actualBody);
   }
 
+
   @Test
   void getReturnsResultOfPngGet() throws IOException {
     RequestParameters validFileRequest = requestParameters;
@@ -102,7 +103,5 @@ class GetTest extends TestDirectorySetup {
     String expectedBody = System.getProperty("user.dir") + "/TestPng/test.png";
     String actualBody = responseParams.body;
     assertEquals(expectedBody, actualBody);
-
-
   }
 }

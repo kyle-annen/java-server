@@ -34,10 +34,12 @@ public class Server implements Runnable {
 
       while(serverRunning) {
         Socket defaultSocket = defaultServerSocket.accept();
+
         InputStreamReader inputStreamReader =
                 new InputStreamReader(defaultSocket.getInputStream());
         BufferedReader readFromClient =
                 new BufferedReader(inputStreamReader);
+
         Boolean reading = true;
         ArrayList<String> httpMessage = new ArrayList<String>();
         String line;
@@ -61,6 +63,8 @@ public class Server implements Runnable {
 
         readFromClient.close();
         inputStreamReader.close();
+
+
         defaultSocket.close();
       }
       defaultServerSocket.close();

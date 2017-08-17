@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 class MethodRouter {
 
+
   ResponseParameters getResponse(RequestParameters requestParams) throws ParseException, IOException {
     ArrayList <String> httpMessage = requestParams.httpMessage;
     String httpMethod = httpMessage.get(0).split(" ")[0];
@@ -13,6 +14,7 @@ class MethodRouter {
       return this.error(requestParams);
     }
   }
+
 
   private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
     Get httpGetter = new Get();

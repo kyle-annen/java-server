@@ -74,23 +74,3 @@ class GetDirectoryTest extends TestDirectorySetup {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
