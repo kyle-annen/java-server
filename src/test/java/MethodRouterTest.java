@@ -1,7 +1,11 @@
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
+<<<<<<< HEAD
 import java.util.ArrayList;
+=======
+import java.util.*;
+>>>>>>> bed5343... finish png requirement
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -13,11 +17,19 @@ class MethodRouterTest {
 
 
   MethodRouterTest() {
+<<<<<<< HEAD
     testGetRoot.add("GET / HTTP/1.1\r\n");
     testGetRoot.add("Host: localhost:2323\r\n");
     testGetRoot.add("User-Agent: curl/7.51.0\r\n");
     testGetRoot.add("Accept: */*\r\n");
     testGetRoot.add("\r\n");
+=======
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
+    String directoryPath = System.getProperty("user.dir");
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
+  }
+>>>>>>> bed5343... finish png requirement
 
     testGetBadRoot.add("GET // HTTP/1.1\r\n\r\n");
 

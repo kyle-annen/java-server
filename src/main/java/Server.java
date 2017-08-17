@@ -38,7 +38,12 @@ public class Server implements Runnable {
           }
         }
 
+<<<<<<< HEAD
         MethodRouter httpRouter = new MethodRouter(httpMessage);
+=======
+        RequestParameters requestParams =
+                new RequestParameters(httpMessage, directoryPath);
+>>>>>>> bed5343... finish png requirement
 
         ArrayList<String> httpResponse = httpRouter.getResponse();
 

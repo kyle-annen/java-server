@@ -45,11 +45,16 @@ class Get {
       response.add(pongPathBody);
 
     } else {
+<<<<<<< HEAD
       response.add("HTTP/1.1 404 Not Found\r\n");
       response.add("Connection: Close\r\n");
       response.add("Content-Type: text/plain\r\n");
       response.add("404: Page not found\r\n");
       response.add("This is not the page you are looking for.\r\n");
+=======
+      Send404 send404 = new Send404();
+      return send404.get();
+>>>>>>> bed5343... finish png requirement
     }
     response.add("\r\n");
 

@@ -13,10 +13,18 @@ class GetTest {
   private ArrayList<String> pingRoute = new ArrayList<String>();
 
   GetTest() {
+<<<<<<< HEAD
     rootRoute.add("GET / HTTP/1.1\r\n\r\n");
     helloWorldRoute.add("GET /helloworld HTTP/1.1\r\n\r\n");
     badRoute.add("GET // HTTP/1.1\r\n\r\n");
     pingRoute.add("GET /ping HTTP/1.1\r\n\r\n");
+=======
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
+    String directoryPath = System.getProperty("user.dir");
+    Socket testSocket = new Socket();
+    requestParameters = new RequestParameters(httpMessage, directoryPath);
+>>>>>>> bed5343... finish png requirement
   }
 
   @Test

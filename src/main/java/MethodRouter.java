@@ -25,9 +25,15 @@ class MethodRouter {
     return httpGetter.get(httpMessage);
   }
 
+<<<<<<< HEAD
   private ArrayList<String> error() {
      ArrayList<String> unavailableMessage = new ArrayList<String>();
      unavailableMessage.add("HTTP/1.1 404 Not Found\r\n");
      return unavailableMessage;
+=======
+  private ResponseParameters error(RequestParameters requestParams) throws IOException {
+    Send404 send404 = new Send404();
+    return send404.get();
+>>>>>>> bed5343... finish png requirement
   }
 }
