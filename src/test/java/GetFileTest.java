@@ -30,7 +30,6 @@ class GetFileTest extends TestDirectorySetup {
     assertEquals(expectedFileType, actualFileType);
 
     String[] actualFilePath = responseParameters.body.split("/");
-    for(String string : actualFilePath) { System.out.println(string); }
     String actualFile = actualFilePath[actualFilePath.length - 1];
     String expectedFile = "testFile1.txt";
     assertEquals(expectedFile, actualFile);

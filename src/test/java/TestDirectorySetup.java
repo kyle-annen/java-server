@@ -1,6 +1,5 @@
 import org.junit.Ignore;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +12,8 @@ import java.util.List;
 @Ignore
 public class TestDirectorySetup {
 
-  @BeforeEach
-  void generateTestFileStructure() throws IOException {
+  @BeforeAll
+  static void generateTestFileStructure() throws IOException {
     List<String> lines = Arrays.asList("test\r\n\r\ntest","test\n");
     File dir = new File("./TestDirectory");
     dir.mkdir();
@@ -28,8 +27,8 @@ public class TestDirectorySetup {
     Files.write(file2, lines);
   }
 
-  @AfterEach
-  void destroyTestFileStructure() throws IOException {
+  @AfterAll
+  static void destroyTestFileStructure() throws IOException {
     File dir = new File("./TestDirectory");
     File dir2 = new File("./TestEmpty");
     File dir3 = new File("./TestPng");
