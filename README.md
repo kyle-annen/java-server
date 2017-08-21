@@ -1,10 +1,10 @@
 # Java Server [![Build Status](https://travis-ci.org/kyle-annen/java-server.svg?branch=master)](https://travis-ci.org/kyle-annen/java-server)
 
-## Run tests
+## Requirements
 
-``` bash
-mvn clean test
-```
+- Java 1.8
+- Maven 3.5.0
+
 
 ## Run Server
 
@@ -15,11 +15,15 @@ mvn clean test
 mvn package
 ```
 - Run the server, optionally specifying the port and root directory to serve.
-``` bash
-cd target/classes/Main
-java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve 
+- 
 
-//>java Main <port> <directory>
+``` bash
+java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve 
 ```
 
+## Run tests
+
+``` bash
+mvn clean test
+```
 
