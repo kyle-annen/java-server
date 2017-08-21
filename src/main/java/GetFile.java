@@ -14,3 +14,6 @@ class GetFile {
     return new ResponseParameters(responseHeader, "file", filePath);
   }
 }
+
+
+
