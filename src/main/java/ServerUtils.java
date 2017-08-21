@@ -18,6 +18,7 @@ class ServerUtils {
 
   String getFileMimeType(String _filePath) throws IOException {
      return URLConnection.guessContentTypeFromName(_filePath);
-
   }
+
+
 }

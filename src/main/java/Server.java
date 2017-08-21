@@ -10,69 +10,94 @@ public class Server implements Runnable {
   private String directoryPath = System.getProperty("user.dir");
 
   Server(String[] args) {
-    Boolean isValidDirectoryPath;
-    if (args.length > 0 && args[0].matches("\\d+")) {
-      portNumber = Integer.parseInt(args[0]);
-    }
-    isValidDirectoryPath = args.length > 1 && new File(args[1]).isDirectory();
-    if (isValidDirectoryPath) {
-      directoryPath = args[1];
-    } else {
-      System.out.println("No valid directory provided.");
-    }
-    System.out.println("Serving directory: " + directoryPath);
+    Logger logger = new Logger();
+    portNumber = this.setPortNumber(portNumber, args);
+    directoryPath = this.setDirectoryPath(directoryPath, args, logger);
+    logger.log("Serving directory: " + directoryPath);
     httpRouter = new MethodRouter();
   }
 
   public void run() {
-    System.out.println("Server started at: http://localhost:" +
-            Integer.toString(portNumber));
-    ServerSocket defaultServerSocket;
+    this.announceServer(portNumber, new Logger());
+    ServerSocket serverSocket;
 
     try {
-      defaultServerSocket = new ServerSocket(portNumber);
+      serverSocket = new ServerSocket(portNumber);
 
       while(serverRunning) {
-        Socket defaultSocket = defaultServerSocket.accept();
+        Socket socket = serverSocket.accept();
         InputStreamReader inputStreamReader =
-                new InputStreamReader(defaultSocket.getInputStream());
-        BufferedReader readFromClient =
+                new InputStreamReader(socket.getInputStream());
+        BufferedReader bufferedReader =
                 new BufferedReader(inputStreamReader);
-        Boolean reading = true;
-        ArrayList<String> httpMessage = new ArrayList<String>();
-        String line;
 
-        while(reading) {
-          line = readFromClient.readLine();
-          if (line.equals("")) {
-            reading = false;
-          } else {
-            httpMessage.add(line);
-          }
-        }
+        ArrayList<String> httpMessage =
+                this.readHttpMessage(bufferedReader);
 
         RequestParameters requestParams =
                 new RequestParameters(httpMessage, directoryPath);
 
-        ResponseParameters responseParameters = httpRouter.getResponse(requestParams);
+        ResponseParameters responseParams =
+                httpRouter.getResponse(requestParams);
 
-        SendResponse sendResponse = new SendResponse();
-        sendResponse.send(responseParameters, defaultSocket);
+        new SendResponse().send(responseParams, socket);
 
-        readFromClient.close();
-        inputStreamReader.close();
-        defaultSocket.close();
+        this.closeConnections(bufferedReader, inputStreamReader, socket);
       }
-      defaultServerSocket.close();
-    } catch (IOException e) {
+      serverSocket.close();
+    } catch (IOException | ParseException e) {
       e.printStackTrace();
-    } catch (ParseException e) {
-      e.printStackTrace();
+      this.run();
+    }
+  }
+
+  private void announceServer(int portNumber, Logger logger) {
+    String outputMessage = "Server started at: http://localhost:" +
+            Integer.toString(portNumber);
+    logger.log(outputMessage);
+  }
+
+  private void closeConnections(
+          BufferedReader bufferedReader,
+          InputStreamReader inputStreamReader,
+          Socket socket) throws IOException {
+    bufferedReader.close();
+    inputStreamReader.close();
+    socket.close();
+  }
+
+  private ArrayList<String> readHttpMessage(
+          BufferedReader bufferedReader ) throws IOException {
+    Boolean reading = true;
+    ArrayList<String> httpMessage = new ArrayList<>();
+    String line;
+    while(reading) {
+      line = bufferedReader.readLine();
+      if(line.equals("")) { reading = false; }
+      else { httpMessage.add(line); }
+    }
+    return httpMessage;
+  }
+
+  private String setDirectoryPath(String directPath, String[] args, Logger logger) {
+    Boolean isValidDirectoryPath = args.length > 1 && new File(args[1]).isDirectory();
+    if (isValidDirectoryPath) {
+      return args[1];
+    } else {
+      logger.log("No valid directory provided.");
+      return directPath;
+    }
+  }
+
+  private int setPortNumber(int portNum, String[] args) {
+    if (args.length > 0 && args[0].matches("\\d+")) {
+      return Integer.parseInt(args[0]);
+    } else {
+      return portNum;
     }
   }
 
   void stop() {
     serverRunning = false;
   }
-
 }
