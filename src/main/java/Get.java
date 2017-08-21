@@ -2,8 +2,8 @@ import java.io.*;
 
 class Get {
   ResponseParameters get(RequestParameters requestParams) throws IOException {
-    String relativePath = requestParams.httpMessage.get(0).split(" ")[1];
-    String filePath = requestParams.directoryPath + relativePath;
+    String relativePath = requestParams.getRequestPath();
+    String filePath = requestParams.getDirectoryPath() + relativePath;
     File targetFile = new File(filePath);
     Boolean pathExists = targetFile.exists();
     Boolean isDirectory = targetFile.isDirectory();

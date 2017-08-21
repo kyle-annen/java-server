@@ -5,12 +5,11 @@ import java.util.ArrayList;
 class MethodRouter {
 
   ResponseParameters getResponse(RequestParameters requestParams) throws ParseException, IOException {
-    ArrayList <String> httpMessage = requestParams.httpMessage;
-    String httpMethod = httpMessage.get(0).split(" ")[0];
+    String httpMethod = requestParams.getHttpVerb();
     if (httpMethod.equals("GET")) {
       return this.get(requestParams);
     } else {
-      return this.error(requestParams);
+      return this.error();
     }
   }
 
@@ -19,7 +18,7 @@ class MethodRouter {
     return httpGetter.get(requestParams);
   }
 
-  private ResponseParameters error(RequestParameters requestParams) throws IOException {
+  private ResponseParameters error() throws IOException {
     Send404 send404 = new Send404();
     return send404.get();
   }

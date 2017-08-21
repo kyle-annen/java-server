@@ -5,7 +5,7 @@ class GetDirectory {
   private String webDirectoryRelativePath;
 
   GetDirectory(RequestParameters _requestParams) throws IOException {
-    webDirectoryRelativePath = _requestParams.httpMessage.get(0).split(" ")[1];
+    webDirectoryRelativePath = _requestParams.getRequestPath();
 
   }
 

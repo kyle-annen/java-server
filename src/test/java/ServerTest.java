@@ -34,10 +34,6 @@ class ServerTest extends TestDirectorySetup {
 
   }
 
-
-
-
-
   @Test
   void serverSendsValidResponseToValidRequestForFile() {
     try {

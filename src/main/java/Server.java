@@ -35,7 +35,13 @@ public class Server implements Runnable {
                 this.readHttpMessage(bufferedReader);
 
         RequestParameters requestParams =
-                new RequestParameters(httpMessage, directoryPath);
+                new RequestParameters.RequestBuilder(directoryPath)
+                        .setHttpVerb(httpMessage)
+                        .setRequestPath(httpMessage)
+                        .setHost(httpMessage)
+                        .setUserAgent(httpMessage)
+                        .setAccept(httpMessage)
+                        .build();
 
         ResponseParameters responseParams =
                 httpRouter.getResponse(requestParams);
