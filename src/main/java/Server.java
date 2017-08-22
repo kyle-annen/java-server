@@ -2,15 +2,18 @@ import java.io.*;
 import java.net.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
+  Logger logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
   private MethodRouter httpRouter;
   private String directoryPath = System.getProperty("user.dir");
 
   Server(String[] args) {
-    Logger logger = new Logger();
+    logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
@@ -18,40 +21,20 @@ public class Server implements Runnable {
   }
 
   public void run() {
-    this.announceServer(portNumber, new Logger());
+    //pass the instantiated logger here
+    this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
-
+    ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
     try {
       serverSocket = new ServerSocket(portNumber);
 
       while(serverRunning) {
         Socket socket = serverSocket.accept();
-        InputStreamReader inputStreamReader =
-                new InputStreamReader(socket.getInputStream());
-        BufferedReader bufferedReader =
-                new BufferedReader(inputStreamReader);
-
-        ArrayList<String> httpMessage =
-                this.readHttpMessage(bufferedReader);
-
-        RequestParameters requestParams =
-                new RequestParameters.RequestBuilder(directoryPath)
-                        .setHttpVerb(httpMessage)
-                        .setRequestPath(httpMessage)
-                        .setHost(httpMessage)
-                        .setUserAgent(httpMessage)
-                        .setAccept(httpMessage)
-                        .build();
-
-        ResponseParameters responseParams =
-                httpRouter.getResponse(requestParams);
-
-        new SendResponse().send(responseParams, socket);
-
-        this.closeConnections(bufferedReader, inputStreamReader, socket);
+        RequestHandler requestHandler = new RequestHandler(directoryPath, socket, logger);
+        requestExecutor.submit(requestHandler);
       }
       serverSocket.close();
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       e.printStackTrace();
       this.run();
     }
@@ -63,27 +46,9 @@ public class Server implements Runnable {
     logger.log(outputMessage);
   }
 
-  private void closeConnections(
-          BufferedReader bufferedReader,
-          InputStreamReader inputStreamReader,
-          Socket socket) throws IOException {
-    bufferedReader.close();
-    inputStreamReader.close();
-    socket.close();
-  }
 
-  private ArrayList<String> readHttpMessage(
-          BufferedReader bufferedReader ) throws IOException {
-    Boolean reading = true;
-    ArrayList<String> httpMessage = new ArrayList<>();
-    String line;
-    while(reading) {
-      line = bufferedReader.readLine();
-      if(line.equals("")) { reading = false; }
-      else { httpMessage.add(line); }
-    }
-    return httpMessage;
-  }
+
+
 
   private String setDirectoryPath(String directPath, String[] args, Logger logger) {
     Boolean isValidDirectoryPath = args.length > 1 && new File(args[1]).isDirectory();
