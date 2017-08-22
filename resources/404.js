@@ -1,21 +1,6 @@
-$(document).ready(){
-    function animatethis(targetElement, speed) {
-        $(targetElement).animate({ marginLeft: "+=250px"},
-        {
-            duration: speed,
-            complete: function ()
-            {
-                targetElement.animate({ marginLeft: "-=250px" },
-                {
-                    duration: speed,
-                    complete: function ()
-                    {
-                        animatethis(targetElement, speed);
-                    }
-                });
-            }
-        });
-    };
+$(document).ready(function() {
+    $('#js-target').text('Javascript has loaded, this text is placed by a JS file served from the server.');
+})
 
-    animatethis($('.swingimage'), 5000);
-}
+
+

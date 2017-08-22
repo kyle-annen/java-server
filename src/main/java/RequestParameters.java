@@ -18,8 +18,6 @@ public class RequestParameters {
     this.accept = builder.accept;
   }
 
-
-
   String getDirectoryPath() { return directoryPath; }
 
   String getHttpVerb() { return httpVerb; }
@@ -82,7 +80,6 @@ public class RequestParameters {
       this.userAgent = userAgent;
       return this;
     }
-
 
     public RequestBuilder setAccept(ArrayList<String> httpMessage) {
       String[] accept = null;
