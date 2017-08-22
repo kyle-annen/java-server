@@ -12,7 +12,10 @@ class GetDirectoryTest extends TestDirectorySetup {
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory HTTP/1.1\r\n");
     String directoryPath = "./TestDirectory";
-    requestParameters = new RequestParameters(httpMessage, directoryPath);
+    requestParameters = new RequestParameters.RequestBuilder(directoryPath)
+            .setHttpVerb(httpMessage)
+            .setRequestPath(httpMessage)
+            .build();
   }
 
   @Test
