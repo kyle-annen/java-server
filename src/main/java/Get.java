@@ -5,11 +5,11 @@ class Get {
     String relativePath = requestParams.getRequestPath();
     String filePath = requestParams.getDirectoryPath() + relativePath;
     String indexPath = filePath + "/index.html";
-    System.out.println(indexPath);
     Boolean hasIndex = new File(indexPath).exists();
 
     File targetFile = hasIndex ? new File(indexPath) : new File(filePath);
     filePath = targetFile.toString();
+
     Boolean pathExists = targetFile.exists();
     Boolean isDirectory = targetFile.isDirectory();
     Boolean isPng = targetFile.toString().contains(".png");

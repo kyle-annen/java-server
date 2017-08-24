@@ -27,6 +27,9 @@ public class RequestHandler implements Runnable {
 
         ArrayList<String> httpMessage =
                 this.readHttpMessage(bufferedReader);
+        for(String m: httpMessage) {
+          System.out.println(m);
+        }
 
         RequestParameters requestParams =
                 new RequestParameters.RequestBuilder(directoryPath)
@@ -35,10 +38,10 @@ public class RequestHandler implements Runnable {
                         .setHost(httpMessage)
                         .setUserAgent(httpMessage)
                         .setAccept(httpMessage)
+                        .setSocket(socket)
                         .build();
 
         //instantiate the router with the directory path
-
         MethodRouter httpRouter = new MethodRouter();
 
         ResponseParameters responseParams =

@@ -8,14 +8,21 @@ class MethodRouter {
     String httpMethod = requestParams.getHttpVerb();
     if (httpMethod.equals("GET")) {
       return this.get(requestParams);
+    } else if(httpMethod.equals("POST")) {
+      return this.post(requestParams);
     } else {
       return this.error();
     }
   }
 
   private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
-    Get httpGetter = new Get();
-    return httpGetter.get(requestParams);
+    Get get = new Get();
+    return get.get(requestParams);
+  }
+
+  private ResponseParameters post(RequestParameters requestParams) throws ParseException, IOException {
+    Post post = new Post();
+    return post.post(requestParams);
   }
 
   private ResponseParameters error() throws IOException {
