@@ -1,11 +1,7 @@
 import java.io.*;
 import java.net.URLDecoder;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 class Post {
 
@@ -27,9 +23,9 @@ class Post {
 
 
   HashMap<String, String> parseFormData(String bodyContent) throws UnsupportedEncodingException {
-    String[] formfields = bodyContent.split("&");
+    String[] formFields = bodyContent.split("&");
     HashMap<String, String> formData = new HashMap<>();
-    for(String field: formfields) {
+    for(String field: formFields) {
       String[] fieldKeyValue = field.split("=");
       formData.put(URLDecoder.decode(fieldKeyValue[0], "UTF-8"), URLDecoder.decode(fieldKeyValue[1], "UTF-8"));
     }
