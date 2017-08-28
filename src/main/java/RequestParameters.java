@@ -1,3 +1,4 @@
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -8,6 +9,8 @@ public class RequestParameters {
   private final String host;
   private final String userAgent;
   private final String[] accept;
+  private final Socket socket;
+  private final String bodyContent;
 
   private RequestParameters(RequestBuilder builder) {
     this.directoryPath = builder.directoryPath;
@@ -16,6 +19,8 @@ public class RequestParameters {
     this.host = builder.host;
     this.userAgent = builder.userAgent;
     this.accept = builder.accept;
+    this.socket = builder.socket;
+    this.bodyContent = builder.bodyContent;
   }
 
   String getDirectoryPath() { return directoryPath; }
@@ -30,13 +35,17 @@ public class RequestParameters {
 
   String[] getAccept() { return accept; }
 
+  String getBodyContent() { return bodyContent; }
+
   public static class RequestBuilder {
     private final String directoryPath;
+    private Socket socket;
     private String httpVerb;
     private String requestPath;
     private String host;
     private String userAgent;
     private String[] accept;
+    private String bodyContent;
 
     public RequestBuilder(String directoryPath) {
       this.directoryPath = directoryPath;
@@ -66,6 +75,11 @@ public class RequestParameters {
       return this;
     }
 
+    public RequestBuilder setSocket(Socket socket) {
+      this.socket = socket;
+      return this;
+    }
+
     public RequestBuilder setUserAgent(ArrayList<String> httpMessage) {
       String userAgent = null;
       for(String line: httpMessage) {
@@ -91,6 +105,18 @@ public class RequestParameters {
         }
       }
       this.accept = accept;
+      return this;
+    }
+
+
+    public RequestBuilder setBodyContent(ArrayList<String> httpMessage) {
+      for(String line: httpMessage) {
+        String headerLine = line.split(" ")[0];
+        if(headerLine.equals("Body-Content:")) {
+          this.bodyContent = line.substring(14);
+          return this;
+        }
+      }
       return this;
     }
 

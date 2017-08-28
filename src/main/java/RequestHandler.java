@@ -19,14 +19,24 @@ public class RequestHandler implements Runnable {
 
   public void run() {
     while (threadAlive) {
+      ArrayList<String> httpMessage = new ArrayList<>();
       try {
         InputStreamReader inputStreamReader =
                 new InputStreamReader(socket.getInputStream());
         BufferedReader bufferedReader =
                 new BufferedReader(inputStreamReader);
 
-        ArrayList<String> httpMessage =
-                this.readHttpMessage(bufferedReader);
+        httpMessage = this.readHttpMessage(bufferedReader, httpMessage);
+
+        for(String m: httpMessage) {
+          System.out.println(m);
+        }
+
+        Boolean containsContent = this.containsContent(httpMessage);
+
+        httpMessage = containsContent ?
+                this.readContentBody(bufferedReader, httpMessage)
+                : httpMessage;
 
         RequestParameters requestParams =
                 new RequestParameters.RequestBuilder(directoryPath)
@@ -35,10 +45,11 @@ public class RequestHandler implements Runnable {
                         .setHost(httpMessage)
                         .setUserAgent(httpMessage)
                         .setAccept(httpMessage)
+                        .setSocket(socket)
+                        .setBodyContent(httpMessage)
                         .build();
 
         //instantiate the router with the directory path
-
         MethodRouter httpRouter = new MethodRouter();
 
         ResponseParameters responseParams =
@@ -55,6 +66,16 @@ public class RequestHandler implements Runnable {
     }
   }
 
+  private Boolean containsContent(ArrayList<String> httpMessage) {
+    for(String line: httpMessage) {
+      String headerType = line.split(" ")[0];
+      if(headerType.equals("Content-Length:")) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   private void closeConnections(
           BufferedReader bufferedReader,
           InputStreamReader inputStreamReader,
@@ -65,15 +86,44 @@ public class RequestHandler implements Runnable {
   }
 
   private ArrayList<String> readHttpMessage(
-          BufferedReader bufferedReader ) throws IOException {
+          BufferedReader bufferedReader,
+          ArrayList<String> httpMessage) throws IOException {
     Boolean reading = true;
-    ArrayList<String> httpMessage = new ArrayList<>();
     String line;
     while(reading) {
       line = bufferedReader.readLine();
       if(line.equals("")) { reading = false; }
-      else { httpMessage.add(line); }
+      else {
+        httpMessage.add(line); }
     }
     return httpMessage;
   }
+
+  private ArrayList<String> readContentBody(
+          BufferedReader bufferedReader,
+          ArrayList<String> httpMessage) throws IOException {
+    int contentLength = this.getContentLength(httpMessage);
+    String content = "";
+    int length = 0;
+    while(length < contentLength) {
+      int value = bufferedReader.read();
+      if(value != -1) { content += (char)value; }
+      length += 1;
+    }
+    httpMessage.add("Body-Content: " + content);
+    return httpMessage;
+  }
+
+  private int getContentLength(ArrayList<String> httpMessage) {
+    int contentLength = 0;
+    for(String line: httpMessage) {
+      String headerLabel = line.split(" ")[0];
+      String headerValue = line.split(" ")[1];
+      if (headerLabel.equals("Content-Length:")) {
+        contentLength = Integer.parseInt(headerValue.trim());
+      }
+    }
+    return contentLength;
+  }
+
 }

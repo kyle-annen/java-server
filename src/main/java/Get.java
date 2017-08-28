@@ -4,7 +4,12 @@ class Get {
   ResponseParameters get(RequestParameters requestParams) throws IOException {
     String relativePath = requestParams.getRequestPath();
     String filePath = requestParams.getDirectoryPath() + relativePath;
-    File targetFile = new File(filePath);
+    String indexPath = filePath + "/index.html";
+    Boolean hasIndex = new File(indexPath).exists();
+
+    File targetFile = hasIndex ? new File(indexPath) : new File(filePath);
+    filePath = targetFile.toString();
+
     Boolean pathExists = targetFile.exists();
     Boolean isDirectory = targetFile.isDirectory();
     Boolean isPng = targetFile.toString().contains(".png");
@@ -13,12 +18,13 @@ class Get {
     Boolean isCssFile = targetFile.toString().contains(".css");
     Boolean isJsFile = targetFile.toString().contains(".js");
     Boolean isPdf = targetFile.toString().contains(".pdf");
+
     Boolean isTextFile = isCssFile || isJsFile || isHtmlFile || isTxtFile;
 
-    if (pathExists && isDirectory) {
+    if (pathExists && isDirectory && !hasIndex) {
       GetDirectory directory = new GetDirectory(requestParams);
       return directory.get(filePath);
-    } else if (isTextFile) {
+    } else if (isTextFile || hasIndex) {
       GetHtmlText getHtmlText = new GetHtmlText();
       return getHtmlText.get(requestParams, filePath);
     } else if(isPng || isPdf) {
