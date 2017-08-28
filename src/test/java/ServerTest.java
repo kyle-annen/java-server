@@ -61,4 +61,39 @@ class ServerTest extends TestDirectorySetup {
       this.serverSendsValidResponseToValidRequestForFile();
     }
   }
+
+  @Test
+  void serverSendsRedirectToValidPostRequest() {
+    ServerUtils serverUtils = new ServerUtils();
+    try {
+      String[] serverResponse;
+      Server testServer = new Server(new String[]{"4045"});
+      Thread testServerThread = new Thread(testServer);
+      testServerThread.start();
+      Socket testSocket = new Socket("localhost", 4045);
+      DataOutputStream sendToServer =
+              new DataOutputStream(testSocket.getOutputStream());
+      BufferedReader readFromServer =
+              new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
+
+      sendToServer.writeBytes("POST /resources/form HTTP/1.1\r\n");
+      String testContent = "first_name=george-michael&last_name=bluth&location=banana-stand";
+      String contentLength = serverUtils.getHttpHeaderContentLength(testContent);
+      sendToServer.writeBytes("Content-Length: " + contentLength + "\r\n");
+      sendToServer.writeBytes("\r\n");
+      sendToServer.writeBytes(testContent);
+      sendToServer.writeBytes("\r\n\r\n");
+      sendToServer.flush();
+
+      serverResponse = readFromServer.readLine().split(" ");
+      String actualResponse = String.join(" ", serverResponse);
+      String expectedResponse = "HTTP/1.1 302 Found";
+
+      testServer.stop();
+
+      assertEquals(actualResponse, expectedResponse);
+    } catch (IOException e) {
+      this.serverSendsValidResponseToValidRequestForFile();
+    }
+  }
 }

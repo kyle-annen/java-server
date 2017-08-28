@@ -66,4 +66,25 @@ class MethodRouterTest extends TestDirectorySetup {
     String actualHttpHeader = responseParams.responseHeader.get(0);
     assertEquals(expectedHttpHeader, actualHttpHeader);
   }
+
+  @Test
+  void methodRouterRespondsCorrectlyToPostHttpVerb() throws IOException, ParseException {
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("POST /resources/form HTTP/1.1\r\n");
+    String directoryPath = System.getProperty("user.dir");
+    httpMessage.add("Body-Content: first_name=george-michael&last_name=bluth\r\n");
+    RequestParameters postParams = new RequestParameters.RequestBuilder(directoryPath)
+            .setHttpVerb(httpMessage)
+            .setRequestPath(httpMessage)
+            .setBodyContent(httpMessage)
+            .build();
+    MethodRouter methodRouter = new MethodRouter();
+
+    ResponseParameters responseParams =
+            methodRouter.getResponse(postParams);
+
+    String expectedHttpHeader = "HTTP/1.1 302 Found\r\n";
+    String actualHttpHeader = responseParams.responseHeader.get(0);
+    assertEquals(expectedHttpHeader, actualHttpHeader);
+  }
 }
