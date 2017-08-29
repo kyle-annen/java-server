@@ -18,7 +18,7 @@ mvn package
 - 
 
 ``` bash
-java -jar target/java-server-0.1.jar 3030 /Root/directory/to/serve 
+java -jar target/java-server-0.1.jar -p 3030 -d /Root/directory/to/serve 
 ```
 
 ## Run tests
