@@ -9,20 +9,21 @@ public class Server implements Runnable {
   private Boolean serverRunning = true;
   private MethodRouter httpRouter;
   private String directoryPath = System.getProperty("user.dir");
+  private ExecutorService requestExecutor;
 
-  Server(String[] args) {
+  Server(String[] args, ExecutorService requestExecutor) {
     logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
     httpRouter = new MethodRouter();
+    this.requestExecutor = requestExecutor;
   }
 
   public void run() {
-    //pass the instantiated logger here
+
     this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
-    ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
     try {
       serverSocket = new ServerSocket(portNumber);
 
@@ -34,7 +35,6 @@ public class Server implements Runnable {
       serverSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
-      this.run();
     }
   }
 
@@ -44,26 +44,23 @@ public class Server implements Runnable {
     logger.log(outputMessage);
   }
 
-
-
-
-
   private String setDirectoryPath(String directPath, String[] args, Logger logger) {
-    Boolean isValidDirectoryPath = args.length > 1 && new File(args[1]).isDirectory();
-    if (isValidDirectoryPath) {
-      return args[1];
-    } else {
-      logger.log("No valid directory provided.");
-      return directPath;
+    for(int i = 0; i < args.length; i++) {
+      if(args[i].equals("-d") && new File(args[i + 1]).isDirectory()) {
+        return args[i + 1];
+      }
     }
+    logger.log("No valid directory path provided.");
+    return directPath;
   }
 
   private int setPortNumber(int portNum, String[] args) {
-    if (args.length > 0 && args[0].matches("\\d+")) {
-      return Integer.parseInt(args[0]);
-    } else {
-      return portNum;
+    for (int i = 0; i < args.length; i++ ) {
+      if(args[i].equals("-p") && args[i + 1].matches("\\d+")) {
+        return Integer.parseInt(args[i + 1]);
+      }
     }
+    return portNum;
   }
 
   void stop() {

@@ -1,6 +1,11 @@
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class Main {
   public static void main(String[] args) {
-    Server httpServer = new Server(args);
+    ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+    Server httpServer = new Server(args, requestExecutor);
+    Runtime.getRuntime().addShutdownHook(new ShutdownHook(httpServer, requestExecutor));
     httpServer.run();
   }
 }

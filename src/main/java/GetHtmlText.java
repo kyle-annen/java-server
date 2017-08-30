@@ -15,18 +15,14 @@ class GetHtmlText {
     return new ResponseParameters(response, "file", filePath);
   }
 
-  String getFileContents(String fullFilePath) {
+  String getFileContents(String fullFilePath) throws IOException {
     StringBuilder contentBuilder = new StringBuilder();
-    try {
-      BufferedReader in = new BufferedReader(new FileReader(fullFilePath));
-      String str;
-      while((str = in.readLine()) != null) {
-        contentBuilder.append(str);
-      }
-      in.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    BufferedReader in = new BufferedReader(new FileReader(fullFilePath));
+    String str;
+    while((str = in.readLine()) != null) {
+      contentBuilder.append(str);
     }
+    in.close();
     return contentBuilder.toString();
   }
 }

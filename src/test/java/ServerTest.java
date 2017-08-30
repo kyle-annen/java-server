@@ -2,13 +2,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.net.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 class ServerTest extends TestDirectorySetup {
   @Test
   void serverSendsValidResponseToValidRequest() {
     try {
       String[] serverResponse;
-      Server testServer = new Server(new String[]{"4040"});
+      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+      Server testServer = new Server(new String[]{"-p", "4040"}, requestExecutor);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
 
@@ -38,7 +41,8 @@ class ServerTest extends TestDirectorySetup {
   void serverSendsValidResponseToValidRequestForFile() {
     try {
       String[] serverResponse;
-      Server testServer = new Server(new String[]{"4043"});
+      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+      Server testServer = new Server(new String[]{"-p", "4043"}, requestExecutor);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
       Socket testSocket = new Socket("localhost", 4043);
@@ -67,7 +71,8 @@ class ServerTest extends TestDirectorySetup {
     ServerUtils serverUtils = new ServerUtils();
     try {
       String[] serverResponse;
-      Server testServer = new Server(new String[]{"4045"});
+      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+      Server testServer = new Server(new String[]{"-p", "4045"}, requestExecutor);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
       Socket testSocket = new Socket("localhost", 4045);

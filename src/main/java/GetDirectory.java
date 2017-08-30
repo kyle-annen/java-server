@@ -55,7 +55,8 @@ class GetDirectory {
       for(String item: directoryList) {
         if(item.contains(".html") || item.contains(".txt")
                 || item.contains(".png") || item.contains(".pdf")
-                || item.contains(".js") || item.contains(".css")) {
+                || item.contains(".js") || item.contains(".css")
+                || item.contains(".jpg") || item.contains(".gif") || item.contains(".jpeg")) {
           String link = webDirectoryRelativePath + "/" + item;
           link = link.replace("//", "/");
           directoryResponseMessage.add("<li><a href='" + link + "'>" + item + "</a></li>\n");

@@ -4,15 +4,16 @@ class Get {
   ResponseParameters get(RequestParameters requestParams) throws IOException {
     String relativePath = requestParams.getRequestPath();
     String filePath = requestParams.getDirectoryPath() + relativePath;
-    String indexPath = filePath + "/index.html";
-    Boolean hasIndex = new File(indexPath).exists();
 
-    File targetFile = hasIndex ? new File(indexPath) : new File(filePath);
+    File targetFile = new File(filePath);
     filePath = targetFile.toString();
 
     Boolean pathExists = targetFile.exists();
     Boolean isDirectory = targetFile.isDirectory();
     Boolean isPng = targetFile.toString().contains(".png");
+    Boolean isJpg = targetFile.toString().contains(".jpg");
+    Boolean isJpeg = targetFile.toString().contains(".jpeg");
+    Boolean isGif = targetFile.toString().contains(".gif");
     Boolean isTxtFile = targetFile.toString().contains(".txt");
     Boolean isHtmlFile = targetFile.toString().contains(".html");
     Boolean isCssFile = targetFile.toString().contains(".css");
@@ -21,13 +22,13 @@ class Get {
 
     Boolean isTextFile = isCssFile || isJsFile || isHtmlFile || isTxtFile;
 
-    if (pathExists && isDirectory && !hasIndex) {
+    if (pathExists && isDirectory) {
       GetDirectory directory = new GetDirectory(requestParams);
       return directory.get(filePath);
-    } else if (isTextFile || hasIndex) {
+    } else if (isTextFile) {
       GetHtmlText getHtmlText = new GetHtmlText();
       return getHtmlText.get(requestParams, filePath);
-    } else if(isPng || isPdf) {
+    } else if(isPng || isPdf || isGif || isJpg || isJpeg) {
       GetFile getFile = new GetFile();
       return getFile.get(requestParams, filePath);
     } else {

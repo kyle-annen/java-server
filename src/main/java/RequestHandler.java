@@ -8,7 +8,6 @@ import java.util.ArrayList;
 public class RequestHandler implements Runnable {
   private String directoryPath;
   Socket socket;
-  private Boolean threadAlive = true;
   private Logger logger;
 
   RequestHandler(String _directoryPath, Socket _socket, Logger _logger) {
@@ -18,51 +17,43 @@ public class RequestHandler implements Runnable {
   }
 
   public void run() {
-    while (threadAlive) {
+
+    try {
       ArrayList<String> httpMessage = new ArrayList<>();
-      try {
-        InputStreamReader inputStreamReader =
-                new InputStreamReader(socket.getInputStream());
-        BufferedReader bufferedReader =
-                new BufferedReader(inputStreamReader);
+      InputStreamReader inputStreamReader =
+              new InputStreamReader(socket.getInputStream());
+      BufferedReader bufferedReader =
+              new BufferedReader(inputStreamReader);
 
-        httpMessage = this.readHttpMessage(bufferedReader, httpMessage);
+      httpMessage = this.readHttpMessage(bufferedReader, httpMessage);
 
-        for(String m: httpMessage) {
-          System.out.println(m);
-        }
+      Boolean containsContent = this.containsContent(httpMessage);
 
-        Boolean containsContent = this.containsContent(httpMessage);
+      httpMessage = containsContent ?
+              this.readContentBody(bufferedReader, httpMessage)
+              : httpMessage;
 
-        httpMessage = containsContent ?
-                this.readContentBody(bufferedReader, httpMessage)
-                : httpMessage;
+      RequestParameters requestParams =
+              new RequestParameters.RequestBuilder(directoryPath)
+                      .setHttpVerb(httpMessage)
+                      .setRequestPath(httpMessage)
+                      .setHost(httpMessage)
+                      .setUserAgent(httpMessage)
+                      .setAccept(httpMessage)
+                      .setSocket(socket)
+                      .setBodyContent(httpMessage)
+                      .build();
 
-        RequestParameters requestParams =
-                new RequestParameters.RequestBuilder(directoryPath)
-                        .setHttpVerb(httpMessage)
-                        .setRequestPath(httpMessage)
-                        .setHost(httpMessage)
-                        .setUserAgent(httpMessage)
-                        .setAccept(httpMessage)
-                        .setSocket(socket)
-                        .setBodyContent(httpMessage)
-                        .build();
+      MethodRouter httpRouter = new MethodRouter();
 
-        //instantiate the router with the directory path
-        MethodRouter httpRouter = new MethodRouter();
+      ResponseParameters responseParams =
+              httpRouter.getResponse(requestParams);
 
-        ResponseParameters responseParams =
-                httpRouter.getResponse(requestParams);
+      new SendResponse().send(responseParams, socket);
 
-        new SendResponse().send(responseParams, socket);
-
-        this.closeConnections(bufferedReader, inputStreamReader, socket);
-      } catch (IOException | ParseException e) {
-        logger.log(e.toString());
-        threadAlive = false;
-
-      }
+      this.closeConnections(bufferedReader, inputStreamReader, socket);
+    } catch (IOException | ParseException e) {
+      logger.log(e.toString());
     }
   }
 

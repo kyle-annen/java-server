@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.net.Socket;
 
@@ -14,7 +16,7 @@ class GetHtmlTextTest extends TestDirectorySetup {
   }
 
   @Test
-  void getFileContentsReturnsFileContents() {
+  void getFileContentsReturnsFileContents() throws IOException {
     String fullFilePath = System.getProperty("user.dir") + "/TestDirectory/testFile1.txt";
     GetHtmlText getHtmlText = new GetHtmlText();
     String actualFileContents = getHtmlText.getFileContents(fullFilePath);
