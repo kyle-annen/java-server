@@ -9,20 +9,21 @@ public class Server implements Runnable {
   private Boolean serverRunning = true;
   private MethodRouter httpRouter;
   private String directoryPath = System.getProperty("user.dir");
+  private ExecutorService requestExecutor;
 
-  Server(String[] args) {
+  Server(String[] args, ExecutorService requestExecutor) {
     logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
     httpRouter = new MethodRouter();
+    this.requestExecutor = requestExecutor;
   }
 
   public void run() {
-    //pass the instantiated logger here
+
     this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
-    ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
     try {
       serverSocket = new ServerSocket(portNumber);
 
@@ -34,7 +35,6 @@ public class Server implements Runnable {
       serverSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
-      this.run();
     }
   }
 
