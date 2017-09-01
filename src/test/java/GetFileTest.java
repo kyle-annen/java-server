@@ -26,7 +26,7 @@ class GetFileTest extends TestDirectorySetup {
   void getFileReturnsResponseWithCorrectFile() throws IOException {
     GetFile getFile = new GetFile();
     String filePath = requestParameters.getDirectoryPath() + "/TestDirectory/testFile1.txt";
-    ResponseParameters responseParameters = getFile.get(requestParameters, filePath);
+    ResponseParametersOld responseParameters = getFile.get(requestParameters, filePath);
 
     String actualFileType = responseParameters.responseHeader.get(3);
     String expectedFileType = "ContentType: text/plain\r\n";

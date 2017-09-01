@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class SendResponse {
 
-  void send(ResponseParameters responseParameters, Socket socket) throws IOException {
+  void send(ResponseParametersOld responseParameters, Socket socket) throws IOException {
     Boolean hasFile = responseParameters.bodyType.equals("file");
 
     if(hasFile) {

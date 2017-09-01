@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.*;
-import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +23,7 @@ class GetTest extends TestDirectorySetup {
             .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validDirectoryRequest);
+    ResponseParametersOld responseParams = testGet.get(validDirectoryRequest);
     String actualHttpCode = responseParams.responseHeader.get(0);
 
     String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
@@ -52,7 +51,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(invalidDirectoryRequest);
+    ResponseParametersOld responseParams = testGet.get(invalidDirectoryRequest);
 
     String expectedHttpCode = "HTTP/1.1 404 Not Found\r\n\r\n";
     String actualHttpCode = responseParams.responseHeader.get(0);
@@ -70,7 +69,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validFileRequest);
+    ResponseParametersOld responseParams = testGet.get(validFileRequest);
 
     String actualHttpCode = responseParams.responseHeader.get(0);
     String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
@@ -96,7 +95,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validFileRequest);
+    ResponseParametersOld responseParams = testGet.get(validFileRequest);
 
     String actualHttpCode = responseParams.responseHeader.get(0);
     String expectedHttpCode = "HTTP/1.1 200 OK\r\n";

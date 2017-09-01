@@ -1,7 +1,7 @@
 import java.io.*;
 
 class Get {
-  ResponseParameters get(RequestParameters requestParams) throws IOException {
+  ResponseParametersOld get(RequestParameters requestParams) throws IOException {
     String relativePath = requestParams.getRequestPath();
     String filePath = requestParams.getDirectoryPath() + relativePath;
 

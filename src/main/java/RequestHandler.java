@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class RequestHandler implements Runnable {
   private String directoryPath;
-  Socket socket;
+  private Socket socket;
   private Logger logger;
 
-  RequestHandler(String _directoryPath, Socket _socket, Logger _logger) {
-    directoryPath = _directoryPath;
-    socket = _socket;
-    logger = _logger;
+  RequestHandler(String directoryPath, Socket socket, Logger logger) {
+    this.directoryPath = directoryPath;
+    this.socket = socket;
+    this.logger = logger;
   }
 
   public void run() {
@@ -46,7 +46,7 @@ public class RequestHandler implements Runnable {
 
       MethodRouter httpRouter = new MethodRouter();
 
-      ResponseParameters responseParams =
+      ResponseParametersOld responseParams =
               httpRouter.getResponse(requestParams);
 
       new SendResponse().send(responseParams, socket);

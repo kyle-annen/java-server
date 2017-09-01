@@ -22,7 +22,7 @@ class MethodRouterTest extends TestDirectorySetup {
             .setRequestPath(httpMessage)
             .build();
     MethodRouter methodRouter = new MethodRouter();
-    ResponseParameters responseParams = methodRouter.getResponse(requestParameters);
+    ResponseParametersOld responseParams = methodRouter.getResponse(requestParameters);
 
     String actualHttpHeader = responseParams.responseHeader.get(0);
     String expectedHttpHeader = "HTTP/1.1 200 OK\r\n";
@@ -40,7 +40,7 @@ class MethodRouterTest extends TestDirectorySetup {
             .setRequestPath(httpMessage)
             .build();
     MethodRouter methodRouter = new MethodRouter();
-    ResponseParameters responseParams =
+    ResponseParametersOld responseParams =
             methodRouter.getResponse(invalidPathRequestParams);
 
     String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
@@ -59,7 +59,7 @@ class MethodRouterTest extends TestDirectorySetup {
             .build();
     MethodRouter methodRouter = new MethodRouter();
 
-    ResponseParameters responseParams =
+    ResponseParametersOld responseParams =
             methodRouter.getResponse(invalidPathRequestParams);
 
     String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
@@ -80,7 +80,7 @@ class MethodRouterTest extends TestDirectorySetup {
             .build();
     MethodRouter methodRouter = new MethodRouter();
 
-    ResponseParameters responseParams =
+    ResponseParametersOld responseParams =
             methodRouter.getResponse(postParams);
 
     String expectedHttpHeader = "HTTP/1.1 302 Found\r\n";

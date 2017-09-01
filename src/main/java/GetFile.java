@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 class GetFile {
-  ResponseParameters get(RequestParameters requestParams, String filePath) throws IOException {
+  ResponseParametersOld get(RequestParameters requestParams, String filePath) throws IOException {
     ServerUtils utils = new ServerUtils();
     String contentType = utils.getFileMimeType(filePath);
     ResponseFactory responseFactory = new ResponseFactory();
@@ -11,7 +11,7 @@ class GetFile {
     ArrayList<String> responseHeader =
             responseFactory.getFileHeader(contentType, fileLength);
 
-    return new ResponseParameters(responseHeader, "file", filePath);
+    return new ResponseParametersOld(responseHeader, "file", filePath);
   }
 }
 

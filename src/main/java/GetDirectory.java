@@ -9,13 +9,13 @@ class GetDirectory {
 
   }
 
-  ResponseParameters get(String filePath) throws IOException {
+  ResponseParametersOld get(String filePath) throws IOException {
     String directoryBody = getDirectoryListing(filePath);
     String contentLength = Long.toString(directoryBody.length());
     ResponseFactory responseFactory = new ResponseFactory();
     ArrayList<String> response =
             responseFactory.getFileHeader("text/html",contentLength);
-    return new ResponseParameters(response, "text", directoryBody);
+    return new ResponseParametersOld(response, "text", directoryBody);
   }
 
   public String getDirectoryListing(String filePath) {

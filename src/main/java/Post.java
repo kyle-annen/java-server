@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 class Post {
 
-  ResponseParameters post(RequestParameters _requestParams) throws IOException {
+  ResponseParametersOld post(RequestParameters _requestParams) throws IOException {
     ArrayList<String> response = new ArrayList<>();
     String fullFilePath = System.getProperty("user.dir") + _requestParams.getRequestPath() + "/form-result.html";
     String outputLocation = _requestParams.getRequestPath() + "/form-result.html";
@@ -14,7 +14,7 @@ class Post {
     response.add("HTTP/1.1 302 Found\r\n");
     response.add("Location: " + outputLocation + "\r\n");
     response.add("\r\n");
-    return new ResponseParameters(response, "text", "\r\n\r\n");
+    return new ResponseParametersOld(response, "text", "\r\n\r\n");
   }
 
   HashMap<String, String> parseFormData(String bodyContent) throws UnsupportedEncodingException {

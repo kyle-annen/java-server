@@ -3,7 +3,7 @@ import java.text.ParseException;
 
 class MethodRouter {
 
-  ResponseParameters getResponse(RequestParameters requestParams) throws ParseException, IOException {
+  ResponseParametersOld getResponse(RequestParameters requestParams) throws ParseException, IOException {
     String httpMethod = requestParams.getHttpVerb();
     if (httpMethod.equals("GET")) {
       return this.get(requestParams);
@@ -14,17 +14,17 @@ class MethodRouter {
     }
   }
 
-  private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
+  private ResponseParametersOld get(RequestParameters requestParams) throws ParseException, IOException {
     Get get = new Get();
     return get.get(requestParams);
   }
 
-  private ResponseParameters post(RequestParameters requestParams) throws ParseException, IOException {
+  private ResponseParametersOld post(RequestParameters requestParams) throws ParseException, IOException {
     Post post = new Post();
     return post.post(requestParams);
   }
 
-  private ResponseParameters error() throws IOException {
+  private ResponseParametersOld error() throws IOException {
     Send404 send404 = new Send404();
     return send404.get();
   }

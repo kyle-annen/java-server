@@ -1,7 +1,6 @@
 import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.util.*;
-import java.net.Socket;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -57,7 +56,7 @@ class GetDirectoryTest extends TestDirectorySetup {
   @Test
   void getReturnsCorrectResponseParameter() throws IOException {
     GetDirectory getDirectory = new GetDirectory(requestParameters);
-    ResponseParameters responseParams = getDirectory.get("./TestDirectory");
+    ResponseParametersOld responseParams = getDirectory.get("./TestDirectory");
     assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
     assertEquals("ContentLength: 210\r\n", responseParams.responseHeader.get(2));
     assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));
@@ -68,7 +67,7 @@ class GetDirectoryTest extends TestDirectorySetup {
   @Test
   void getReturnsCorrectResponseEmptyDir() throws IOException {
     GetDirectory getDirectory = new GetDirectory(requestParameters);
-    ResponseParameters responseParams = getDirectory.get("./TestEmpty");
+    ResponseParametersOld responseParams = getDirectory.get("./TestEmpty");
     assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
     assertEquals("ContentLength: 178\r\n", responseParams.responseHeader.get(2));
     assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));

@@ -46,7 +46,7 @@ class PostTest {
   @Test
   void postWillReturnAResponse() throws IOException {
     Post post = new Post();
-    ResponseParameters responseParams = post.post(testRequestParams);
+    ResponseParametersOld responseParams = post.post(testRequestParams);
     assertEquals(responseParams.responseHeader.get(0), "HTTP/1.1 302 Found\r\n");
     assertEquals(responseParams.responseHeader.get(1), "Location: /resources/form/form-result.html\r\n");
   }
