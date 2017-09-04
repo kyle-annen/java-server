@@ -56,23 +56,23 @@ class GetDirectoryTest extends TestDirectorySetup {
   @Test
   void getReturnsCorrectResponseParameter() throws IOException {
     GetDirectory getDirectory = new GetDirectory(requestParameters);
-    ResponseParametersOld responseParams = getDirectory.get("./TestDirectory");
-    assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
-    assertEquals("ContentLength: 210\r\n", responseParams.responseHeader.get(2));
-    assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));
-    assertEquals("text", responseParams.bodyType);
-    assertEquals(getDirectory.getDirectoryListing("./TestDirectory"), responseParams.body);
+    ResponseParameters responseParams = getDirectory.get("./TestDirectory");
+    assertEquals("HTTP/1.1 200 OK", responseParams.getResponseStatus());
+    assertEquals("Content-Length: 210", responseParams.getContentLength());
+    assertEquals("Content-Type: text/html", responseParams.getContentType());
+    assertEquals("text", responseParams.getBodyType());
+    assertEquals(getDirectory.getDirectoryListing("./TestDirectory"), responseParams.getBodyContent());
   }
 
   @Test
   void getReturnsCorrectResponseEmptyDir() throws IOException {
     GetDirectory getDirectory = new GetDirectory(requestParameters);
-    ResponseParametersOld responseParams = getDirectory.get("./TestEmpty");
-    assertEquals("HTTP/1.1 200 OK\r\n", responseParams.responseHeader.get(0));
-    assertEquals("ContentLength: 178\r\n", responseParams.responseHeader.get(2));
-    assertEquals("ContentType: text/html\r\n", responseParams.responseHeader.get(3));
-    assertEquals(getDirectory.getDirectoryListing("./testEmpty"), responseParams.body);
-    assertEquals(true, responseParams.body.contains("There are no files in this directory"));
+    ResponseParameters responseParams = getDirectory.get("./TestEmpty");
+    assertEquals("HTTP/1.1 200 OK", responseParams.getResponseStatus());
+    assertEquals("Content-Length: 178", responseParams.getContentLength());
+    assertEquals("Content-Type: text/html", responseParams.getContentType());
+    assertEquals(getDirectory.getDirectoryListing("./testEmpty"), responseParams.getBodyContent());
+    assertEquals(true, responseParams.getBodyContent().contains("There are no files in this directory"));
   }
 
 }

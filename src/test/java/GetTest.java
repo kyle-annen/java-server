@@ -23,20 +23,20 @@ class GetTest extends TestDirectorySetup {
             .build();
 
     Get testGet = new Get();
-    ResponseParametersOld responseParams = testGet.get(validDirectoryRequest);
-    String actualHttpCode = responseParams.responseHeader.get(0);
+    ResponseParameters responseParams = testGet.get(validDirectoryRequest);
+    String actualHttpCode = responseParams.getResponseStatus();
 
-    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    String expectedHttpCode = "HTTP/1.1 200 OK";
     assertEquals(expectedHttpCode, actualHttpCode);
 
     String expectedBodyType = "text";
-    String actualBodyType = responseParams.bodyType;
+    String actualBodyType = responseParams.getBodyType();
     assertEquals(expectedBodyType, actualBodyType);
 
-    Boolean actualBodyContainsLink = responseParams.body.contains("<a href");
+    Boolean actualBodyContainsLink = responseParams.getBodyContent().contains("<a href");
     assertEquals(true, actualBodyContainsLink);
 
-    Boolean actualBodyContainsFile = responseParams.body.contains("testFile1.txt");
+    Boolean actualBodyContainsFile = responseParams.getBodyContent().contains("testFile1.txt");
     assertEquals(true, actualBodyContainsFile);
   }
 
@@ -51,10 +51,10 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParametersOld responseParams = testGet.get(invalidDirectoryRequest);
+    ResponseParameters responseParams = testGet.get(invalidDirectoryRequest);
 
-    String expectedHttpCode = "HTTP/1.1 404 Not Found\r\n\r\n";
-    String actualHttpCode = responseParams.responseHeader.get(0);
+    String expectedHttpCode = "HTTP/1.1 404 Not Found";
+    String actualHttpCode = responseParams.getResponseStatus();
     assertEquals(expectedHttpCode, actualHttpCode);
   }
 
@@ -69,25 +69,25 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParametersOld responseParams = testGet.get(validFileRequest);
+    ResponseParameters responseParams = testGet.get(validFileRequest);
 
-    String actualHttpCode = responseParams.responseHeader.get(0);
-    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    String actualHttpCode = responseParams.getResponseStatus();
+    String expectedHttpCode = "HTTP/1.1 200 OK";
     assertEquals(expectedHttpCode, actualHttpCode);
 
     String expectedBodyType = "file";
-    String actualBodyType = responseParams.bodyType;
+    String actualBodyType = responseParams.getBodyType();
     assertEquals(expectedBodyType, actualBodyType);
 
     String expectedBody = System.getProperty("user.dir") + "/TestDirectory/testFile1.txt";
-    String actualBody = responseParams.body;
+    String actualBody = responseParams.getBodyContent();
     assertEquals(expectedBody, actualBody);
   }
 
   @Test
   void getReturnsResultOfPngGet() throws IOException {
     ArrayList<String> httpMessage = new ArrayList<>();
-    httpMessage.add("GET /TestPng/test.png HTTP/1.1\r\n");
+    httpMessage.add("GET /TestPng/test.png HTTP/1.1");
     RequestParameters validFileRequest =
             new RequestParameters.RequestBuilder(directoryPath)
                     .setRequestPath(httpMessage)
@@ -95,18 +95,18 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParametersOld responseParams = testGet.get(validFileRequest);
+    ResponseParameters responseParams = testGet.get(validFileRequest);
 
-    String actualHttpCode = responseParams.responseHeader.get(0);
-    String expectedHttpCode = "HTTP/1.1 200 OK\r\n";
+    String actualHttpCode = responseParams.getResponseStatus();
+    String expectedHttpCode = "HTTP/1.1 200 OK";
     assertEquals(expectedHttpCode, actualHttpCode);
 
     String expectedBodyType = "file";
-    String actualBodyType = responseParams.bodyType;
+    String actualBodyType = responseParams.getBodyType();
     assertEquals(expectedBodyType, actualBodyType);
 
     String expectedBody = System.getProperty("user.dir") + "/TestPng/test.png";
-    String actualBody = responseParams.body;
+    String actualBody = responseParams.getBodyContent();
     assertEquals(expectedBody, actualBody);
 
 

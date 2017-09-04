@@ -7,7 +7,6 @@ public class Server implements Runnable {
   Logger logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
-  private MethodRouter httpRouter;
   private String directoryPath = System.getProperty("user.dir");
   private ExecutorService requestExecutor;
 
@@ -16,17 +15,14 @@ public class Server implements Runnable {
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
-    httpRouter = new MethodRouter();
     this.requestExecutor = requestExecutor;
   }
 
   public void run() {
-
     this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
     try {
       serverSocket = new ServerSocket(portNumber);
-
       while(serverRunning) {
         Socket socket = serverSocket.accept();
         RequestHandler requestHandler = new RequestHandler(directoryPath, socket, logger);

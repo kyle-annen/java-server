@@ -92,11 +92,11 @@ class ServerTest extends TestDirectorySetup {
 
       serverResponse = readFromServer.readLine().split(" ");
       String actualResponse = String.join(" ", serverResponse);
-      String expectedResponse = "HTTP/1.1 302 Found";
+      String expectedResponse = "HTTP/1.1 200 OK";
 
       testServer.stop();
 
-      assertEquals(actualResponse, expectedResponse);
+      assertEquals(expectedResponse, actualResponse);
     } catch (IOException e) {
       this.serverSendsValidResponseToValidRequestForFile();
     }

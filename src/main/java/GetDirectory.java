@@ -4,18 +4,20 @@ import java.util.*;
 class GetDirectory {
   private String webDirectoryRelativePath;
 
-  GetDirectory(RequestParameters _requestParams) throws IOException {
-    webDirectoryRelativePath = _requestParams.getRequestPath();
-
+  GetDirectory(RequestParameters requestParams) throws IOException {
+    webDirectoryRelativePath = requestParams.getRequestPath();
   }
 
-  ResponseParametersOld get(String filePath) throws IOException {
+  ResponseParameters get(String filePath) throws IOException {
     String directoryBody = getDirectoryListing(filePath);
-    String contentLength = Long.toString(directoryBody.length());
-    ResponseFactory responseFactory = new ResponseFactory();
-    ArrayList<String> response =
-            responseFactory.getFileHeader("text/html",contentLength);
-    return new ResponseParametersOld(response, "text", directoryBody);
+    ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
+            .setContentLength(directoryBody)
+            .setContentType(directoryBody)
+            .setBodyContent(directoryBody)
+            .setBodyType(directoryBody)
+            .setDate()
+            .build();
+    return responseParameters;
   }
 
   public String getDirectoryListing(String filePath) {

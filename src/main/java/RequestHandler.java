@@ -40,13 +40,12 @@ public class RequestHandler implements Runnable {
                       .setHost(httpMessage)
                       .setUserAgent(httpMessage)
                       .setAccept(httpMessage)
-                      .setSocket(socket)
                       .setBodyContent(httpMessage)
                       .build();
 
       MethodRouter httpRouter = new MethodRouter();
 
-      ResponseParametersOld responseParams =
+      ResponseParameters responseParams =
               httpRouter.getResponse(requestParams);
 
       new SendResponse().send(responseParams, socket);

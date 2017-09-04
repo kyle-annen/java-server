@@ -22,10 +22,10 @@ class MethodRouterTest extends TestDirectorySetup {
             .setRequestPath(httpMessage)
             .build();
     MethodRouter methodRouter = new MethodRouter();
-    ResponseParametersOld responseParams = methodRouter.getResponse(requestParameters);
+    ResponseParameters responseParams = methodRouter.getResponse(requestParameters);
 
-    String actualHttpHeader = responseParams.responseHeader.get(0);
-    String expectedHttpHeader = "HTTP/1.1 200 OK\r\n";
+    String actualHttpHeader = responseParams.getResponseStatus();
+    String expectedHttpHeader = "HTTP/1.1 200 OK";
     assertEquals(expectedHttpHeader, actualHttpHeader);
 
   }
@@ -40,11 +40,11 @@ class MethodRouterTest extends TestDirectorySetup {
             .setRequestPath(httpMessage)
             .build();
     MethodRouter methodRouter = new MethodRouter();
-    ResponseParametersOld responseParams =
+    ResponseParameters responseParams =
             methodRouter.getResponse(invalidPathRequestParams);
 
-    String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
-    String actualHttpHeader = responseParams.responseHeader.get(0);
+    String expectedHttpHeader = "HTTP/1.1 404 Not Found";
+    String actualHttpHeader = responseParams.getResponseStatus();
     assertEquals(expectedHttpHeader, actualHttpHeader);
   }
 
@@ -59,11 +59,11 @@ class MethodRouterTest extends TestDirectorySetup {
             .build();
     MethodRouter methodRouter = new MethodRouter();
 
-    ResponseParametersOld responseParams =
+    ResponseParameters responseParams =
             methodRouter.getResponse(invalidPathRequestParams);
 
-    String expectedHttpHeader = "HTTP/1.1 404 Not Found\r\n\r\n";
-    String actualHttpHeader = responseParams.responseHeader.get(0);
+    String expectedHttpHeader = "HTTP/1.1 404 Not Found";
+    String actualHttpHeader = responseParams.getResponseStatus();
     assertEquals(expectedHttpHeader, actualHttpHeader);
   }
 
@@ -80,11 +80,11 @@ class MethodRouterTest extends TestDirectorySetup {
             .build();
     MethodRouter methodRouter = new MethodRouter();
 
-    ResponseParametersOld responseParams =
+    ResponseParameters responseParams =
             methodRouter.getResponse(postParams);
 
-    String expectedHttpHeader = "HTTP/1.1 302 Found\r\n";
-    String actualHttpHeader = responseParams.responseHeader.get(0);
+    String expectedHttpHeader = "HTTP/1.1 200 OK";
+    String actualHttpHeader = responseParams.getResponseStatus();
     assertEquals(expectedHttpHeader, actualHttpHeader);
   }
 }

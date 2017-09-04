@@ -13,7 +13,6 @@ class GetFileTest extends TestDirectorySetup {
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");
-    Socket testSocket = new Socket();
     requestParameters = new RequestParameters.RequestBuilder(directoryPath)
             .setHttpVerb(httpMessage)
             .setRequestPath(httpMessage)
@@ -26,13 +25,13 @@ class GetFileTest extends TestDirectorySetup {
   void getFileReturnsResponseWithCorrectFile() throws IOException {
     GetFile getFile = new GetFile();
     String filePath = requestParameters.getDirectoryPath() + "/TestDirectory/testFile1.txt";
-    ResponseParametersOld responseParameters = getFile.get(requestParameters, filePath);
+    ResponseParameters responseParameters = getFile.get(filePath);
 
-    String actualFileType = responseParameters.responseHeader.get(3);
-    String expectedFileType = "ContentType: text/plain\r\n";
+    String actualFileType = responseParameters.getContentType();
+    String expectedFileType = "Content-Type: text/plain";
     assertEquals(expectedFileType, actualFileType);
 
-    String[] actualFilePath = responseParameters.body.split("/");
+    String[] actualFilePath = responseParameters.getBodyContent().split("/");
     String actualFile = actualFilePath[actualFilePath.length - 1];
     String expectedFile = "testFile1.txt";
     assertEquals(expectedFile, actualFile);

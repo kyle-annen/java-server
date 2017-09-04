@@ -13,6 +13,7 @@ public class StatusCodes {
     this.statusCodes.put(202, "202 Accepted");
     this.statusCodes.put(203, "203 Non-Authoritative Information");
     this.statusCodes.put(204, "204 No Content");
+    this.statusCodes.put(205, "205 Reset Content");
 
     this.statusCodes.put(300, "300 Multiple Choices");
     this.statusCodes.put(301, "301 Moved Permanently");

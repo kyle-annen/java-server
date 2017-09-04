@@ -5,16 +5,16 @@ import java.util.HashMap;
 
 class Post {
 
-  ResponseParametersOld post(RequestParameters _requestParams) throws IOException {
-    ArrayList<String> response = new ArrayList<>();
-    String fullFilePath = System.getProperty("user.dir") + _requestParams.getRequestPath() + "/form-result.html";
-    String outputLocation = _requestParams.getRequestPath() + "/form-result.html";
-    HashMap<String, String> formData = parseFormData(_requestParams.getBodyContent());
-    this.saveFormData(formData, fullFilePath);
-    response.add("HTTP/1.1 302 Found\r\n");
-    response.add("Location: " + outputLocation + "\r\n");
-    response.add("\r\n");
-    return new ResponseParametersOld(response, "text", "\r\n\r\n");
+  ResponseParameters post(RequestParameters requestParams) throws IOException {
+    HashMap<String, String> formData = this.parseFormData(requestParams.getBodyContent());
+    String formContent = this.formatFormData(formData);
+    return new ResponseParameters.ResponseBuilder(200)
+            .setDate()
+            .setContentLength(formContent)
+            .setContentType(formContent)
+            .setBodyType(formContent)
+            .setBodyContent(formContent)
+            .build();
   }
 
   HashMap<String, String> parseFormData(String bodyContent) throws UnsupportedEncodingException {
@@ -28,15 +28,21 @@ class Post {
     return formData;
   }
 
-  void saveFormData(HashMap<String, String> formData, String storageDestination) throws IOException {
-    FileWriter fileWriter = new FileWriter(storageDestination);
-    BufferedWriter writer = new BufferedWriter(fileWriter);
+  String formatFormData(HashMap<String, String> formData) throws IOException {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("<!DOCTYPE html>\n" +
+            "<html>\n" +
+            "<head>\n" +
+            "<meta charset=\"UTF-8\">\n" +
+            "<title>Title of the document</title>\n" +
+            "</head>\n" +
+            "\n" +
+            "<body>");
     for (String key: formData.keySet()) {
       String value = formData.get(key);
-      String htmlEntry = "<h3>" + key + ": " + value + "</h3>";
-      writer.write(htmlEntry);
-      writer.newLine();
+      stringBuilder.append("<h3>" + key + ": " + value + "</h3>");
     }
-    writer.close();
+    stringBuilder.append("</body>\n" + "\n" + "</html>");
+    return stringBuilder.toString();
   }
 }

@@ -31,12 +31,6 @@ class PostTest {
             .build();
   }
 
-  @AfterEach
-  void deleteTestFile() {
-    String fileLocation = System.getProperty("user.dir") + "/resources/form/form-result.html";
-    File formResult = new File(fileLocation);
-    formResult.delete();
-  }
 
   @Test
   void postClassExists(){
@@ -46,9 +40,10 @@ class PostTest {
   @Test
   void postWillReturnAResponse() throws IOException {
     Post post = new Post();
-    ResponseParametersOld responseParams = post.post(testRequestParams);
-    assertEquals(responseParams.responseHeader.get(0), "HTTP/1.1 302 Found\r\n");
-    assertEquals(responseParams.responseHeader.get(1), "Location: /resources/form/form-result.html\r\n");
+    ResponseParameters responseParams = post.post(testRequestParams);
+    String expected = "HTTP/1.1 200 OK";
+    String actual = responseParams.getResponseStatus();
+    assertEquals(expected, actual);
   }
 
   @Test
@@ -65,7 +60,6 @@ class PostTest {
     String filePath = System.getProperty("user.dir") + "/resources/form/form-result.html";
     Post post = new Post();
     HashMap<String, String> parsedData = post.parseFormData(testRequestParams.getBodyContent());
-    post.saveFormData(parsedData, filePath);
     assertEquals(true, new File(filePath).exists());
   }
 
