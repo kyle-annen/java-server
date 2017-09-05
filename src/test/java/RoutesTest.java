@@ -42,7 +42,7 @@ public class RoutesTest {
             .build();
     Routes testRoutes = new Routes();
     testRoutes.add("/", new ControllerDirectory());
-    ResponseParameters testResponse = testRoutes.getResponse("/", requestParameters);
+    ResponseParameters testResponse = testRoutes.getResponse(requestParameters);
     assertEquals("HTTP/1.1 200 OK", testResponse.getResponseStatus());
   }
 }

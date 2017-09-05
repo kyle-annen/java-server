@@ -8,10 +8,10 @@ import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PostTest {
+class ControllerPostTest {
   RequestParameters testRequestParams;
 
-  PostTest() {
+  ControllerPostTest() {
     ServerUtils serverUtils = new ServerUtils();
     ArrayList<String> request = new ArrayList<>();
     String testContent = "first_name=kyle&last_name=annen&email=kannen%40gmail.com\r\n";
