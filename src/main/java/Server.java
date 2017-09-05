@@ -9,6 +9,7 @@ public class Server implements Runnable {
   private Boolean serverRunning = true;
   private String directoryPath = System.getProperty("user.dir");
   private ExecutorService requestExecutor;
+  private Router router;
 
   Server(String[] args, ExecutorService requestExecutor) {
     logger = new Logger();
@@ -16,6 +17,8 @@ public class Server implements Runnable {
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
     this.requestExecutor = requestExecutor;
+    this.router = new Router();
+    new RouterConfiguration(router).initialize();
   }
 
   public void run() {
@@ -25,7 +28,7 @@ public class Server implements Runnable {
       serverSocket = new ServerSocket(portNumber);
       while(serverRunning) {
         Socket socket = serverSocket.accept();
-        RequestHandler requestHandler = new RequestHandler(directoryPath, socket, logger);
+        RequestHandler requestHandler = new RequestHandler(directoryPath, socket, logger, router);
         requestExecutor.submit(requestHandler);
       }
       serverSocket.close();

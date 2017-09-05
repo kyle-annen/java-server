@@ -9,11 +9,13 @@ public class RequestHandler implements Runnable {
   private String directoryPath;
   private Socket socket;
   private Logger logger;
+  private Router router;
 
-  RequestHandler(String directoryPath, Socket socket, Logger logger) {
+  RequestHandler(String directoryPath, Socket socket, Logger logger, Router router) {
     this.directoryPath = directoryPath;
     this.socket = socket;
     this.logger = logger;
+    this.router = router;
   }
 
   public void run() {
@@ -43,15 +45,12 @@ public class RequestHandler implements Runnable {
                       .setBodyContent(httpMessage)
                       .build();
 
-      MethodRouter httpRouter = new MethodRouter();
-
-      ResponseParameters responseParams =
-              httpRouter.getResponse(requestParams);
+      ResponseParameters responseParams = this.router.route(requestParams);
 
       new SendResponse().send(responseParams, socket);
 
       this.closeConnections(bufferedReader, inputStreamReader, socket);
-    } catch (IOException | ParseException e) {
+    } catch (IOException e) {
       logger.log(e.toString());
     }
   }
