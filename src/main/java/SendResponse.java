@@ -1,13 +1,13 @@
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.*;
 
 public class SendResponse {
 
   void send(ResponseParameters responseParameters, Socket socket) throws IOException {
+    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
     DataOutputStream outputStream =
-            new DataOutputStream(socket.getOutputStream());
+            new DataOutputStream(bufferedOutputStream);
     String httpHeader = buildHeader(responseParameters);
 
     outputStream.writeBytes(httpHeader);
@@ -15,8 +15,15 @@ public class SendResponse {
     if(responseParameters.getBodyType().equals("text")) {
       outputStream.writeBytes(responseParameters.getBodyContent());
     } else if(responseParameters.getBodyType().equals("file")) {
-      Path filePath = Paths.get(responseParameters.getBodyContent());
-      Files.copy(filePath, outputStream);
+      File file = new File(responseParameters.getBodyContent());
+      FileInputStream fileInputStream = new FileInputStream(file);
+      BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+      byte[] buffer = new byte[1024*128];
+      int available = -1;
+      while((available = bufferedInputStream.read(buffer)) > 0) {
+        bufferedOutputStream.write(buffer, 0, available);
+      }
     }
     outputStream.writeBytes("\r\n\r\n");
     outputStream.flush();
