@@ -11,21 +11,21 @@ class MethodRouter {
     } else if(httpMethod.equals("POST")) {
       return this.post(requestParams);
     } else {
-      return this.error();
+      return this.error(requestParams);
     }
   }
 
   private ResponseParameters get(RequestParameters requestParams) throws ParseException, IOException {
     Get get = new Get();
-    return get.get(requestParams);
+    return get.getResponse(requestParams);
   }
 
   private ResponseParameters post(RequestParameters requestParams) throws ParseException, IOException {
-    Post post = new Post();
-    return post.post(requestParams);
+    ControllerPost post = new ControllerPost();
+    return post.getResponse(requestParams);
   }
 
-  private ResponseParameters error() throws IOException {
-    return new FourOhFour().generateFourOhFourResponse();
+  private ResponseParameters error(RequestParameters requestParameters) throws IOException {
+    return new ControllerFourOhFour().getResponse(requestParameters);
   }
 }

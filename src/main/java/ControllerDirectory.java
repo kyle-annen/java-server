@@ -1,28 +1,24 @@
 import java.io.*;
 import java.util.*;
 
-class GetDirectory {
-  private String webDirectoryRelativePath;
-
-  GetDirectory(RequestParameters requestParams) throws IOException {
-    webDirectoryRelativePath = requestParams.getRequestPath();
-  }
-
-  ResponseParameters get(String filePath) throws IOException {
-    String directoryBody = getDirectoryListing(filePath);
-    ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
+class ControllerDirectory implements ControllerInterface {
+  @Override
+  public ResponseParameters getResponse(RequestParameters requestParameters) throws IOException {
+    String relativePath = requestParameters.getRequestPath();
+    String filePath = System.getProperty("user.dir") + requestParameters.getRequestPath();
+    String directoryBody = getDirectoryListing(filePath, relativePath);
+    return new ResponseParameters.ResponseBuilder(200)
             .setContentLength(directoryBody)
             .setContentType(directoryBody)
             .setBodyContent(directoryBody)
             .setBodyType(directoryBody)
             .setDate()
             .build();
-    return responseParameters;
   }
 
-  public String getDirectoryListing(String filePath) {
+  String getDirectoryListing(String filePath, String relativePath) {
     ArrayList<String> directoryContents = filesList(filePath);
-    ArrayList<String> formattedDirectory = formatDirectoryHtml(directoryContents);
+    ArrayList<String> formattedDirectory = formatDirectoryHtml(directoryContents, relativePath);
     StringBuilder directoryListing = new StringBuilder();
     for(String s : formattedDirectory) {
       directoryListing.append(s);
@@ -30,7 +26,7 @@ class GetDirectory {
     return directoryListing.toString();
   }
 
-  public ArrayList<String> filesList(String filePath) {
+  ArrayList<String> filesList(String filePath) {
     File fullFilePath = new File(filePath);
     try {
       return new ArrayList<>(Arrays.asList(fullFilePath.list()));
@@ -39,7 +35,8 @@ class GetDirectory {
     }
   }
 
-  public ArrayList<String> formatDirectoryHtml(ArrayList<String> directoryList) {
+  ArrayList<String> formatDirectoryHtml(ArrayList<String> directoryList, String relativePath) {
+
     ArrayList<String> directoryResponseMessage = new ArrayList<>();
     directoryResponseMessage.add("<!DOCTYPE html>\n");
     directoryResponseMessage.add("<html>\n");
@@ -48,7 +45,7 @@ class GetDirectory {
     directoryResponseMessage.add("<title>title</title>\n");
     directoryResponseMessage.add("</head>\n");
     directoryResponseMessage.add("<body>\n");
-    directoryResponseMessage.add("<h1>" + webDirectoryRelativePath + "</h1>\n");
+    directoryResponseMessage.add("<h1>" + relativePath + "</h1>\n");
     directoryResponseMessage.add("<ul>\n");
     if(directoryList.size() <= 0) {
       directoryResponseMessage.add("<li>There are no files in this directory</li>\n");
@@ -59,13 +56,13 @@ class GetDirectory {
                 || item.contains(".png") || item.contains(".pdf")
                 || item.contains(".js") || item.contains(".css")
                 || item.contains(".jpg") || item.contains(".gif") || item.contains(".jpeg")) {
-          String link = webDirectoryRelativePath + "/" + item;
+          String link = relativePath + "/" + item;
           link = link.replace("//", "/");
           directoryResponseMessage.add("<li><a href='" + link + "'>" + item + "</a></li>\n");
         } else if(item.contains(".")) {
           directoryResponseMessage.add("<li>" + item + "</li>\n");
         } else {
-          String directoryLink = webDirectoryRelativePath + "/" + item;
+          String directoryLink = relativePath + "/" + item;
           directoryLink = directoryLink.replace("//", "/");
           String directoryHtmlLink = "<li><a href='" + directoryLink + "'>" + item + "</a></li>\n";
           directoryResponseMessage.add(directoryHtmlLink);

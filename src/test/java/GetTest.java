@@ -23,7 +23,7 @@ class GetTest extends TestDirectorySetup {
             .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validDirectoryRequest);
+    ResponseParameters responseParams = testGet.getResponse(validDirectoryRequest);
     String actualHttpCode = responseParams.getResponseStatus();
 
     String expectedHttpCode = "HTTP/1.1 200 OK";
@@ -51,7 +51,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(invalidDirectoryRequest);
+    ResponseParameters responseParams = testGet.getResponse(invalidDirectoryRequest);
 
     String expectedHttpCode = "HTTP/1.1 404 Not Found";
     String actualHttpCode = responseParams.getResponseStatus();
@@ -69,7 +69,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validFileRequest);
+    ResponseParameters responseParams = testGet.getResponse(validFileRequest);
 
     String actualHttpCode = responseParams.getResponseStatus();
     String expectedHttpCode = "HTTP/1.1 200 OK";
@@ -95,7 +95,7 @@ class GetTest extends TestDirectorySetup {
                     .build();
 
     Get testGet = new Get();
-    ResponseParameters responseParams = testGet.get(validFileRequest);
+    ResponseParameters responseParams = testGet.getResponse(validFileRequest);
 
     String actualHttpCode = responseParams.getResponseStatus();
     String expectedHttpCode = "HTTP/1.1 200 OK";

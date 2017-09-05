@@ -1,7 +1,7 @@
 import java.io.*;
 
 class Get {
-  ResponseParameters get(RequestParameters requestParams) throws IOException {
+  ResponseParameters getResponse(RequestParameters requestParams) throws IOException {
     String relativePath = requestParams.getRequestPath();
     String filePath = requestParams.getDirectoryPath() + relativePath;
 
@@ -11,11 +11,11 @@ class Get {
     Boolean isDirectory = targetFile.isDirectory();
 
     if (pathExists && isDirectory) {
-      return new GetDirectory(requestParams).get(filePath);
+      return new ControllerDirectory().getResponse(requestParams);
     } else if (pathExists) {
-      return new GetFile().get(filePath);
+      return new ControllerFile().getResponse(requestParams);
     } else {
-      return new FourOhFour().generateFourOhFourResponse();
+      return new ControllerFourOhFour().getResponse(requestParams);
     }
   }
 }

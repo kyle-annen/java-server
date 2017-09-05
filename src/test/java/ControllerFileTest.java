@@ -1,15 +1,14 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class GetFileTest extends TestDirectorySetup {
+class ControllerFileTest extends TestDirectorySetup {
   private RequestParameters requestParameters;
 
-  GetFileTest() {
+  ControllerFileTest() {
     ArrayList<String> httpMessage = new ArrayList<>();
     httpMessage.add("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n");
     String directoryPath = System.getProperty("user.dir");
@@ -19,13 +18,10 @@ class GetFileTest extends TestDirectorySetup {
             .build();
   }
 
-
-
   @Test
   void getFileReturnsResponseWithCorrectFile() throws IOException {
-    GetFile getFile = new GetFile();
-    String filePath = requestParameters.getDirectoryPath() + "/TestDirectory/testFile1.txt";
-    ResponseParameters responseParameters = getFile.get(filePath);
+    ControllerFile getFile = new ControllerFile();
+    ResponseParameters responseParameters = getFile.getResponse(requestParameters);
 
     String actualFileType = responseParameters.getContentType();
     String expectedFileType = "Content-Type: text/plain";

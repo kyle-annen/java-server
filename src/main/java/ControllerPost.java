@@ -1,11 +1,10 @@
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.HashMap;
 
-class Post {
-
-  ResponseParameters post(RequestParameters requestParams) throws IOException {
+class ControllerPost implements ControllerInterface {
+  @Override
+  public ResponseParameters getResponse(RequestParameters requestParams) throws IOException {
     HashMap<String, String> formData = this.parseFormData(requestParams.getBodyContent());
     String formContent = this.formatFormData(formData);
     return new ResponseParameters.ResponseBuilder(200)

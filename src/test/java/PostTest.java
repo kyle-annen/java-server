@@ -1,4 +1,3 @@
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -34,13 +33,13 @@ class PostTest {
 
   @Test
   void postClassExists(){
-    Post post = new Post();
+    ControllerPost post = new ControllerPost();
   }
 
   @Test
   void postWillReturnAResponse() throws IOException {
-    Post post = new Post();
-    ResponseParameters responseParams = post.post(testRequestParams);
+    ControllerPost post = new ControllerPost();
+    ResponseParameters responseParams = post.getResponse(testRequestParams);
     String expected = "HTTP/1.1 200 OK";
     String actual = responseParams.getResponseStatus();
     assertEquals(expected, actual);
@@ -48,7 +47,7 @@ class PostTest {
 
   @Test
   void parseFormDataParsesFormData() throws UnsupportedEncodingException {
-    Post post = new Post();
+    ControllerPost post = new ControllerPost();
     HashMap<String, String> parsedData = post.parseFormData(testRequestParams.getBodyContent());
     assertEquals("kyle", parsedData.get("first_name"));
     assertEquals("annen", parsedData.get("last_name"));
@@ -58,7 +57,7 @@ class PostTest {
   @Test
   void saveFormDataSavesFormData() throws IOException {
     String filePath = System.getProperty("user.dir") + "/resources/form/form-result.html";
-    Post post = new Post();
+    ControllerPost post = new ControllerPost();
     HashMap<String, String> parsedData = post.parseFormData(testRequestParams.getBodyContent());
     assertEquals(true, new File(filePath).exists());
   }
