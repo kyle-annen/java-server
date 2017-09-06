@@ -1,4 +1,4 @@
-import javax.naming.ldap.Control;
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
@@ -22,15 +22,38 @@ public class Router {
   }
 
   ResponseParameters route(RequestParameters requestParameters) throws IOException {
+
     String httpMethod = requestParameters.getHttpVerb();
-    String route = requestParameters.getRequestPath();
-    Boolean isValidRoute = false;
-    if(router.keySet().contains(httpMethod)) {
+    File file = new File(requestParameters.getDirectoryPath() +
+            requestParameters.getRequestPath());
+    Boolean isDirectory = file.isDirectory();
+    Boolean isFile = file.exists() && !isDirectory;
+    Boolean methodExists = router.keySet().contains(httpMethod);
+    Boolean routeExists = router
+            .get(httpMethod)
+            .keySet()
+            .contains(requestParameters.getRequestPath());
+
+    if(methodExists && routeExists) {
       Routes routes = router.get(httpMethod);
       return routes.getResponse(requestParameters);
+    } else if(isDirectory) {
+      ControllerDirectory controllerDirectory = new ControllerDirectory();
+      return dynamicRoute(requestParameters, controllerDirectory);
+    } else if(isFile) {
+      ControllerFile controllerFile = new ControllerFile();
+      return dynamicRoute(requestParameters, controllerFile);
     } else {
       return new ControllerFourOhFour().getResponse(requestParameters);
     }
   }
 
+  private ResponseParameters dynamicRoute(
+          RequestParameters requestParameters,
+          ControllerInterface controllerInterface) throws IOException {
+    Routes dynamicRoutes = new Routes();
+    String route = requestParameters.getRequestPath();
+    dynamicRoutes.add(route, controllerInterface);
+    return dynamicRoutes.getResponse(requestParameters);
+  }
 }

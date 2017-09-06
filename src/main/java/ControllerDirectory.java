@@ -5,7 +5,7 @@ class ControllerDirectory implements ControllerInterface {
   @Override
   public ResponseParameters getResponse(RequestParameters requestParameters) throws IOException {
     String relativePath = requestParameters.getRequestPath();
-    String filePath = System.getProperty("user.dir") + requestParameters.getRequestPath();
+    String filePath = requestParameters.getDirectoryPath() + requestParameters.getRequestPath();
     String directoryBody = getDirectoryListing(filePath, relativePath);
     return new ResponseParameters.ResponseBuilder(200)
             .setContentLength(directoryBody)

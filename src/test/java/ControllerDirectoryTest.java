@@ -66,10 +66,17 @@ class ControllerDirectoryTest extends TestDirectorySetup {
 
   @Test
   void getReturnsCorrectResponseEmptyDir() throws IOException {
+    ArrayList<String> httpMessage2 = new ArrayList<>();
+    httpMessage2.add("GET /testEmpty HTTP/1.1\r\n");
+    String directoryPath = "./testEmpty";
+    requestParameters = new RequestParameters.RequestBuilder(directoryPath)
+            .setHttpVerb(httpMessage2)
+            .setRequestPath(httpMessage2)
+            .build();
     ControllerDirectory controllerDirectory = new ControllerDirectory();
     ResponseParameters responseParams = controllerDirectory.getResponse(requestParameters);
     assertEquals("HTTP/1.1 200 OK", responseParams.getResponseStatus());
-    assertEquals("Content-Length: 178", responseParams.getContentLength());
+    assertEquals("Content-Length: 174", responseParams.getContentLength());
     assertEquals("Content-Type: text/html", responseParams.getContentType());
     assertEquals(controllerDirectory.getDirectoryListing("./testEmpty", requestParameters.getRequestPath()), responseParams.getBodyContent());
     assertEquals(true, responseParams.getBodyContent().contains("There are no files in this directory"));

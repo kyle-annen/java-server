@@ -1,6 +1,7 @@
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class RoutesTest {
@@ -37,9 +38,13 @@ public class RoutesTest {
 
   @Test
   void routesGetResponseReturnsResponse() throws IOException {
+    ArrayList<String> httpRequest = new ArrayList<>();
+    httpRequest.add("GET / HTTP/1.1");
     RequestParameters requestParameters =
             new RequestParameters.RequestBuilder("/")
-            .build();
+                    .setHttpVerb(httpRequest)
+                    .setRequestPath(httpRequest)
+                    .build();
     Routes testRoutes = new Routes();
     testRoutes.add("/", new ControllerDirectory());
     ResponseParameters testResponse = testRoutes.getResponse(requestParameters);
