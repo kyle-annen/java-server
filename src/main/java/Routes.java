@@ -15,11 +15,7 @@ public class Routes {
 
   public ResponseParameters getResponse(RequestParameters requestParameters) throws IOException {
     String path = requestParameters.getRequestPath();
-    Set<String> keySet = routes.keySet();
-    System.out.println(keySet.toString());
-    Boolean routeExists = routes
-            .keySet()
-            .contains(path);
+    Boolean routeExists = routes .keySet() .contains(path);
     if (routeExists) {
       return routes.get(path).getResponse(requestParameters);
     } else {
