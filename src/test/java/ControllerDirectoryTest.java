@@ -54,17 +54,6 @@ class ControllerDirectoryTest extends TestDirectorySetup {
   }
 
   @Test
-  void getReturnsCorrectResponseParameter() throws IOException {
-    ControllerDirectory controllerDirectory = new ControllerDirectory();
-    ResponseParameters responseParams = controllerDirectory.getResponse(requestParameters);
-    assertEquals("HTTP/1.1 200 OK", responseParams.getResponseStatus());
-    assertEquals("Content-Length: 210", responseParams.getContentLength());
-    assertEquals("Content-Type: text/html", responseParams.getContentType());
-    assertEquals("text", responseParams.getBodyType());
-    assertEquals(controllerDirectory.getDirectoryListing("./TestDirectory", requestParameters.getRequestPath()), responseParams.getBodyContent());
-  }
-
-  @Test
   void getReturnsCorrectResponseEmptyDir() throws IOException {
     ArrayList<String> httpMessage2 = new ArrayList<>();
     httpMessage2.add("GET /testEmpty HTTP/1.1\r\n");

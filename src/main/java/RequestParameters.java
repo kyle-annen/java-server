@@ -10,6 +10,7 @@ public class RequestParameters {
   private final String userAgent;
   private final String[] accept;
   private final String bodyContent;
+  private final String contentDisposition;
 
   private RequestParameters(RequestBuilder builder) {
     this.directoryPath = builder.directoryPath;
@@ -19,6 +20,7 @@ public class RequestParameters {
     this.userAgent = builder.userAgent;
     this.accept = builder.accept;
     this.bodyContent = builder.bodyContent;
+    this.contentDisposition = builder.contentDisposition;
   }
 
   String getDirectoryPath() { return directoryPath; }
@@ -35,6 +37,8 @@ public class RequestParameters {
 
   String getBodyContent() { return bodyContent; }
 
+  String getContentDisposition() { return contentDisposition; }
+
   public static class RequestBuilder {
     private final String directoryPath;
     private String httpVerb;
@@ -43,6 +47,7 @@ public class RequestParameters {
     private String userAgent;
     private String[] accept;
     private String bodyContent;
+    private String contentDisposition;
 
     public RequestBuilder(String directoryPath) {
       this.directoryPath = directoryPath;
@@ -110,6 +115,11 @@ public class RequestParameters {
         }
       }
       return this;
+    }
+
+    public RequestBuilder setContentDisposition(ConfigFileDownloads fileConfig) {
+      return this;
+
     }
 
     public RequestParameters build(){ return new RequestParameters(this); }

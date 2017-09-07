@@ -1,7 +1,7 @@
-public class RouterConfiguration {
+public class ConfigRoutes {
   Router router;
 
-  RouterConfiguration(Router router) {
+  ConfigRoutes(Router router) {
     this.router = router;
   }
 
@@ -10,14 +10,13 @@ public class RouterConfiguration {
     this.initializePostRoutes();
   }
 
-  void initializeGetRoutes() {
+  private void initializeGetRoutes() {
     ControllerFile controllerFile = new ControllerFile();
     router.addRoute("GET","/resources/form/index.html", controllerFile);
   }
 
-  void initializePostRoutes() {
+  private void initializePostRoutes() {
     ControllerPost controllerPost = new ControllerPost();
     router.addRoute("POST", "/resources/form", controllerPost);
   }
-
 }

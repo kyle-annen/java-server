@@ -32,4 +32,14 @@ class ControllerFileTest extends TestDirectorySetup {
     String expectedFile = "testFile1.txt";
     assertEquals(expectedFile, actualFile);
   }
+
+  @Test
+  void getFileReturnsContentDispositionHeaderForFileToDownload() {
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /TestDirectory/testFile1.txt HTTP/1.1j\r\n");
+
+    ControllerFile controllerFile = new ControllerFile();
+
+
+  }
 }

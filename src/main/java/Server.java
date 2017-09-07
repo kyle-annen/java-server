@@ -1,15 +1,15 @@
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
-  Logger logger;
+  private Logger logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
   private String directoryPath = System.getProperty("user.dir");
   private ExecutorService requestExecutor;
   private Router router;
+  private ConfigFileDownloads fileConfig;
 
   Server(String[] args, ExecutorService requestExecutor) {
     logger = new Logger();
@@ -18,7 +18,8 @@ public class Server implements Runnable {
     logger.log("Serving directory: " + directoryPath);
     this.requestExecutor = requestExecutor;
     this.router = new Router();
-    new RouterConfiguration(router).initialize();
+    new ConfigRoutes(router).initialize();
+    this.fileConfig = new ConfigFileDownloads();
   }
 
   public void run() {
@@ -28,7 +29,8 @@ public class Server implements Runnable {
       serverSocket = new ServerSocket(portNumber);
       while(serverRunning) {
         Socket socket = serverSocket.accept();
-        RequestHandler requestHandler = new RequestHandler(directoryPath, socket, logger, router);
+        RequestHandler requestHandler =
+                new RequestHandler(directoryPath, socket, logger, router, fileConfig);
         requestExecutor.submit(requestHandler);
       }
       serverSocket.close();

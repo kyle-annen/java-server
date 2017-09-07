@@ -10,12 +10,15 @@ public class RequestHandler implements Runnable {
   private Socket socket;
   private Logger logger;
   private Router router;
+  private ConfigFileDownloads fileConfig;
 
-  RequestHandler(String directoryPath, Socket socket, Logger logger, Router router) {
+  RequestHandler(String directoryPath, Socket socket,
+                 Logger logger, Router router, ConfigFileDownloads fileConfig) {
     this.directoryPath = directoryPath;
     this.socket = socket;
     this.logger = logger;
     this.router = router;
+    this.fileConfig = fileConfig;
   }
 
   public void run() {
@@ -43,6 +46,7 @@ public class RequestHandler implements Runnable {
                       .setUserAgent(httpMessage)
                       .setAccept(httpMessage)
                       .setBodyContent(httpMessage)
+                      .setContentDisposition(fileConfig)
                       .build();
 
       ResponseParameters responseParams = this.router.route(requestParams);
