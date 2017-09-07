@@ -21,7 +21,8 @@ public class ConfigFileDownloadsTest {
             .setRequestPath(httpMessage)
             .build();
     ConfigFileDownloads configFileDownloads = new ConfigFileDownloads();
-    Boolean actual = configFileDownloads.isDownloadable(requestParameters);
+    Boolean actual =
+            configFileDownloads.isDownloadable(requestParameters.getRequestPath());
     assertEquals(false, actual);
   }
 
@@ -34,7 +35,7 @@ public class ConfigFileDownloadsTest {
                     .setRequestPath(httpMessage)
                     .build();
     ConfigFileDownloads configFileDownloads = new ConfigFileDownloads();
-    Boolean actual = configFileDownloads.isDownloadable(requestParameters);
+    Boolean actual = configFileDownloads.isDownloadable(requestParameters.getRequestPath());
     assertEquals(true, actual);
   }
 

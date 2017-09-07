@@ -8,6 +8,7 @@ class ControllerDirectory implements ControllerInterface {
     String filePath = requestParameters.getDirectoryPath() + requestParameters.getRequestPath();
     String directoryBody = getDirectoryListing(filePath, relativePath);
     return new ResponseParameters.ResponseBuilder(200)
+            .setContentDisposition(filePath)
             .setContentLength(directoryBody)
             .setContentType(directoryBody)
             .setBodyContent(directoryBody)

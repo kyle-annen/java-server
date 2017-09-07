@@ -46,7 +46,6 @@ public class RequestHandler implements Runnable {
                       .setUserAgent(httpMessage)
                       .setAccept(httpMessage)
                       .setBodyContent(httpMessage)
-                      .setContentDisposition(fileConfig)
                       .build();
 
       ResponseParameters responseParams = this.router.route(requestParams);

@@ -7,6 +7,7 @@ class ControllerFile implements ControllerInterface {
             requestParameters.getRequestPath();
     return new ResponseParameters.ResponseBuilder(200)
             .setDate()
+            .setContentDisposition(filePath)
             .setContentLength(filePath)
             .setContentType(filePath)
             .setBodyType(filePath)

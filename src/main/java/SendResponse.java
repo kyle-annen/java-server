@@ -34,14 +34,11 @@ public class SendResponse {
     String lineEnding = "\r\n";
     StringBuilder stringBuilder = new StringBuilder();
     stringBuilder.append(responseParameters.getResponseStatus());
-    stringBuilder.append(lineEnding);
     stringBuilder.append(responseParameters.getDate());
+    stringBuilder.append(responseParameters.getContentDisposition());
     stringBuilder.append(responseParameters.getContentLength());
-    stringBuilder.append(lineEnding);
     stringBuilder.append(responseParameters.getContentType());
-    stringBuilder.append(lineEnding);
     stringBuilder.append(responseParameters.getConnectionClose());
-    stringBuilder.append(lineEnding);
     stringBuilder.append(lineEnding);
     return stringBuilder.toString();
   }

@@ -4,8 +4,9 @@ import java.io.IOException;
 
 public class ResponseParameters {
   private final String responseStatus;
-  private final String contentLength;
+  private final String contentDisposition;
   private final String contentType;
+  private final String contentLength;
   private final String date;
   private final String bodyType;
   private final String bodyContent;
@@ -13,12 +14,14 @@ public class ResponseParameters {
 
   private ResponseParameters(ResponseBuilder builder) {
     this.responseStatus = builder.responseStatus;
-    this.contentLength = builder.contentLength;
+    this.contentDisposition = builder.contentDisposition;
     this.contentType = builder.contentType;
+    this.contentLength = builder.contentLength;
     this.date = builder.date;
     this.bodyType = builder.bodyType;
     this.bodyContent = builder.bodyContent;
-    this.connectionClose = "Connection: close";
+    this.connectionClose = "Connection: close\r\n";
+
   }
 
   String getResponseStatus() { return responseStatus; }
@@ -35,11 +38,14 @@ public class ResponseParameters {
 
   String getConnectionClose() { return connectionClose; }
 
+  String getContentDisposition() { return contentDisposition; }
+
   public static class ResponseBuilder {
     private final String responseStatus;
     private ServerUtils serverUtils;
-    private String contentLength;
+    private String contentDisposition;
     private String contentType;
+    private String contentLength;
     private String date;
     private String bodyType;
     private String bodyContent;
@@ -51,15 +57,17 @@ public class ResponseParameters {
       this.responseStatus = "HTTP/1.1 " + responseStatus;
     }
 
-    public ResponseBuilder setContentLength(String filePathOrTextContent) {
-      Boolean isFilePath = new File(filePathOrTextContent).exists();
-      String contentLength;
-      if (isFilePath) {
-        contentLength = Long.toString(new File(filePathOrTextContent).length());
+    public ResponseBuilder setContentDisposition(String filepathOrTextContent) {
+      ConfigFileDownloads configFileDownloads = new ConfigFileDownloads();
+      Boolean isDownloadable = configFileDownloads.isDownloadable(filepathOrTextContent);
+      if(isDownloadable) {
+        String[] fileArray = filepathOrTextContent.split("/");
+        String fileName = fileArray[fileArray.length - 1];
+        this.contentDisposition =
+                "Content-Disposition: attachment; filename=\"" + fileName + "\"\r\n";
       } else {
-        contentLength = serverUtils.getHttpHeaderContentLength(filePathOrTextContent);
+        this.contentDisposition = "Content-Disposition: inline;\r\n";
       }
-      this.contentLength = "Content-Length: " + contentLength;
       return this;
     }
 
@@ -71,12 +79,24 @@ public class ResponseParameters {
       } else {
         mimeType = "text/html";
       }
-      this.contentType = "Content-Type: " + mimeType;
+      this.contentType = "Content-Type: " + mimeType + "\r\n";
+      return this;
+    }
+
+    public ResponseBuilder setContentLength(String filePathOrTextContent) {
+      Boolean isFilePath = new File(filePathOrTextContent).exists();
+      String contentLength;
+      if (isFilePath) {
+        contentLength = Long.toString(new File(filePathOrTextContent).length());
+      } else {
+        contentLength = serverUtils.getHttpHeaderContentLength(filePathOrTextContent);
+      }
+      this.contentLength = "Content-Length: " + contentLength + "\r\n";
       return this;
     }
 
     public ResponseBuilder setDate () {
-      this.date = "Date: " + serverUtils.getHttpHeaderDate();
+      this.date = "Date: " + serverUtils.getHttpHeaderDate() + "\r\n";
       return this;
     }
 

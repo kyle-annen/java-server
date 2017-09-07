@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.ArrayList;
 
 class ConfigFileDownloads {
@@ -12,12 +13,17 @@ class ConfigFileDownloads {
     fileList.add("jpg");
     fileList.add("jpeg");
     fileList.add("html");
+    fileList.add("png");
+    fileList.add("pdf");
   }
 
-  public Boolean isDownloadable(RequestParameters requestParameters) {
-    String requestPath = requestParameters.getRequestPath();
-    String[] fileArray = requestPath.split("\\.");
+  public Boolean isDownloadable(String filePath) {
+    String[] fileArray = filePath.split("\\.");
     String fileExtension = fileArray[fileArray.length - 1];
-    return !filesToNotAddDownloadParameter.contains(fileExtension);
+    Boolean isDownloadable = !this.filesToNotAddDownloadParameter.contains(fileExtension);
+    File file = new File(filePath);
+    Boolean isDirectory =  file.isDirectory();
+    return isDownloadable && !isDirectory;
+
   }
 }

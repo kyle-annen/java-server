@@ -20,8 +20,8 @@ class ControllerFileTest extends TestDirectorySetup {
 
   @Test
   void getFileReturnsResponseWithCorrectFile() throws IOException {
-    ControllerFile getFile = new ControllerFile();
-    ResponseParameters responseParameters = getFile.getResponse(requestParameters);
+    ControllerFile controllerFile = new ControllerFile();
+    ResponseParameters responseParameters = controllerFile.getResponse(requestParameters);
 
     String actualFileType = responseParameters.getContentType();
     String expectedFileType = "Content-Type: text/plain";
@@ -34,11 +34,11 @@ class ControllerFileTest extends TestDirectorySetup {
   }
 
   @Test
-  void getFileReturnsContentDispositionHeaderForFileToDownload() {
-    ArrayList<String> httpMessage = new ArrayList<>();
-    httpMessage.add("GET /TestDirectory/testFile1.txt HTTP/1.1j\r\n");
-
+  void getFileReturnsContentDispositionHeaderForFileToDownload() throws IOException {
     ControllerFile controllerFile = new ControllerFile();
+    ResponseParameters responseParameters = controllerFile.getResponse(requestParameters);
+    String actual = responseParameters.getContentDisposition();
+
 
 
   }
