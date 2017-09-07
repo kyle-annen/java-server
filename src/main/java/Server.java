@@ -9,7 +9,8 @@ public class Server implements Runnable {
   private String directoryPath = System.getProperty("user.dir");
   private ExecutorService requestExecutor;
   private Router router;
-  private ConfigFileDownloads fileConfig;
+  private ReadInterface readInterface;
+  private SendInterface sendInterface;
 
   Server(String[] args, ExecutorService requestExecutor) {
     logger = new Logger();
@@ -19,7 +20,8 @@ public class Server implements Runnable {
     this.requestExecutor = requestExecutor;
     this.router = new Router();
     new ConfigRoutes(router).initialize();
-    this.fileConfig = new ConfigFileDownloads();
+    this.readInterface = new ReadRequest();
+    this.sendInterface = new SendResponse();
   }
 
   public void run() {
@@ -30,7 +32,9 @@ public class Server implements Runnable {
       while(serverRunning) {
         Socket socket = serverSocket.accept();
         RequestHandler requestHandler =
-                new RequestHandler(directoryPath, socket, logger, router, fileConfig);
+                new RequestHandler(
+                        directoryPath, socket, logger, router,
+                        this.sendInterface, this.readInterface);
         requestExecutor.submit(requestHandler);
       }
       serverSocket.close();

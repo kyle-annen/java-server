@@ -40,7 +40,7 @@ class ControllerPostTest {
   void postWillReturnAResponse() throws IOException {
     ControllerPost post = new ControllerPost();
     ResponseParameters responseParams = post.getResponse(testRequestParams);
-    String expected = "HTTP/1.1 200 OK";
+    String expected = "HTTP/1.1 200 OK\r\n";
     String actual = responseParams.getResponseStatus();
     assertEquals(expected, actual);
   }

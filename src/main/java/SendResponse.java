@@ -1,10 +1,10 @@
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.*;
 
-public class SendResponse {
+public class SendResponse implements SendInterface {
 
-  void send(ResponseParameters responseParameters, Socket socket) throws IOException {
+  @Override
+  public void send(ResponseParameters responseParameters, Socket socket) throws IOException {
     BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
     DataOutputStream outputStream =
             new DataOutputStream(bufferedOutputStream);
@@ -25,7 +25,6 @@ public class SendResponse {
         bufferedOutputStream.write(buffer, 0, available);
       }
     }
-    outputStream.writeBytes("\r\n\r\n");
     outputStream.flush();
     outputStream.close();
   }

@@ -64,9 +64,9 @@ class ControllerDirectoryTest extends TestDirectorySetup {
             .build();
     ControllerDirectory controllerDirectory = new ControllerDirectory();
     ResponseParameters responseParams = controllerDirectory.getResponse(requestParameters);
-    assertEquals("HTTP/1.1 200 OK", responseParams.getResponseStatus());
-    assertEquals("Content-Length: 174", responseParams.getContentLength());
-    assertEquals("Content-Type: text/html", responseParams.getContentType());
+    assertEquals("HTTP/1.1 200 OK\r\n", responseParams.getResponseStatus());
+    assertEquals("Content-Length: 174\r\n", responseParams.getContentLength());
+    assertEquals("Content-Type: text/html\r\n", responseParams.getContentType());
     assertEquals(controllerDirectory.getDirectoryListing("./testEmpty", requestParameters.getRequestPath()), responseParams.getBodyContent());
     assertEquals(true, responseParams.getBodyContent().contains("There are no files in this directory"));
   }

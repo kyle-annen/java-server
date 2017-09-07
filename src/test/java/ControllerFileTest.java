@@ -24,7 +24,7 @@ class ControllerFileTest extends TestDirectorySetup {
     ResponseParameters responseParameters = controllerFile.getResponse(requestParameters);
 
     String actualFileType = responseParameters.getContentType();
-    String expectedFileType = "Content-Type: text/plain";
+    String expectedFileType = "Content-Type: text/plain\r\n";
     assertEquals(expectedFileType, actualFileType);
 
     String[] actualFilePath = responseParameters.getBodyContent().split("/");
@@ -38,10 +38,7 @@ class ControllerFileTest extends TestDirectorySetup {
     ControllerFile controllerFile = new ControllerFile();
     ResponseParameters responseParameters = controllerFile.getResponse(requestParameters);
     String actual = responseParameters.getContentDisposition();
-    String expected = "Content-Disposition: application; filename=\"testFile1.txt\"";
-
-
-
-
+    String expected = "Content-Disposition: attachment; filename=\"testFile1.txt\"\r\n";
+    assertEquals(expected,actual);
   }
 }

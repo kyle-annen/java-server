@@ -88,7 +88,7 @@ public class ResponseParameters {
       Boolean isFilePath = new File(filePathOrTextContent).exists();
       String contentLength;
       if (isFilePath) {
-        contentLength = Long.toString(new File(filePathOrTextContent).length());
+        contentLength = Long.toString(new File(filePathOrTextContent).length() + 2);
       } else {
         contentLength = serverUtils.getHttpHeaderContentLength(filePathOrTextContent);
       }

@@ -48,6 +48,6 @@ public class RoutesTest {
     Routes testRoutes = new Routes();
     testRoutes.add("/", new ControllerDirectory());
     ResponseParameters testResponse = testRoutes.getResponse(requestParameters);
-    assertEquals("HTTP/1.1 200 OK", testResponse.getResponseStatus());
+    assertEquals("HTTP/1.1 200 OK\r\n", testResponse.getResponseStatus());
   }
 }

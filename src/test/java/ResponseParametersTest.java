@@ -15,7 +15,7 @@ public class ResponseParametersTest {
   void responseParameterContainsCorrectResponseStatus() {
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
             .build();
-    String expectedStatus = "HTTP/1.1 200 OK";
+    String expectedStatus = "HTTP/1.1 200 OK\r\n";
     String actaulStatus = responseParameters.getResponseStatus();
   }
 
@@ -23,11 +23,11 @@ public class ResponseParametersTest {
   void responseParametersSetCorrectContentLengthForFile() throws IOException {
     String testFile = System.getProperty("user.dir") + "/resources/404.html";
     File file = new File(testFile);
-    String fileLength = Long.toString(file.length());
+    String fileLength = Long.toString(file.length() + 2);
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
             .setContentLength(testFile)
             .build();
-    String expected = "Content-Length: " + fileLength;
+    String expected = "Content-Length: " + fileLength  + "\r\n";
     String actual = responseParameters.getContentLength();
     assertEquals(expected, actual);
   }
@@ -38,7 +38,7 @@ public class ResponseParametersTest {
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
             .setContentLength(testString)
             .build();
-    String expected = "Content-Length: " + this.serverUtils.getHttpHeaderContentLength(testString);
+    String expected = "Content-Length: " + this.serverUtils.getHttpHeaderContentLength(testString) + "\r\n";
     String actual = responseParameters.getContentLength();
     assertEquals(expected, actual);
   }
@@ -57,7 +57,7 @@ public class ResponseParametersTest {
     String actualBodyType = responseParameters.getBodyType();
     assertEquals(expectedBodyType, actualBodyType);
 
-    String expectedContentType = "Content-Type: text/html";
+    String expectedContentType = "Content-Type: text/html\r\n";
     String actualContentType = responseParameters.getContentType();
     assertEquals(expectedContentType, actualContentType);
   }
@@ -71,9 +71,6 @@ public class ResponseParametersTest {
     String actual = responseParameters.getDate().split(" ")[0];
     assertEquals(expected, actual);
   }
-
-
-
 }
 
 

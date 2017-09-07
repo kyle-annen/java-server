@@ -41,7 +41,7 @@ public class RouterTest {
             .setRequestPath(httpRequest)
             .build();
     ResponseParameters responseParameters = router.route(requestParameters);
-    String expectedResponseHeader = "HTTP/1.1 200 OK";
+    String expectedResponseHeader = "HTTP/1.1 200 OK\r\n";
     String actualResponseHeader = responseParameters.getResponseStatus();
     assertEquals(expectedResponseHeader, actualResponseHeader);
   }
@@ -59,7 +59,7 @@ public class RouterTest {
                     .setRequestPath(httpRequest)
                     .build();
     ResponseParameters responseParameters = router.route(requestParameters);
-    String expectedResponseHeader = "HTTP/1.1 404 Not Found";
+    String expectedResponseHeader = "HTTP/1.1 404 Not Found\r\n";
     String actualResponseHeader = responseParameters.getResponseStatus();
     assertEquals(expectedResponseHeader, actualResponseHeader);
   }
