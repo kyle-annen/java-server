@@ -13,6 +13,7 @@ public class ResponseParameters {
   private final String connectionClose;
 
   private ResponseParameters(ResponseBuilder builder) {
+    String lineEnd = "\r\n";
     this.responseStatus = builder.responseStatus;
     this.contentDisposition = builder.contentDisposition;
     this.contentType = builder.contentType;
@@ -54,7 +55,7 @@ public class ResponseParameters {
       serverUtils = new ServerUtils();
       StatusCodes statusCodes = new StatusCodes();
       String responseStatus = statusCodes.get(responseCode);
-      this.responseStatus = "HTTP/1.1 " + responseStatus;
+      this.responseStatus = "HTTP/1.1 " + responseStatus + "\r\n";
     }
 
     public ResponseBuilder setContentDisposition(String filepathOrTextContent) {

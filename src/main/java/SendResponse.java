@@ -40,6 +40,7 @@ public class SendResponse {
     stringBuilder.append(responseParameters.getContentType());
     stringBuilder.append(responseParameters.getConnectionClose());
     stringBuilder.append(lineEnding);
+    stringBuilder.append(lineEnding);
     return stringBuilder.toString();
   }
 }

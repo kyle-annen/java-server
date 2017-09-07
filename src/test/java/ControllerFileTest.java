@@ -38,6 +38,8 @@ class ControllerFileTest extends TestDirectorySetup {
     ControllerFile controllerFile = new ControllerFile();
     ResponseParameters responseParameters = controllerFile.getResponse(requestParameters);
     String actual = responseParameters.getContentDisposition();
+    String expected = "Content-Disposition: application; filename=\"testFile1.txt\"";
+
 
 
 
