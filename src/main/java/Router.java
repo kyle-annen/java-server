@@ -2,8 +2,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-public class Router {
-  HashMap<String, Routes> router = new HashMap<>();
+class Router {
+  private HashMap<String, Routes> router = new HashMap<>();
 
   void addRoute(
           String httpMethod,
@@ -12,9 +12,13 @@ public class Router {
     Boolean methodRouteExists = router.keySet().contains(httpMethod);
     Routes routes;
     if(methodRouteExists) { routes = router.get(httpMethod);} else { routes = new Routes();}
-    Boolean pathRouteExists = routes.keySet().contains(route);
+    Boolean pathRouteExists = routes.getRoutePaths().contains(route);
     if(!pathRouteExists) { routes.add(route, controller); }
     router.put(httpMethod, routes);
+  }
+
+  Routes getRoutes(String httpMethod) {
+    return router.get(httpMethod);
   }
 
   ResponseParameters route(RequestParameters requestParameters) throws IOException {
@@ -27,7 +31,7 @@ public class Router {
     Boolean methodExists = router.keySet().contains(httpMethod);
     Boolean routeExists = router
             .get(httpMethod)
-            .keySet()
+            .getRoutePaths()
             .contains(requestParameters.getRequestPath());
 
     if(methodExists && routeExists) {

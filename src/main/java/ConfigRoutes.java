@@ -1,12 +1,12 @@
-public class ConfigRoutes {
-  Router router;
+class ConfigRoutes {
+  private Router router;
 
   ConfigRoutes(Router router) {
     this.router = router;
     this.initialize();
   }
 
-  void initialize() {
+  private void initialize() {
     this.initializeGetRoutes();
     this.initializePostRoutes();
   }

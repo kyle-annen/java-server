@@ -1,4 +1,7 @@
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.After;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import java.io.*;
 import java.net.*;
@@ -6,15 +9,34 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 class ServerTest extends TestDirectorySetup {
+  Server testServer;
+
+  @Before
+  void startServer() {
+    ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+    ReadInterface readInterface = new ReadRequest();
+    SendInterface sendInterface = new SendResponse();
+    Router router = new Router();
+    LoggerInterface loggerInterface = new Logger();
+    this.testServer = new Server(
+            new String[]{"-p", "4040"},
+            requestExecutor,
+            readInterface,
+            sendInterface,
+            router,
+            loggerInterface);
+    this.testServer.run();
+  }
+
+  @After
+  void stopServer() {
+    this.testServer.stop();
+  }
+
   @Test
   void serverSendsValidResponseToValidRequest() {
     try {
       String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
-      Server testServer = new Server(new String[]{"-p", "4040"}, requestExecutor);
-      Thread testServerThread = new Thread(testServer);
-      testServerThread.start();
-
       Socket testSocket = new Socket("localhost", 4040);
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
@@ -27,25 +49,17 @@ class ServerTest extends TestDirectorySetup {
       serverResponse = readFromServer.readLine().split(" ");
       String actualResponse = String.join(" ", serverResponse);
       String expectedResponse = "HTTP/1.1 200 OK";
-
-      testServer.stop();
-
       assertEquals(actualResponse, expectedResponse);
     } catch (IOException e) {
       this.serverSendsValidResponseToValidRequest();
     }
-
   }
 
   @Test
   void serverSendsValidResponseToValidRequestForFile() {
     try {
       String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
-      Server testServer = new Server(new String[]{"-p", "4043"}, requestExecutor);
-      Thread testServerThread = new Thread(testServer);
-      testServerThread.start();
-      Socket testSocket = new Socket("localhost", 4043);
+      Socket testSocket = new Socket("localhost", 4040);
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
       BufferedReader readFromServer =
@@ -58,8 +72,6 @@ class ServerTest extends TestDirectorySetup {
       String actualResponse = String.join(" ", serverResponse);
       String expectedResponse = "HTTP/1.1 200 OK";
 
-      testServer.stop();
-
       assertEquals(actualResponse, expectedResponse);
     } catch (IOException e) {
       this.serverSendsValidResponseToValidRequestForFile();
@@ -71,11 +83,7 @@ class ServerTest extends TestDirectorySetup {
     ServerUtils serverUtils = new ServerUtils();
     try {
       String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
-      Server testServer = new Server(new String[]{"-p", "4045"}, requestExecutor);
-      Thread testServerThread = new Thread(testServer);
-      testServerThread.start();
-      Socket testSocket = new Socket("localhost", 4045);
+      Socket testSocket = new Socket("localhost", 4040);
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
       BufferedReader readFromServer =
@@ -93,8 +101,6 @@ class ServerTest extends TestDirectorySetup {
       serverResponse = readFromServer.readLine().split(" ");
       String actualResponse = String.join(" ", serverResponse);
       String expectedResponse = "HTTP/1.1 200 OK";
-
-      testServer.stop();
 
       assertEquals(expectedResponse, actualResponse);
     } catch (IOException e) {
