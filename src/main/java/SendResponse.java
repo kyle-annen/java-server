@@ -19,10 +19,11 @@ public class SendResponse implements SendInterface {
       FileInputStream fileInputStream = new FileInputStream(file);
       BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
-      byte[] buffer = new byte[1024*128];
+      byte[] buffer = new byte[8192];
       int available = -1;
       while((available = bufferedInputStream.read(buffer)) > 0) {
         bufferedOutputStream.write(buffer, 0, available);
+        bufferedOutputStream.flush();
       }
     }
     outputStream.flush();
@@ -31,15 +32,13 @@ public class SendResponse implements SendInterface {
 
   private String buildHeader(ResponseParameters responseParameters) {
     String lineEnding = "\r\n";
-    StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append(responseParameters.getResponseStatus());
-    stringBuilder.append(responseParameters.getDate());
-    stringBuilder.append(responseParameters.getContentDisposition());
-    stringBuilder.append(responseParameters.getContentLength());
-    stringBuilder.append(responseParameters.getContentType());
-    stringBuilder.append(responseParameters.getConnectionClose());
-    stringBuilder.append(lineEnding);
-    stringBuilder.append(lineEnding);
-    return stringBuilder.toString();
+    String header = responseParameters.getResponseStatus() +
+            responseParameters.getDate() +
+            responseParameters.getContentDisposition() +
+            responseParameters.getContentLength() +
+            responseParameters.getContentType() +
+            responseParameters.getConnectionClose() +
+            lineEnding;
+    return header;
   }
 }

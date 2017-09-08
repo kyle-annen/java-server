@@ -4,15 +4,15 @@ import java.net.Socket;
 public class RequestHandler implements Runnable {
   private String directoryPath;
   private Socket socket;
-  private Logger logger;
-  private Router router;
+  private LoggerInterface logger;
+  private RouterInterface router;
   private SendInterface sendInterface;
   private ReadInterface readInterface;
 
   RequestHandler(String directoryPath,
                  Socket socket,
                  Logger logger,
-                 Router router,
+                 RouterInterface router,
                  SendInterface sendInterface,
                  ReadInterface readInterface) {
     this.directoryPath = directoryPath;

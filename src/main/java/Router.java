@@ -2,7 +2,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-class Router {
+class Router implements RouterInterface {
   private HashMap<String, Routes> router = new HashMap<>();
 
   void addRoute(
@@ -21,7 +21,8 @@ class Router {
     return router.get(httpMethod);
   }
 
-  ResponseParameters route(RequestParameters requestParameters) throws IOException {
+  @Override
+  public ResponseParameters route(RequestParameters requestParameters) throws IOException {
 
     String httpMethod = requestParameters.getHttpVerb();
     File file = new File(requestParameters.getDirectoryPath() +

@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 
-public class Server {
+public class Server implements Runnable{
   private Logger logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
@@ -32,6 +32,7 @@ public class Server {
     new ConfigRoutes(this.router);
   }
 
+  @Override
   public void run() {
     this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
