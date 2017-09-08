@@ -3,6 +3,7 @@ public class ConfigRoutes {
 
   ConfigRoutes(Router router) {
     this.router = router;
+    this.initialize();
   }
 
   void initialize() {

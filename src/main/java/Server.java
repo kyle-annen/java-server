@@ -29,7 +29,7 @@ public class Server {
     this.readInterface = readInterface;
     this.sendInterface = sendInterface;
 
-    new ConfigRoutes(this.router).initialize();
+    new ConfigRoutes(this.router);
   }
 
   public void run() {
