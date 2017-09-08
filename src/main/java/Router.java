@@ -3,11 +3,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 public class Router {
-  HashMap<String, Routes> router;
-
-  Router() {
-    router = new HashMap<>();
-  }
+  HashMap<String, Routes> router = new HashMap<>();
 
   void addRoute(
           String httpMethod,

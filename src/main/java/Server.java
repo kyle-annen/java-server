@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.concurrent.ExecutorService;
 
-public class Server implements Runnable {
+public class Server {
   private Logger logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
@@ -12,16 +12,24 @@ public class Server implements Runnable {
   private ReadInterface readInterface;
   private SendInterface sendInterface;
 
-  Server(String[] args, ExecutorService requestExecutor) {
-    logger = new Logger();
+  Server(
+          String[] args,
+          ExecutorService requestExecutor,
+          ReadInterface readInterface,
+          SendInterface sendInterface,
+          Router router,
+          LoggerInterface logger) {
+    this.logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     logger.log("Serving directory: " + directoryPath);
+
     this.requestExecutor = requestExecutor;
-    this.router = new Router();
-    new ConfigRoutes(router).initialize();
-    this.readInterface = new ReadRequest();
-    this.sendInterface = new SendResponse();
+    this.router = router;
+    this.readInterface = readInterface;
+    this.sendInterface = sendInterface;
+
+    new ConfigRoutes(this.router).initialize();
   }
 
   public void run() {
@@ -33,7 +41,7 @@ public class Server implements Runnable {
         Socket socket = serverSocket.accept();
         RequestHandler requestHandler =
                 new RequestHandler(
-                        directoryPath, socket, logger, router,
+                        this.directoryPath, socket, this.logger, router,
                         this.sendInterface, this.readInterface);
         requestExecutor.submit(requestHandler);
       }
@@ -49,7 +57,7 @@ public class Server implements Runnable {
     logger.log(outputMessage);
   }
 
-  private String setDirectoryPath(String directPath, String[] args, Logger logger) {
+  private String setDirectoryPath(String directPath, String[] args, LoggerInterface logger) {
     for(int i = 0; i < args.length; i++) {
       if(args[i].equals("-d") && new File(args[i + 1]).isDirectory()) {
         return args[i + 1];
