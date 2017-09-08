@@ -1,9 +1,9 @@
-import org.junit.Ignore;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class SendResponseTest {
 
-  @Ignore
+  @Disabled
   void sendResonseSendsFile() {
     assert(false);
   }

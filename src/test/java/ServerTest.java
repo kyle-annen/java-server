@@ -1,9 +1,8 @@
-import org.junit.Ignore;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Disabled;
 
 public class ServerTest {
 
-  @Ignore
+  @Disabled
   void howDoIMockASocket() {
     assert(false);
   }

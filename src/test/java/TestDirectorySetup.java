@@ -1,4 +1,3 @@
-import org.junit.Ignore;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -10,7 +9,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 
-@Ignore
 public class TestDirectorySetup {
 
   @BeforeAll
