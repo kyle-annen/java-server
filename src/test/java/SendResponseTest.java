@@ -1,10 +1,10 @@
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
-public class ServerTest {
+public class SendResponseTest {
 
   @Ignore
-  void howDoIMockASocket() {
+  void sendResonseSendsFile() {
     assert(false);
   }
 }

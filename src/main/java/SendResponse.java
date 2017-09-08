@@ -1,18 +1,44 @@
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
-import java.util.ArrayList;
 
-public class SendResponse {
+public class SendResponse implements SendInterface {
 
-  void send(ResponseParameters responseParameters, Socket socket) throws IOException {
-    Boolean hasFile = responseParameters.bodyType.equals("file");
+  @Override
+  public void send(ResponseParameters responseParameters, Socket socket) throws IOException {
+    BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(socket.getOutputStream());
+    DataOutputStream outputStream =
+            new DataOutputStream(bufferedOutputStream);
+    String httpHeader = buildHeader(responseParameters);
 
-    if(hasFile) {
-      new OutputFile().send(socket, responseParameters.responseHeader, responseParameters.body);
-    } else {
-      ArrayList<String> response = responseParameters.responseHeader;
-      response.add(responseParameters.body);
-      new OutputText().send(socket, responseParameters.responseHeader);
+    outputStream.writeBytes(httpHeader);
+
+    if(responseParameters.getBodyType().equals("text")) {
+      outputStream.writeBytes(responseParameters.getBodyContent());
+    } else if(responseParameters.getBodyType().equals("file")) {
+      File file = new File(responseParameters.getBodyContent());
+      FileInputStream fileInputStream = new FileInputStream(file);
+      BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
+
+      byte[] buffer = new byte[8192];
+      int available = -1;
+      while((available = bufferedInputStream.read(buffer)) > 0) {
+        bufferedOutputStream.write(buffer, 0, available);
+        bufferedOutputStream.flush();
+      }
     }
+    outputStream.flush();
+    outputStream.close();
+  }
+
+  private String buildHeader(ResponseParameters responseParameters) {
+    String lineEnding = "\r\n";
+    String header = responseParameters.getResponseStatus() +
+            responseParameters.getDate() +
+            responseParameters.getContentDisposition() +
+            responseParameters.getContentLength() +
+            responseParameters.getContentType() +
+            responseParameters.getConnectionClose() +
+            lineEnding;
+    return header;
   }
 }

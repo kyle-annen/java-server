@@ -1,10 +1,10 @@
 import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
-public class ServerTest {
+public class ReadRequestTest {
 
   @Ignore
-  void howDoIMockASocket() {
+  void readRequestReturnsRequestParameters(){
     assert(false);
   }
 }

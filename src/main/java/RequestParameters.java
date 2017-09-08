@@ -9,7 +9,6 @@ public class RequestParameters {
   private final String host;
   private final String userAgent;
   private final String[] accept;
-  private final Socket socket;
   private final String bodyContent;
 
   private RequestParameters(RequestBuilder builder) {
@@ -19,7 +18,6 @@ public class RequestParameters {
     this.host = builder.host;
     this.userAgent = builder.userAgent;
     this.accept = builder.accept;
-    this.socket = builder.socket;
     this.bodyContent = builder.bodyContent;
   }
 
@@ -39,7 +37,6 @@ public class RequestParameters {
 
   public static class RequestBuilder {
     private final String directoryPath;
-    private Socket socket;
     private String httpVerb;
     private String requestPath;
     private String host;
@@ -72,11 +69,6 @@ public class RequestParameters {
         }
       }
       this.host = host;
-      return this;
-    }
-
-    public RequestBuilder setSocket(Socket socket) {
-      this.socket = socket;
       return this;
     }
 

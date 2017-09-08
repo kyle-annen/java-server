@@ -16,15 +16,4 @@ public class ShutdownHook extends Thread{
     new Logger().log("\nShutting server down gracefully.");
     requestExecutor.shutdown();
   }
-
-  public void waitForAllThreads() throws InterruptedException {
-    Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-    Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-    for (Thread thread: threadArray) {
-      Boolean isServerThread = thread.getName().contains("pool");
-      if (isServerThread) {
-        thread.join();
-      }
-    }
-  }
 }
