@@ -6,6 +6,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 class RequestHandlerTest extends TestDirectorySetup {
+  private  LoggerInterface logger = string -> {
+  };
+
+
   @Test
   void serverSendsValidResponseToValidRequest() {
     try {
@@ -17,7 +21,7 @@ class RequestHandlerTest extends TestDirectorySetup {
               new ReadRequest(),
               new SendResponse(),
               new Router(),
-              new Logger());
+              logger);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
 
@@ -54,7 +58,7 @@ class RequestHandlerTest extends TestDirectorySetup {
               new ReadRequest(),
               new SendResponse(),
               new Router(),
-              new Logger());
+              logger);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
       Socket testSocket = new Socket("localhost", 4043);
@@ -90,7 +94,7 @@ class RequestHandlerTest extends TestDirectorySetup {
               new ReadRequest(),
               new SendResponse(),
               new Router(),
-              new Logger());
+              logger);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
       Socket testSocket = new Socket("localhost", 4045);

@@ -1,4 +1,3 @@
-import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class RouterTest {
-  @Ignore
   private class MockController implements ControllerInterface {
     @Override
     public ResponseParameters getResponse(RequestParameters requestParameters) {
