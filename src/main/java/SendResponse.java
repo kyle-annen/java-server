@@ -25,6 +25,7 @@ public class SendResponse implements SendInterface {
         bufferedOutputStream.write(buffer, 0, available);
         bufferedOutputStream.flush();
       }
+      outputStream.writeBytes("\r\n\r\n");
     }
     outputStream.flush();
     outputStream.close();
