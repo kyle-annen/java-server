@@ -4,9 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.eightlight.kyleannen</groupId>
+  <groupId>com.github.kyle-annen</groupId>
   <artifactId>javaserver</artifactId>
   <version>0.1</version>
+  <licenses>
+    <license>
+      <name>MIT License</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+    </license>
+  </licenses>
+  <name>${project.groupId}:${project.artifactId}</name>
+  <description>A minimal java http server which fulfills small portions of the
+  http specifications. This is not a full fledged or secure server. It should only be used
+  for learning purposes and contains no guarantees of any king.</description>
+  <url>http://github.com/kyle-annen/java-server</url>
+  <scm>
+    <connection>scm:git:git://github.com/kyle-annen/java-server.git</connection>
+    <developerConnection>scm:git:ssh://github.com:kyle-annen/java-server.git</developerConnection>
+    <url>http://github.com/kyle-annen/java-server/tree/master</url>
+  </scm>
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
