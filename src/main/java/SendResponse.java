@@ -28,18 +28,16 @@ public class SendResponse implements SendInterface {
       outputStream.writeBytes("\r\n\r\n");
     }
     outputStream.flush();
-    outputStream.close();
   }
 
-  private String buildHeader(ResponseParameters responseParameters) {
+  String buildHeader(ResponseParameters responseParameters) {
     String lineEnding = "\r\n";
-    String header = responseParameters.getResponseStatus() +
+    return responseParameters.getResponseStatus() +
             responseParameters.getDate() +
             responseParameters.getContentDisposition() +
             responseParameters.getContentLength() +
             responseParameters.getContentType() +
             responseParameters.getConnectionClose() +
             lineEnding;
-    return header;
   }
 }

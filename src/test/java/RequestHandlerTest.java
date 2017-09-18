@@ -6,17 +6,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 class RequestHandlerTest extends TestDirectorySetup {
-  private  LoggerInterface logger = string -> {
+  private Integer startPort1 = 2020;
+
+  LoggerInterface logger = new LoggerInterface() {
+    @Override
+    public void log(String string) {
+    }
   };
 
 
   @Test
-  void serverSendsValidResponseToValidRequest() {
+  void serverSendsValidResponseToValidRequest() throws InterruptedException, IOException {
+
     try {
+      String port = startPort1.toString();
       String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
+      ExecutorService requestExecutor = Executors.newFixedThreadPool(1);
       Server testServer = new Server(
-              new String[]{"-p", "4040"},
+              new String[]{"-p", port},
               requestExecutor,
               new ReadRequest(),
               new SendResponse(),
@@ -24,103 +31,93 @@ class RequestHandlerTest extends TestDirectorySetup {
               logger);
       Thread testServerThread = new Thread(testServer);
       testServerThread.start();
-
-      Socket testSocket = new Socket("localhost", 4040);
+      Thread.sleep(100);
+      Socket testSocket = new Socket("localhost", Integer.parseInt(port));
       DataOutputStream sendToServer =
               new DataOutputStream(testSocket.getOutputStream());
       BufferedReader readFromServer =
               new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
-
       sendToServer.writeBytes("GET / HTTP/1.1\r\n\r\n");
       sendToServer.flush();
-
       serverResponse = readFromServer.readLine().split(" ");
       String actualResponse = String.join(" ", serverResponse);
       String expectedResponse = "HTTP/1.1 200 OK";
-
       testServer.stop();
-
       assertEquals(actualResponse, expectedResponse);
-    } catch (IOException e) {
+    } catch (IOException ignore) {
+      startPort1 += 1;
       this.serverSendsValidResponseToValidRequest();
     }
-
   }
 
   @Test
-  void serverSendsValidResponseToValidRequestForFile() {
-    try {
-      String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
-      Server testServer = new Server(
-              new String[]{"-p", "4043"},
-              requestExecutor,
-              new ReadRequest(),
-              new SendResponse(),
-              new Router(),
-              logger);
-      Thread testServerThread = new Thread(testServer);
-      testServerThread.start();
-      Socket testSocket = new Socket("localhost", 4043);
-      DataOutputStream sendToServer =
-              new DataOutputStream(testSocket.getOutputStream());
-      BufferedReader readFromServer =
-              new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
+  void serverSendsValidResponseToValidRequestForFile() throws InterruptedException, IOException {
+    String[] serverResponse;
+    ExecutorService requestExecutor = Executors.newFixedThreadPool(1);
+    Server testServer = new Server(
+            new String[]{"-p", "4043"},
+            requestExecutor,
+            new ReadRequest(),
+            new SendResponse(),
+            new Router(),
+            logger);
+    Thread testServerThread = new Thread(testServer);
+    testServerThread.start();
+    Thread.sleep(100);
+    Socket testSocket = new Socket("localhost", 4043);
+    DataOutputStream sendToServer =
+            new DataOutputStream(testSocket.getOutputStream());
+    BufferedReader readFromServer =
+            new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
 
-      sendToServer.writeBytes("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n\r\n");
-      sendToServer.flush();
+    sendToServer.writeBytes("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n\r\n");
+    sendToServer.flush();
 
-      serverResponse = readFromServer.readLine().split(" ");
-      String actualResponse = String.join(" ", serverResponse);
-      String expectedResponse = "HTTP/1.1 200 OK";
+    serverResponse = readFromServer.readLine().split(" ");
+    String actualResponse = String.join(" ", serverResponse);
+    String expectedResponse = "HTTP/1.1 200 OK";
 
-      testServer.stop();
+    testServer.stop();
 
-      assertEquals(actualResponse, expectedResponse);
-    } catch (IOException e) {
-      this.serverSendsValidResponseToValidRequestForFile();
-    }
+    assertEquals(actualResponse, expectedResponse);
   }
 
   @Test
-  void serverSendsRedirectToValidPostRequest() {
+  void serverSendsRedirectToValidPostRequest() throws InterruptedException, IOException {
     ServerUtils serverUtils = new ServerUtils();
-    try {
-      String[] serverResponse;
-      ExecutorService requestExecutor = Executors.newFixedThreadPool(3);
-      Server testServer = new Server(
-              new String[]{"-p", "4048"},
-              requestExecutor,
-              new ReadRequest(),
-              new SendResponse(),
-              new Router(),
-              logger);
-      Thread testServerThread = new Thread(testServer);
-      testServerThread.start();
-      Socket testSocket = new Socket("localhost", 4045);
-      DataOutputStream sendToServer =
-              new DataOutputStream(testSocket.getOutputStream());
-      BufferedReader readFromServer =
-              new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
+    String[] serverResponse;
+    ExecutorService requestExecutor = Executors.newFixedThreadPool(1);
+    Server testServer = new Server(
+            new String[]{"-p", "4045"},
+            requestExecutor,
+            new ReadRequest(),
+            new SendResponse(),
+            new Router(),
+            logger);
+    Thread testServerThread = new Thread(testServer);
+    testServerThread.start();
+    Thread.sleep(100);
+    Socket testSocket = new Socket("localhost", 4045);
+    DataOutputStream sendToServer =
+            new DataOutputStream(testSocket.getOutputStream());
+    BufferedReader readFromServer =
+            new BufferedReader(new InputStreamReader(testSocket.getInputStream()));
 
-      sendToServer.writeBytes("POST /resources/form HTTP/1.1\r\n");
-      String testContent = "first_name=george-michael&last_name=bluth&location=banana-stand";
-      String contentLength = serverUtils.getHttpHeaderContentLength(testContent);
-      sendToServer.writeBytes("Content-Length: " + contentLength + "\r\n");
-      sendToServer.writeBytes("\r\n");
-      sendToServer.writeBytes(testContent);
-      sendToServer.writeBytes("\r\n\r\n");
-      sendToServer.flush();
+    sendToServer.writeBytes("POST /resources/form HTTP/1.1\r\n");
+    String testContent = "first_name=george-michael&last_name=bluth&location=banana-stand";
+    String contentLength = serverUtils.getHttpHeaderContentLength(testContent);
+    sendToServer.writeBytes("Content-Length: " + contentLength + "\r\n");
+    sendToServer.writeBytes("\r\n");
+    sendToServer.writeBytes(testContent);
+    sendToServer.writeBytes("\r\n\r\n");
+    sendToServer.flush();
 
-      serverResponse = readFromServer.readLine().split(" ");
-      String actualResponse = String.join(" ", serverResponse);
-      String expectedResponse = "HTTP/1.1 302 Found";
+    serverResponse = readFromServer.readLine().split(" ");
+    String actualResponse = String.join(" ", serverResponse);
+    String expectedResponse = "HTTP/1.1 200 OK";
 
-      testServer.stop();
+    testServer.stop();
 
-      assertEquals(actualResponse, expectedResponse);
-    } catch (IOException e) {
-      this.serverSendsValidResponseToValidRequestForFile();
-    }
+    assertEquals(expectedResponse, actualResponse);
   }
 }

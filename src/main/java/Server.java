@@ -22,7 +22,7 @@ public class Server implements Runnable{
     this.logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
-    logger.log("Serving directory: " + directoryPath);
+    //logger.log("Serving directory: " + directoryPath);
 
     this.requestExecutor = requestExecutor;
     this.router = router;
@@ -55,7 +55,7 @@ public class Server implements Runnable{
   private void announceServer(int portNumber, Logger logger) {
     String outputMessage = "Server started at: http://localhost:" +
             Integer.toString(portNumber);
-    logger.log(outputMessage);
+    //logger.log(outputMessage);
   }
 
   private String setDirectoryPath(String directPath, String[] args, LoggerInterface logger) {

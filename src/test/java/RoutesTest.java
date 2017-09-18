@@ -50,4 +50,36 @@ public class RoutesTest {
     ResponseParameters testResponse = testRoutes.getResponse(requestParameters);
     assertEquals("HTTP/1.1 200 OK\r\n", testResponse.getResponseStatus());
   }
+
+  @Test
+  void routesGetReturnsImplementationOfRouteInterface() {
+    Routes testRoutes = new Routes();
+    testRoutes.add("/", new ControllerFourOhFour());
+
+    ControllerInterface actualInterface = testRoutes.get("/");
+    ControllerInterface expectedInterface = new ControllerFourOhFour();
+
+    assertEquals(expectedInterface.getClass(), actualInterface.getClass());
+  }
+
+  @Test
+  void returnsFourOhFourResponseOnBadRoute() throws IOException {
+    ArrayList<String> httpMessage = new ArrayList<>();
+    httpMessage.add("GET /bad/test/route/not/gonna/work HTTP/1.1\r\n\r\n");
+    RequestParameters requestParameters = new RequestParameters.RequestBuilder("/")
+            .setHost(httpMessage)
+            .setUserAgent(httpMessage)
+            .setBodyContent(httpMessage)
+            .setRequestPath(httpMessage)
+            .setHttpVerb(httpMessage)
+            .setAccept(httpMessage)
+            .build();
+    Routes testRoutes = new Routes();
+    testRoutes.add("/", new ControllerFourOhFour());
+
+    ResponseParameters responseParameters = testRoutes.getResponse(requestParameters);
+    String actual = responseParameters.getResponseStatus();
+    String expected = "HTTP/1.1 404 Not Found\r\n";
+    assertEquals(expected, actual);
+  }
 }
