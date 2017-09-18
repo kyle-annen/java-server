@@ -12,15 +12,22 @@ import static org.junit.jupiter.api.Assertions.*;
 public class SendResponseTest {
   Server server;
 
+  class MockLogger implements LoggerInterface {
 
-   SendResponseTest() {
+    @Override
+    public void log(String string) {
+    }
+  }
+
+
+  SendResponseTest() {
     ExecutorService executorService = Executors.newFixedThreadPool(10);
     ReadRequest readRequest = new ReadRequest();
     SendResponse sendResponse = new SendResponse();
     Router router = new Router();
-    Logger logger = new Logger();
+    MockLogger mockLogger = new MockLogger();
     String[] args = new String[]{"-p","4345"};
-    server = new Server(args, executorService, readRequest, sendResponse, router, logger);
+    server = new Server(args, executorService, readRequest, sendResponse, router, mockLogger);
   }
 
   class SendResponseMockedBuildHeader extends SendResponse {
@@ -32,7 +39,8 @@ public class SendResponseTest {
 
 
   @Test
-  void sendResponseSendsResponse() throws IOException {
+  void sendResponseSendsResponse() throws IOException, InterruptedException {
+    Thread.sleep(100);
     Thread serverThread = new Thread(server);
     serverThread.start();
 
