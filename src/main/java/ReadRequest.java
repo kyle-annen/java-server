@@ -35,11 +35,11 @@ class ReadRequest implements ReadInterface {
           BufferedReader bufferedReader,
           ArrayList<String> httpMessage) throws IOException {
     int contentLength = this.getContentLength(httpMessage);
-    String content = "";
+    StringBuilder content = new StringBuilder();
     int length = 0;
     while(length < contentLength) {
       int value = bufferedReader.read();
-      if(value != -1) { content += (char)value; }
+      if(value != -1) { content.append((char) value); }
       length += 1;
     }
     httpMessage.add("Body-Content: " + content);
