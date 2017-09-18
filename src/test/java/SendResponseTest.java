@@ -51,5 +51,7 @@ public class SendResponseTest {
     String expected = "200";
     String actual = requestParameters.getRequestPath();
     assertEquals(expected, actual);
+    server.stop();
+
   }
 }
