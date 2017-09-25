@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RequestParameters {
-  private final String directoryPath;
-  private final String httpVerb;
-  private final String requestPath;
-  private final String host;
-  private final String userAgent;
-  private final String[] accept;
-  private final String bodyContent;
+  public final String directoryPath;
+  public final String httpVerb;
+  public final String requestPath;
+  public final String host;
+  public final String userAgent;
+  public final String[] accept;
+  public final String bodyContent;
 
   private RequestParameters(RequestBuilder builder) {
     this.directoryPath = builder.directoryPath;
