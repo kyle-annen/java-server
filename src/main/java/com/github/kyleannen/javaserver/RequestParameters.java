@@ -11,6 +11,7 @@ public class RequestParameters {
   public final String userAgent;
   public final String[] accept;
   public final String bodyContent;
+  public final String params;
 
   private RequestParameters(RequestBuilder builder) {
     this.directoryPath = builder.directoryPath;
@@ -20,6 +21,7 @@ public class RequestParameters {
     this.userAgent = builder.userAgent;
     this.accept = builder.accept;
     this.bodyContent = builder.bodyContent;
+    this.params = builder.params;
   }
 
   String getDirectoryPath() { return directoryPath; }
@@ -36,6 +38,8 @@ public class RequestParameters {
 
   String getBodyContent() { return bodyContent; }
 
+  String getParams() { return params; }
+
   public static class RequestBuilder {
     private final String directoryPath;
     private String httpVerb;
@@ -44,6 +48,7 @@ public class RequestParameters {
     private String userAgent;
     private String[] accept;
     private String bodyContent;
+    private String params;
 
     public RequestBuilder(String directoryPath) {
       this.directoryPath = directoryPath;
@@ -57,7 +62,14 @@ public class RequestParameters {
 
     public RequestBuilder setRequestPath(ArrayList<String> httpMessage) {
       String initialLine = httpMessage.get(0);
-      this.requestPath = initialLine.split(" ")[1].trim();
+      String fullRequestPath = initialLine.split(" ")[1].trim();
+      Boolean containsParams = fullRequestPath.contains("?");
+      if(containsParams) {
+        this.params = fullRequestPath.split("\\?")[1];
+        this.requestPath = fullRequestPath.split("\\?")[0];
+      } else {
+        this.requestPath = fullRequestPath;
+      }
       return this;
     }
 
