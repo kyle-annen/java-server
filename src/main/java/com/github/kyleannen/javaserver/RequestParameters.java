@@ -69,6 +69,7 @@ public class RequestParameters {
         this.requestPath = fullRequestPath.split("\\?")[0];
       } else {
         this.requestPath = fullRequestPath;
+        this.params = "";
       }
       return this;
     }
