@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Router implements RouterInterface {
   private HashMap<String, Routes> router = new HashMap<>();
 
-  void addRoute(
+  public void addRoute(
           String httpMethod,
           String route,
           ControllerInterface controller) {
