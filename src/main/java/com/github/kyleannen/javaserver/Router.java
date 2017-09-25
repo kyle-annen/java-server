@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
-class Router implements RouterInterface {
+public class Router implements RouterInterface {
   private HashMap<String, Routes> router = new HashMap<>();
 
   void addRoute(
