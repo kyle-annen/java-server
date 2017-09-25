@@ -1,4 +1,4 @@
-# Java Server [![Build Status](https://travis-ci.org/kyle-annen/java-server.svg?branch=master)](https://travis-ci.org/kyle-annen/java-server)
+# Java com.github.kyleannen.javaserver.Server [![Build Status](https://travis-ci.org/kyle-annen/java-server.svg?branch=master)](https://travis-ci.org/kyle-annen/java-server)
 
 ## Requirements
 
@@ -6,7 +6,7 @@
 - Maven 3.5.0
 
 
-## Run Server
+## Run com.github.kyleannen.javaserver.Server
 
 - Clone repository.
 - Compile the project.
@@ -30,7 +30,7 @@ mvn clean test
 
 ## Adding routes
 
-To add route, a method can be added in the ConfigRoutes class.  
+To add route, a method can be added in the com.github.kyleannen.javaserver.ConfigRoutes class.  
 
 If the server is to be used as a dependency, the following pattern can be used to add routes.
 
@@ -40,9 +40,9 @@ import com.github.kyleannen.javaserver
 
 public class CustomServer {
     public void run() {
-        Router router = new Router();
+        com.github.kyleannen.javaserver.Router router = new com.github.kyleannen.javaserver.Router();
         router.addRoute("GET", "/custom/route", customController);
-        Server server = ConfigureServer().configure(args, router);
+        com.github.kyleannen.javaserver.Server server = com.github.kyleannen.javaserver.ConfigureServer().configure(args, router);
         server.start();
     }
 }

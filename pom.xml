@@ -159,7 +159,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>Main</mainClass>
+              <mainClass>com.github.kyleannen.javaserver.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
