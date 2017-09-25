@@ -27,3 +27,24 @@ java -jar target/java-server-0.1.jar -p 3030 -d /Root/directory/to/serve
 mvn clean test
 ```
 
+
+## Adding routes
+
+To add route, a method can be added in the ConfigRoutes class.  
+
+If the server is to be used as a dependency, the following pattern can be used to add routes.
+
+
+``` java
+import com.github.kyleannen.javaserver
+
+public class CustomServer {
+    public void run() {
+        Router router = new Router();
+        router.addRoute("GET", "/custom/route", customController);
+        Server server = ConfigureServer().configure(args, router);
+        server.start();
+    }
+}
+```
+

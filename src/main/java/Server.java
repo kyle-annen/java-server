@@ -28,7 +28,6 @@ public class Server implements Runnable{
     this.router = router;
     this.readInterface = readInterface;
     this.sendInterface = sendInterface;
-
     new ConfigRoutes(this.router);
   }
 
@@ -41,9 +40,9 @@ public class Server implements Runnable{
       while(serverRunning) {
         Socket socket = serverSocket.accept();
         RequestHandler requestHandler =
-                new RequestHandler(
-                        this.directoryPath, socket, this.logger, router,
-                        this.sendInterface, this.readInterface);
+          new RequestHandler(
+            this.directoryPath, socket, this.logger, router,
+            this.sendInterface, this.readInterface);
         requestExecutor.submit(requestHandler);
       }
       serverSocket.close();
