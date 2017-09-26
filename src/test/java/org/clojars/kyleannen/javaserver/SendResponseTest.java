@@ -25,6 +25,7 @@ public class SendResponseTest {
     ReadRequest readRequest = new ReadRequest();
     SendResponse sendResponse = new SendResponse();
     Router router = new Router();
+    new ConfigRoutes(router);
     MockLogger mockLogger = new MockLogger();
     String[] args = new String[]{"-p","4345"};
     server = new Server(args, executorService, readRequest, sendResponse, router, mockLogger);
