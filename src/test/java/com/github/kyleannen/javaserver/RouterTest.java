@@ -65,4 +65,39 @@ public class RouterTest {
     assertEquals(expectedResponseHeader, actualResponseHeader);
   }
 
+  @Test
+  void routerReturns404WhenDirectoriesAreDisabled() throws  IOException {
+    Router router = new Router();
+    new ConfigRoutes(router);
+    router.disableDirectoryRouting();
+    ArrayList<String> httpRequest = new ArrayList<>();
+    httpRequest.add("GET / HTTP/1.1\r\n\r\n");
+    RequestParameters requestParameters =
+            new RequestParameters.RequestBuilder("/")
+                    .setHttpVerb(httpRequest)
+                    .setRequestPath(httpRequest)
+                    .build();
+    ResponseParameters responseParameters = router.route(requestParameters);
+    String expectedResponseHeader = "HTTP/1.1 404 Not Found\r\n";
+    String actualResponseHeader = responseParameters.getResponseStatus();
+    assertEquals(expectedResponseHeader, actualResponseHeader);
+  }
+
+  @Test
+  void routerReturns404WhenFilesDynamicRoutingAreDisabled() throws IOException {
+    Router router = new Router();
+    new ConfigRoutes(router);
+    router.disableFileRouting();
+    ArrayList<String> httpRequest = new ArrayList<>();
+    httpRequest.add("GET /TestDirectory/testFile1.txt HTTP/1.1\r\n\r\n");
+    RequestParameters requestParameters =
+            new RequestParameters.RequestBuilder("/")
+                    .setHttpVerb(httpRequest)
+                    .setRequestPath(httpRequest)
+                    .build();
+    ResponseParameters responseParameters = router.route(requestParameters);
+    String actualResonpseHeader = responseParameters.getResponseStatus();
+    assertEquals(actualResonpseHeader, actualResonpseHeader);
+  }
 }
+

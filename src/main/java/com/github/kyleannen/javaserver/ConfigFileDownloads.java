@@ -25,6 +25,5 @@ class ConfigFileDownloads {
     File file = new File(filePath);
     Boolean isDirectory =  file.isDirectory();
     return isDownloadable && !isDirectory;
-
   }
 }

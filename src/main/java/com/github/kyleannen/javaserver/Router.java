@@ -6,6 +6,8 @@ import java.util.HashMap;
 
 public class Router implements RouterInterface {
   private HashMap<String, Routes> router = new HashMap<>();
+  private Boolean disableDirectoryRouting = false;
+  private Boolean disableFileRouting = false;
 
   public void addRoute(
           String httpMethod,
@@ -23,9 +25,13 @@ public class Router implements RouterInterface {
     return router.get(httpMethod);
   }
 
+  public void disableDirectoryRouting() { this.disableDirectoryRouting = true; }
+
+  public void disableFileRouting() { this.disableFileRouting = true; }
+
+
   @Override
   public ResponseParameters route(RequestParameters requestParameters) throws IOException {
-
     String httpMethod = requestParameters.getHttpVerb();
     File file = new File(requestParameters.getDirectoryPath() +
             requestParameters.getRequestPath());
@@ -36,19 +42,16 @@ public class Router implements RouterInterface {
             .get(httpMethod)
             .getRoutePaths()
             .contains(requestParameters.getRequestPath());
-
     if(methodExists && routeExists) {
-      Routes routes = router.get(httpMethod);
-      return routes.getResponse(requestParameters);
-    } else if(isDirectory) {
-      ControllerDirectory controllerDirectory = new ControllerDirectory();
-      return dynamicRoute(requestParameters, controllerDirectory);
-    } else if(isFile) {
-      ControllerFile controllerFile = new ControllerFile();
-      return dynamicRoute(requestParameters, controllerFile);
-    } else {
-      return new ControllerFourOhFour().getResponse(requestParameters);
+      return router.get(httpMethod).getResponse(requestParameters);
     }
+    if(isDirectory && !this.disableDirectoryRouting) {
+      return  dynamicRoute(requestParameters, new ControllerDirectory());
+    }
+    if(isFile && !this.disableFileRouting) {
+      return dynamicRoute(requestParameters, new ControllerFile());
+    }
+    return new ControllerFourOhFour().getResponse(requestParameters);
   }
 
   private ResponseParameters dynamicRoute(

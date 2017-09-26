@@ -2,6 +2,7 @@ package com.github.kyleannen.javaserver;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 public class Routes {
@@ -13,7 +14,13 @@ public class Routes {
 
   public ControllerInterface get(String path) { return this.routes.get(path); }
 
-  Set<String> getRoutePaths() { return this.routes.keySet(); }
+  Set<String> getRoutePaths() {
+    if (this.routes.size() > 0) {
+      return this.routes.keySet();
+    } else {
+      return new HashMap<String, ControllerInterface>().keySet();
+    }
+  }
 
   Boolean routeExists(String route) { return this.routes.keySet().contains(route); }
 
