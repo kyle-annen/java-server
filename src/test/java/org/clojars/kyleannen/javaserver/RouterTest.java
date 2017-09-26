@@ -1,6 +1,5 @@
 package org.clojars.kyleannen.javaserver;
 
-import com.github.kyleannen.javaserver.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
