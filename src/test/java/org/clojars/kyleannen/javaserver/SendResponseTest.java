@@ -21,11 +21,10 @@ public class SendResponseTest {
 
 
   SendResponseTest() {
-    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    ExecutorService executorService = Executors.newFixedThreadPool(1);
     ReadRequest readRequest = new ReadRequest();
     SendResponse sendResponse = new SendResponse();
     Router router = new Router();
-    new ConfigRoutes(router);
     MockLogger mockLogger = new MockLogger();
     String[] args = new String[]{"-p","4345"};
     server = new Server(args, executorService, readRequest, sendResponse, router, mockLogger);
@@ -60,7 +59,5 @@ public class SendResponseTest {
     String expected = "200";
     String actual = requestParameters.getRequestPath();
     assertEquals(expected, actual);
-    server.stop();
-
   }
 }

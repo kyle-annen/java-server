@@ -11,13 +11,13 @@
       <organizationUrl>http://www.clojars.org</organizationUrl>
     </developer>
   </developers>
-  <!--<distributionManagement>-->
-    <!--<repository>-->
-      <!--<id>clojars</id>-->
-      <!--<name>Clojars repository</name>-->
-      <!--<url>https://clojars.org/repo</url>-->
-    <!--</repository>-->
-  <!--</distributionManagement>-->
+  <distributionManagement>
+    <repository>
+      <id>clojars</id>
+      <name>Clojars repository</name>
+      <url>https://clojars.org/repo</url>
+    </repository>
+  </distributionManagement>
   <licenses>
     <license>
       <name>MIT License</name>
