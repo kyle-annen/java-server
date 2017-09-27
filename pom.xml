@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.github.kyleannen</groupId>
+  <groupId>org.clojars.kyleannen</groupId>
   <artifactId>javaserver</artifactId>
   <version>0.1-SNAPSHOT</version>
   <developers>
@@ -33,13 +33,13 @@
       http://github.com/kyle-annen/java-server/tree/master
     </url>
   </scm>
-  <distributionManagement>
-    <repository>
-      <id>clojars</id>
-      <name>Clojars repository</name>
-      <url>https://clojars.org/repo</url>
-    </repository>
-  </distributionManagement>
+  <!--<distributionManagement>-->
+    <!--<repository>-->
+      <!--<id>clojars</id>-->
+      <!--<name>Clojars repository</name>-->
+      <!--<url>https://clojars.org/repo</url>-->
+    <!--</repository>-->
+  <!--</distributionManagement>-->
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
