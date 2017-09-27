@@ -8,3 +8,9 @@ javaserver.iml
 ./resources/images/100mb.png
 resources/images/100mb.png
 resources/1gb.pdf
+.classpath
+.project
+.settings
+/bin/
+bin/
+bin

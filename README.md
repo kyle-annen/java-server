@@ -6,7 +6,7 @@
 - Maven 3.5.0
 
 
-## Run com.github.kyleannen.javaserver.Server
+## Run Server
 
 - Clone repository.
 - Compile the project.
@@ -35,7 +35,7 @@ If the server is to be used as a dependency, the following pattern can be used t
 
 
 ``` java
-import com.github.kyleannen.javaserver
+import org.clojars.kyleannen.javaserver
 
 public class CustomServer {
     public void run() {
