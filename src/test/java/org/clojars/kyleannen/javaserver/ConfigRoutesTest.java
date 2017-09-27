@@ -20,7 +20,7 @@ public class ConfigRoutesTest {
     new ConfigRoutes(router);
     Routes routes = router.getRoutes("POST");
     Boolean expected = false;
-    Boolean actual = routes.routeExists("/this/is/an/really/bad/route.longfileextensiondoesntexistyet");
+    Boolean actual = routes.routeExists("/this/is/an/really/bad/routelongfileextensiondoesntexistyet");
     assertEquals(expected, actual);
   }
 }
