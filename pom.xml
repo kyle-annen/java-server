@@ -33,13 +33,13 @@
       http://github.com/kyle-annen/java-server/tree/master
     </url>
   </scm>
-  <!--<distributionManagement>-->
-    <!--<repository>-->
-      <!--<id>clojars</id>-->
-      <!--<name>Clojars repository</name>-->
-      <!--<url>https://clojars.org/repo</url>-->
-    <!--</repository>-->
-  <!--</distributionManagement>-->
+  <distributionManagement>
+    <repository>
+      <id>clojars</id>
+      <name>Clojars repository</name>
+      <url>https://clojars.org/repo</url>
+    </repository>
+  </distributionManagement>
   <dependencies>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

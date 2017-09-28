@@ -26,21 +26,21 @@ public class ResponseParameters {
 
   }
 
-  String getResponseStatus() { return responseStatus; }
+  public String getResponseStatus() { return responseStatus; }
 
-  String getContentLength() { return contentLength; }
+  public String getContentLength() { return contentLength; }
 
-  String getContentType() { return contentType; }
+  public String getContentType() { return contentType; }
 
-  String getDate() { return date; }
+  public String getDate() { return date; }
 
-  String getBodyType() { return  bodyType; }
+  public String getBodyType() { return  bodyType; }
 
-  String getBodyContent() { return bodyContent;}
+  public String getBodyContent() { return bodyContent;}
 
-  String getConnectionClose() { return connectionClose; }
+  public String getConnectionClose() { return connectionClose; }
 
-  String getContentDisposition() { return contentDisposition; }
+  public String getContentDisposition() { return contentDisposition; }
 
   public static class ResponseBuilder {
     private final String responseStatus;
