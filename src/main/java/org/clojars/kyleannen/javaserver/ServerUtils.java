@@ -18,8 +18,9 @@ class ServerUtils {
      return Integer.toString(messageBody.getBytes().length);
   }
 
-  String getFileMimeType(String _filePath) throws IOException {
-     return URLConnection.guessContentTypeFromName(_filePath);
+  String getFileMimeType(String filePath) throws IOException {
+     if(filePath.contains(".css")) { return "text/css"; }
+     return URLConnection.guessContentTypeFromName(filePath);
   }
 
 
