@@ -19,10 +19,12 @@ class ServerUtils {
   }
 
   String getFileMimeType(String filePath) throws IOException {
-     if(filePath.contains(".css")) { return "text/css"; }
-     if(filePath.contains(".json")) { return "application/javascript"; }
-     return URLConnection.guessContentTypeFromName(filePath);
+     if(filePath.contains(".css")) {
+       return "text/css";
+     } else if(filePath.contains(".json")) {
+       return "application/javascript";
+     } else {
+       return URLConnection.guessContentTypeFromName(filePath);
+     }
   }
-
-
 }
