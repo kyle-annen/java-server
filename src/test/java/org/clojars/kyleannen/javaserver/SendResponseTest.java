@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SendResponseTest {
   Server server;
@@ -21,7 +21,7 @@ public class SendResponseTest {
 
 
   SendResponseTest() {
-    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    ExecutorService executorService = Executors.newFixedThreadPool(1);
     ReadRequest readRequest = new ReadRequest();
     SendResponse sendResponse = new SendResponse();
     Router router = new Router();
