@@ -25,6 +25,7 @@ public class Server implements Runnable{
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args, logger);
     //logger.log("Serving directory: " + directoryPath);
+    //this.announceServer(portNumber,this.logger);
 
     this.requestExecutor = requestExecutor;
     this.router = router;

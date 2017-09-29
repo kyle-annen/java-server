@@ -14,7 +14,6 @@ public class ResponseParameters {
   private final String connectionClose;
 
   private ResponseParameters(ResponseBuilder builder) {
-    String lineEnd = "\r\n";
     this.responseStatus = builder.responseStatus;
     this.contentDisposition = builder.contentDisposition;
     this.contentType = builder.contentType;
