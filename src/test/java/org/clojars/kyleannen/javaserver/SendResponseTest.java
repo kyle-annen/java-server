@@ -40,9 +40,9 @@ public class SendResponseTest {
 
   @Test
   void sendResponseSendsResponse() throws IOException, InterruptedException {
-    Thread.sleep(100);
     Thread serverThread = new Thread(server);
     serverThread.start();
+    Thread.sleep(10000);
 
     Socket socket = new Socket("localhost", 4345);
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
