@@ -15,8 +15,10 @@ class ConfigRoutes {
   }
 
   private void initializeGetRoutes() {
+    ControllerForm controllerForm = new ControllerForm();
     ControllerFile controllerFile = new ControllerFile();
     router.addRoute("GET","/resources/form/index.html", controllerFile);
+    router.addRoute("GET", "/form", controllerForm);
   }
 
   private void initializePostRoutes() {
