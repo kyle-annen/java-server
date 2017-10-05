@@ -1,6 +1,6 @@
 package org.clojars.kyleannen.javaserver;
 
-class ConfigRoutes {
+public class ConfigRoutes {
   private Router router;
 
   ConfigRoutes(Router router) {
