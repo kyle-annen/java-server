@@ -119,8 +119,8 @@ public class ResponseParameters {
       return this;
     }
 
-    public ResponseBuilder setAccessControlAllowOrigin(String host) {
-      this.accessControlAllowOrigin = "Access-Control-Allow-Origin: http://" + host + "\r\n";
+    public ResponseBuilder setAccessControlAllowOrigin() {
+      this.accessControlAllowOrigin = "Access-Control-Allow-Origin: *\r\n";
       return this;
     }
 
