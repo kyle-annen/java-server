@@ -42,7 +42,7 @@ public class SendResponseTest {
   void sendResponseSendsResponse() throws IOException, InterruptedException {
     Thread serverThread = new Thread(server);
     serverThread.start();
-    Thread.sleep(10000);
+    Thread.sleep(1000);
 
     Socket socket = new Socket("localhost", 4345);
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)

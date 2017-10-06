@@ -1,6 +1,6 @@
 package org.clojars.kyleannen.javaserver;
 
-class ConfigRoutes {
+public class ConfigRoutes {
   private Router router;
 
   ConfigRoutes(Router router) {
@@ -8,18 +8,20 @@ class ConfigRoutes {
     this.initialize();
   }
 
-  private void initialize() {
+  void initialize() {
     this.initializeGetRoutes();
     this.initializePostRoutes();
     //custom routes go here:
   }
 
-  private void initializeGetRoutes() {
+  void initializeGetRoutes() {
+    ControllerForm controllerForm = new ControllerForm();
     ControllerFile controllerFile = new ControllerFile();
     router.addRoute("GET","/resources/form/index.html", controllerFile);
+    router.addRoute("GET", "/form", controllerForm);
   }
 
-  private void initializePostRoutes() {
+  void initializePostRoutes() {
     ControllerPost controllerPost = new ControllerPost();
     router.addRoute("POST", "/resources/form", controllerPost);
   }
