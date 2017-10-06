@@ -2,13 +2,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.clojars.kyleannen</groupId>
   <artifactId>javaserver</artifactId>
-  <version>0.5.2</version>
+  <version>0.5.3</version>
   <developers>
     <developer>
       <name>Kyle Annen</name>
       <email>kyleannen@gmail.com</email>
-      <organization>Sonatype</organization>
-      <organizationUrl>http://www.sonatype.com</organizationUrl>
+      <organization>Clojars</organization>
+      <organizationUrl>http://clojars.org</organizationUrl>
     </developer>
   </developers>
   <licenses>
