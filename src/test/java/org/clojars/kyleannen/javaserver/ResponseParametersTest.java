@@ -77,9 +77,9 @@ public class ResponseParametersTest {
   @Test
   void responseParmetersAccessControlSetsCorrectly() {
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
-            .setAccessControlAllowOrigin("api.testdomain.com")
+            .setAccessControlAllowOrigin()
             .build();
-    String expected = "Access-Control-Allow-Origin: http://api.testdomain.com\r\n";
+    String expected = "Access-Control-Allow-Origin: *\r\n";
     String actual = responseParameters.getAccessControlAllowOrigin();
     assertEquals(expected, actual);
   }
