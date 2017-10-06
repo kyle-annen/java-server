@@ -39,6 +39,7 @@ public class SendResponse implements SendInterface {
             responseParameters.getContentDisposition() +
             responseParameters.getContentLength() +
             responseParameters.getContentType() +
+            responseParameters.getAccessControlAllowOrigin() +
             responseParameters.getConnectionClose() +
             lineEnding;
   }
