@@ -73,6 +73,16 @@ public class ResponseParametersTest {
     String actual = responseParameters.getDate().split(" ")[0];
     assertEquals(expected, actual);
   }
+
+  @Test
+  void responseParmetersAccessControlSetsCorrectly() {
+    ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
+            .setAccessControlAllowOrigin("api.testdomain.com")
+            .build();
+    String expected = "Access-Control-Allow-Origin: http://api.testdomain.com\r\n";
+    String actual = responseParameters.getAccessControlAllowOrigin();
+    assertEquals(expected, actual);
+  }
 }
 
 

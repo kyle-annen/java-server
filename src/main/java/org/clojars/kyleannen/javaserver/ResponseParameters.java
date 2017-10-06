@@ -12,6 +12,7 @@ public class ResponseParameters {
   private final String bodyType;
   private final String bodyContent;
   private final String connectionClose;
+  private final String accessControlAllowOrigin;
 
   private ResponseParameters(ResponseBuilder builder) {
     this.responseStatus = builder.responseStatus;
@@ -22,6 +23,7 @@ public class ResponseParameters {
     this.bodyType = builder.bodyType;
     this.bodyContent = builder.bodyContent;
     this.connectionClose = "Connection: close\r\n";
+    this.accessControlAllowOrigin = builder.accessControlAllowOrigin;
 
   }
 
@@ -41,6 +43,8 @@ public class ResponseParameters {
 
   public String getContentDisposition() { return contentDisposition; }
 
+  public String getAccessControlAllowOrigin() { return accessControlAllowOrigin; }
+
   public static class ResponseBuilder {
     private final String responseStatus;
     private ServerUtils serverUtils;
@@ -50,6 +54,7 @@ public class ResponseParameters {
     private String date;
     private String bodyType;
     private String bodyContent;
+    private String accessControlAllowOrigin;
 
     public ResponseBuilder(Integer responseCode) {
       serverUtils = new ServerUtils();
@@ -111,6 +116,11 @@ public class ResponseParameters {
 
     public ResponseBuilder setBodyContent(String filePathOrTextContent) {
       this.bodyContent = filePathOrTextContent;
+      return this;
+    }
+
+    public ResponseBuilder setAccessControlAllowOrigin(String host) {
+      this.accessControlAllowOrigin = "Access-Control-Allow-Origin: http://" + host + "\r\n";
       return this;
     }
 
