@@ -7,16 +7,14 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 class ReadRequest implements ReadInterface {
+
   @Override
   public RequestParameters getRequest(Socket socket, String directoryPath) throws IOException {
-    ArrayList<String> httpMessage = new ArrayList<>();
-    InputStreamReader inputStreamReader =
-            new InputStreamReader(socket.getInputStream());
-    BufferedReader bufferedReader =
-            new BufferedReader(inputStreamReader);
+    ArrayList<String> httpMessage       = new ArrayList<>();
+    InputStreamReader inputStreamReader = new InputStreamReader(socket.getInputStream());
+    BufferedReader    bufferedReader    = new BufferedReader(inputStreamReader);
 
-    httpMessage = this.readHttpMessage(bufferedReader, httpMessage);
-
+    httpMessage             = this.readHttpMessage(bufferedReader, httpMessage);
     Boolean containsContent = this.containsContent(httpMessage);
 
     httpMessage = containsContent ?
@@ -73,13 +71,16 @@ class ReadRequest implements ReadInterface {
   private ArrayList<String> readHttpMessage(
           BufferedReader bufferedReader,
           ArrayList<String> httpMessage) throws IOException {
+
     Boolean reading = true;
     String line;
     while(reading) {
       line = bufferedReader.readLine();
-      if(line.equals("")) { reading = false; }
-      else {
-        httpMessage.add(line); }
+      if(line.equals("")) {
+        reading = false;
+      } else {
+        httpMessage.add(line);
+      }
     }
     return httpMessage;
   }
