@@ -11,6 +11,9 @@
       <organizationUrl>http://clojars.org</organizationUrl>
     </developer>
   </developers>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <licenses>
     <license>
       <name>MIT License</name>
