@@ -10,10 +10,12 @@ import java.util.concurrent.Executors;
 
 class RequestHandlerTest extends TestDirectorySetup {
   private Integer startPort1 = 2020;
-
   LoggerInterface logger = new LoggerInterface() {
+    String string;
+
     @Override
     public void log(String string) {
+      this.string = string;
     }
   };
 
