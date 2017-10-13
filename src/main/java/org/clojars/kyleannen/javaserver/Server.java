@@ -24,9 +24,6 @@ public class Server implements Runnable{
     this.logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
     directoryPath = this.setDirectoryPath(directoryPath, args);
-    //logger.log("Serving directory: " + directoryPath);
-    //this.announceServer(portNumber,this.logger);
-
     this.requestExecutor = requestExecutor;
     this.router = router;
     this.readInterface = readInterface;
@@ -50,6 +47,7 @@ public class Server implements Runnable{
       serverSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
+      this.logger.log(e.toString());
     }
   }
 
