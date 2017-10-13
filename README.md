@@ -1,6 +1,6 @@
 # Java Server 
 [![Build Status](https://travis-ci.org/kyle-annen/java-server.svg?branch=master)](https://travis-ci.org/kyle-annen/java-server)
-[![Coverage Status](https://coveralls.io/repos/github/kyle-annen/java-server/badge.svg?branch=add-coveralls)](https://coveralls.io/github/kyle-annen/java-server?branch=add-coveralls)
+[![Coverage Status](https://coveralls.io/repos/github/kyle-annen/java-server/badge.svg?branch=master)](https://coveralls.io/github/kyle-annen/java-server?branch=master)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/5b6cc4b4e1d5471992b778e9ee55cfa6)](https://www.codacy.com/app/kyle-annen/java-server?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=kyle-annen/java-server&amp;utm_campaign=Badge_Grade)
 
 
