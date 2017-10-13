@@ -21,7 +21,7 @@ public class Routes {
     }
   }
 
-  Boolean routeExists(String route) { return this.routes.keySet().contains(route); }
+  protected Boolean routeExists(String route) { return this.routes.keySet().contains(route); }
 
   public ResponseParameters getResponse(RequestParameters requestParameters) throws IOException {
     String path = requestParameters.getRequestPath();

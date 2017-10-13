@@ -18,7 +18,6 @@ public class TestDirectorySetup {
 
   @BeforeAll
   static void generateTestFileStructure() throws IOException {
-    ArrayList<Path> files = new ArrayList<>();
     List<String> lines = Arrays.asList("test\r\n\r\ntest","test\n");
     File dir = new File("./TestDirectory");
     File dir2 = new File("./TestEmpty");

@@ -15,12 +15,6 @@ public class RouterTest {
     }
   }
 
-
-  @Test
-  void RouterCanBeInstantiated() {
-    Router router = new Router();
-  }
-
   @Test
   void routerCanAddRouter() {
     Router router = new Router();

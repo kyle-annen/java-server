@@ -3,8 +3,8 @@ package org.clojars.kyleannen.javaserver;
 import java.util.concurrent.ExecutorService;
 
 public class ShutdownHook extends Thread{
-  Server httpServer;
-  ExecutorService requestExecutor;
+  private Server httpServer;
+  private ExecutorService requestExecutor;
 
   ShutdownHook(Server httpServer, ExecutorService requestExecutor) {
     this.httpServer = httpServer;

@@ -32,12 +32,6 @@ class ControllerPostTest {
             .build();
   }
 
-
-  @Test
-  void postClassExists(){
-    ControllerPost post = new ControllerPost();
-  }
-
   @Test
   void postWillReturnAResponse() throws IOException {
     ControllerPost post = new ControllerPost();
@@ -54,13 +48,5 @@ class ControllerPostTest {
     assertEquals("kyle", parsedData.get("first_name"));
     assertEquals("annen", parsedData.get("last_name"));
     assertEquals("kannen@gmail.com", parsedData.get("email"));
-  }
-
-  @Test
-  void saveFormDataSavesFormData() throws IOException {
-    String filePath = System.getProperty("user.dir") + "/resources/form/form-result.html";
-    ControllerPost post = new ControllerPost();
-    HashMap<String, String> parsedData = post.parseFormData(testRequestParams.getBodyContent());
-    assertEquals(true, new File(filePath).exists());
   }
 }

@@ -23,7 +23,7 @@ public class Server implements Runnable{
           LoggerInterface logger) {
     this.logger = new Logger();
     portNumber = this.setPortNumber(portNumber, args);
-    directoryPath = this.setDirectoryPath(directoryPath, args, logger);
+    directoryPath = this.setDirectoryPath(directoryPath, args);
     //logger.log("Serving directory: " + directoryPath);
     //this.announceServer(portNumber,this.logger);
 
@@ -36,7 +36,6 @@ public class Server implements Runnable{
 
   @Override
   public void run() {
-    this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
     try {
       serverSocket = new ServerSocket(portNumber);
@@ -54,19 +53,12 @@ public class Server implements Runnable{
     }
   }
 
-  private void announceServer(int portNumber, Logger logger) {
-    String outputMessage = "com.github.kyleannen.javaserver.Server started at: http://localhost:" +
-            Integer.toString(portNumber);
-    //logger.log(outputMessage);
-  }
-
-  private String setDirectoryPath(String directPath, String[] args, LoggerInterface logger) {
+  private String setDirectoryPath(String directPath, String[] args) {
     for(int i = 0; i < args.length; i++) {
       if(args[i].equals("-d") && new File(args[i + 1]).isDirectory()) {
         return args[i + 1];
       }
     }
-//    logger.log("No valid directory path provided.");
     return directPath;
   }
 
