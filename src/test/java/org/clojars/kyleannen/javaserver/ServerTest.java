@@ -40,4 +40,16 @@ public class ServerTest {
     }
 
   }
+
+  @Test
+  void getPortNumberReturnsServerPort() {
+    int serverPort = this.server.getPortNumber();
+    assertEquals(4350, serverPort);
+  }
+
+  @Test
+  void getDirectoryPathReturnsDirectoryPath() {
+    String serverPath = this.server.getDirectoryPath();
+    assertEquals("/", serverPath);
+  }
 }

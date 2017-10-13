@@ -73,6 +73,21 @@ class ControllerDirectoryTest extends TestDirectorySetup {
     assertEquals(true, responseParams.getBodyContent().contains("There are no files in this directory"));
   }
 
+
+  @Test
+  void getReturnsCorrectFormattingForManyFileTypes() throws IOException {
+    ArrayList<String> httpMessage2 = new ArrayList<>();
+    httpMessage2.add("GET / HTTP/1.1\r\n");
+    String directoryPath = "./TestAllFiles";
+    requestParameters = new RequestParameters.RequestBuilder(directoryPath)
+            .setHttpVerb(httpMessage2)
+            .setRequestPath(httpMessage2)
+            .build();
+    ControllerDirectory controllerDirectory = new ControllerDirectory();
+    ResponseParameters responseParams = controllerDirectory.getResponse(requestParameters);
+    assertEquals(true, responseParams.getBodyContent().contains(".jpg"));
+  }
+
 }
 
 

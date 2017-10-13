@@ -66,7 +66,7 @@ public class Server implements Runnable{
         return args[i + 1];
       }
     }
-    logger.log("No valid directory path provided.");
+//    logger.log("No valid directory path provided.");
     return directPath;
   }
 
@@ -77,6 +77,14 @@ public class Server implements Runnable{
       }
     }
     return portNum;
+  }
+
+  int getPortNumber() {
+    return this.portNumber;
+  }
+
+  String getDirectoryPath() {
+    return this.directoryPath;
   }
 
   void stop() {
