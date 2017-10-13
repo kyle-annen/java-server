@@ -41,4 +41,26 @@ class RequestParametersTest {
     assertEquals(expectedUserAgent, requestParams.getUserAgent());
     assertEquals(expectedAccept, requestParams.getAccept()[0].trim());
   }
+
+  @Test
+  void requestParametersContainsNeededValuesIfUrlParamsExist() throws IOException {
+    ArrayList<String> testMessage = new ArrayList<>();
+    testMessage.add("GET /test?param1=1&param2=2 HTTP/1.1\r\n");
+    testMessage.add("Host: localhost\r\n");
+    testMessage.add("User-Agent: Mozilla\r\n");
+    testMessage.add("Accept: text/html\r\n");
+    String directoryPath = System.getProperty("user.dir");
+
+    RequestParameters requestParams =
+            new RequestParameters.RequestBuilder(directoryPath)
+                    .setHttpVerb(testMessage)
+                    .setRequestPath(testMessage)
+                    .setHost(testMessage)
+                    .setUserAgent(testMessage)
+                    .setAccept(testMessage)
+                    .build();
+
+    String expectedParams="param1=1&param2=2";
+    assertEquals(expectedParams, requestParams.getParams());
+  }
 }

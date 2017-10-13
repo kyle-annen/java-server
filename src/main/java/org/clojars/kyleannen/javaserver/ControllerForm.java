@@ -11,7 +11,6 @@ public class ControllerForm implements ControllerInterface {
     return new ResponseParameters.ResponseBuilder(200)
             .setDate()
             .setContentDisposition(indexFormPath)
-            .setContentDisposition(indexFormPath)
             .setContentType(indexFormPath)
             .setBodyType(indexFormPath)
             .setBodyContent(indexFormPath)
