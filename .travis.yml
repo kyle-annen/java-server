@@ -4,7 +4,7 @@ jdk:
 after_success:
 - mvn clean test jacoco:report coveralls:report
 - wget . / 'https://github.com/codacy/codacy-coverage-reporter/releases/download/2.0.1/codacy-coverage-reporter-2.0.1-assembly.jar'
-- java -jar codacy-coverage-reporter-2.0.1-assembly.jar com.codacy.CodacyCoverageReporter -l Java -r target/site/jacoco/jacoco.xml --projectToken $CODACY_PROJECT_TOKEN
+- java -jar codacy-coverage-reporter-2.0.1-assembly.jar -l Java -r target/site/jacoco/jacoco.xml --projectToken $CODACY_PROJECT_TOKEN
 env:
   global:
     secure: Nb5h+AG5YtzuOwuklhnqbbNf7StTj9aFR8LlEXW2Af3JnefigaTkua8jIIfSbnO+CPNuKwJ/JPjMQ/+V+lr6zN6r1G+ZHGKjqrhZ4ChEaEc8W7gPlh4Uj/iK3cxKYiuDUF2uMv+7GQbroAaI1kuFWruLXVnTCQU1RUcCquyXTQKzG//Hxuj6aD6xOguOELRxKyk022jNl7c9wwxEhYfgl8Vw8nMxU/UV9Le2H3osEQTzKozKcPCeffmgKYtKm1Is6c1b0GVVXN5g53TajL/F3O8I5H8QFlUU1RnaqWjSA1Dnco4+KZZjHlweMt3xNW0ivSROmBYvCkZX6ZO3SRdywcuoIygiO6awTsp8X6yNfmItbvA20jxdWoXFkIXC5PxV/ErDTeBhXqrRfYO0FYx4lbz09PlBCoiGoambz/s6OYLugxn250biXz0D6q6nHhD666sQcoWJU5JsiLw5ADY0lZ5XRnx89u1KMMSI9D0PKFewZdobnIImey/2qjiIcjf0KgOmV9LKzdM9C1dhB2uK4Ni7c8A43PE/4wj23N7AmZ0CcFYrg8z7Gz2U+wqMOpDAyKlxGxxHdOf8dllRPgiClNlDOlsaE6pu6kQrPG+wM+NEUB+D/6P5J+d2GckifAl3pq0Jqqyi+vSqU4vHKiIiDulNtelq0YIkntP2Aoe5Uq4=
