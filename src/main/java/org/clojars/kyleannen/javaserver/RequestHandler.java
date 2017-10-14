@@ -13,7 +13,7 @@ public class RequestHandler implements Runnable {
 
   RequestHandler(String directoryPath,
                  Socket socket,
-                 Logger logger,
+                 LoggerInterface logger,
                  RouterInterface router,
                  SendInterface sendInterface,
                  ReadInterface readInterface) {

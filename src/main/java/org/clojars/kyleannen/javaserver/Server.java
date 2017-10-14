@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 
 public class Server implements Runnable{
-  private Logger logger;
+  private LoggerInterface logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
   private String directoryPath = System.getProperty("user.dir");
@@ -21,13 +21,13 @@ public class Server implements Runnable{
           SendInterface sendInterface,
           Router router,
           LoggerInterface logger) {
-    this.logger = new Logger();
-    portNumber = this.setPortNumber(portNumber, args);
-    directoryPath = this.setDirectoryPath(directoryPath, args);
-    this.requestExecutor = requestExecutor;
+    this.logger = logger;
     this.router = router;
     this.readInterface = readInterface;
     this.sendInterface = sendInterface;
+    this.requestExecutor = requestExecutor;
+    portNumber = this.setPortNumber(portNumber, args);
+    directoryPath = this.setDirectoryPath(directoryPath, args);
     new ConfigRoutes(this.router);
   }
 
@@ -47,8 +47,19 @@ public class Server implements Runnable{
       serverSocket.close();
     } catch (IOException e) {
       e.printStackTrace();
-      this.logger.log(e.toString());
     }
+  }
+
+  void stop() {
+    serverRunning = false;
+  }
+
+  String getDirectoryPath() {
+    return this.directoryPath;
+  }
+
+  int getPortNumber() {
+    return this.portNumber;
   }
 
   private String setDirectoryPath(String directPath, String[] args) {
@@ -67,17 +78,5 @@ public class Server implements Runnable{
       }
     }
     return portNum;
-  }
-
-  int getPortNumber() {
-    return this.portNumber;
-  }
-
-  String getDirectoryPath() {
-    return this.directoryPath;
-  }
-
-  void stop() {
-    serverRunning = false;
   }
 }
