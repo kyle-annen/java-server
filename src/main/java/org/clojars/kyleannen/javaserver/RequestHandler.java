@@ -31,7 +31,6 @@ public class RequestHandler implements Runnable {
               this.readInterface.getRequest(this.socket, this.directoryPath);
       ResponseParameters responseParams =
               this.router.route(requestParams);
-
       this.sendInterface.send(responseParams, this.socket);
     } catch (IOException e) {
       logger.log(e.toString());
