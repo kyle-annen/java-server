@@ -19,7 +19,7 @@ class ControllerDirectory implements ControllerInterface {
             .build();
   }
 
-  String getDirectoryListing(String filePath, String relativePath) {
+  protected String getDirectoryListing(String filePath, String relativePath) {
     ArrayList<String> directoryContents = filesList(filePath);
     ArrayList<String> formattedDirectory = formatDirectoryHtml(directoryContents, relativePath);
     StringBuilder directoryListing = new StringBuilder();
@@ -29,7 +29,7 @@ class ControllerDirectory implements ControllerInterface {
     return directoryListing.toString();
   }
 
-  ArrayList<String> filesList(String filePath) {
+  protected ArrayList<String> filesList(String filePath) {
     File fullFilePath = new File(filePath);
     try {
       return new ArrayList<>(Arrays.asList(fullFilePath.list()));
@@ -38,7 +38,7 @@ class ControllerDirectory implements ControllerInterface {
     }
   }
 
-  ArrayList<String> formatDirectoryHtml(ArrayList<String> directoryList, String relativePath) {
+  protected ArrayList<String> formatDirectoryHtml(ArrayList<String> directoryList, String relativePath) {
 
     ArrayList<String> directoryResponseMessage = new ArrayList<>();
     directoryResponseMessage.add("<!DOCTYPE html>\n");

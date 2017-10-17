@@ -8,20 +8,20 @@ public class ConfigRoutes {
     this.initialize();
   }
 
-  void initialize() {
+  private void initialize() {
     this.initializeGetRoutes();
     this.initializePostRoutes();
     //custom routes go here:
   }
 
-  void initializeGetRoutes() {
+  private void initializeGetRoutes() {
     ControllerForm controllerForm = new ControllerForm();
     ControllerFile controllerFile = new ControllerFile();
     router.addRoute("GET","/resources/form/index.html", controllerFile);
     router.addRoute("GET", "/form", controllerForm);
   }
 
-  void initializePostRoutes() {
+  private void initializePostRoutes() {
     ControllerPost controllerPost = new ControllerPost();
     router.addRoute("POST", "/resources/form", controllerPost);
   }

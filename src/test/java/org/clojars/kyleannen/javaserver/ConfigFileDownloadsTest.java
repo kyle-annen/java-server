@@ -8,10 +8,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 
 public class ConfigFileDownloadsTest {
-  @Test
-  void configFileDownloadsCanBeInitialized() {
-    ConfigFileDownloads configFileDownloads = new ConfigFileDownloads();
-  }
 
   @Test
   void configFileIsDownloadableReturnsCorrectBoolean() {

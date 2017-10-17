@@ -13,9 +13,13 @@ public class SendResponseTest {
   Server server;
 
   class MockLogger implements LoggerInterface {
-
+    String string;
     @Override
     public void log(String string) {
+      this.string = string;
+    }
+    public String getLog() {
+      return this.string;
     }
   }
 

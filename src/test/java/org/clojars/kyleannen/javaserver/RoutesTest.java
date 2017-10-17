@@ -18,16 +18,6 @@ public class RoutesTest {
   }
 
   @Test
-  void routeCanBeInitialized() {
-    try {
-      Routes testRoutes = new Routes();
-      assert(true);
-    } catch (Exception e){
-      assert(false);
-    }
-  }
-
-  @Test
   void routeCanBeAddedToRoutes() {
     Routes testRoutes = new Routes();
     try {

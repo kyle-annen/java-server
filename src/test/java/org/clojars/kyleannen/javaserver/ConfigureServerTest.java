@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ConfigureServerTest {
 
   @Test
-  void configureServerReturnsAServerWithPortConfiguredWhenPortPassed() {
+  public void configureServerReturnsAServerWithPortConfiguredWhenPortPassed() {
     String testPort = "3333";
     String[] args = new String[]{"-p", testPort};
     Router testRouter = new Router();
@@ -16,7 +16,7 @@ public class ConfigureServerTest {
   }
 
   @Test
-  void configureServerReturnsAServerWithDirectoryConfiguredWhenDirectoryPassed() {
+  public void configureServerReturnsAServerWithDirectoryConfiguredWhenDirectoryPassed() {
     String testDirectory = System.getProperty("user.dir") + "/resources";
     String[] args = new String[]{"-d", testDirectory};
     Router router = new Router();

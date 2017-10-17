@@ -13,11 +13,15 @@ public class Router implements RouterInterface {
           String httpMethod,
           String route,
           ControllerInterface controller) {
+
     Boolean methodRouteExists = router.keySet().contains(httpMethod);
-    Routes routes;
-    if(methodRouteExists) { routes = router.get(httpMethod);} else { routes = new Routes();}
+
+    Routes routes = methodRouteExists ? router.get(httpMethod) : new Routes();
+
     Boolean pathRouteExists = routes.getRoutePaths().contains(route);
+
     if(!pathRouteExists) { routes.add(route, controller); }
+
     router.put(httpMethod, routes);
   }
 

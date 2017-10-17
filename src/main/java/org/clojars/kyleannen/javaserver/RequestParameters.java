@@ -24,21 +24,21 @@ public class RequestParameters {
     this.params = builder.params;
   }
 
-  String getDirectoryPath() { return directoryPath; }
+  public String getDirectoryPath() { return directoryPath; }
 
-  String getHttpVerb() { return httpVerb; }
+  public String getHttpVerb() { return httpVerb; }
 
-  String getRequestPath() { return requestPath; }
+  public String getRequestPath() { return requestPath; }
 
-  String getHost() { return host; }
+  public String getHost() { return host; }
 
-  String getUserAgent() { return userAgent; }
+  public String getUserAgent() { return userAgent; }
 
-  String[] getAccept() { return accept; }
+  public String[] getAccept() { return accept; }
 
-  String getBodyContent() { return bodyContent; }
+  public String getBodyContent() { return bodyContent; }
 
-  String getParams() { return params; }
+  public String getParams() { return params; }
 
   public static class RequestBuilder {
     private final String directoryPath;
@@ -78,7 +78,7 @@ public class RequestParameters {
       String host = null;
       for(String line: httpMessage) {
         String headerField = line.split(" ")[0];
-        if(headerField.equals("Host:")) {
+        if("Host:".equals(headerField)) {
           host = line.split(" ")[1].trim();
         }
       }

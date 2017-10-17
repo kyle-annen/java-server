@@ -18,7 +18,8 @@ public class ResponseParametersTest {
     ResponseParameters responseParameters = new ResponseParameters.ResponseBuilder(200)
             .build();
     String expectedStatus = "HTTP/1.1 200 OK\r\n";
-    String actaulStatus = responseParameters.getResponseStatus();
+    String actualStatus = responseParameters.getResponseStatus();
+    assertEquals(expectedStatus, actualStatus);
   }
 
   @Test

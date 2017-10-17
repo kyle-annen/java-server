@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.clojars.kyleannen</groupId>
   <artifactId>javaserver</artifactId>
-  <version>0.5.4</version>
+  <version>0.5.5</version>
   <developers>
     <developer>
       <name>Kyle Annen</name>

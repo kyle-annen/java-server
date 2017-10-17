@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.concurrent.ExecutorService;
 
 public class Server implements Runnable{
-  private Logger logger;
+  private LoggerInterface logger;
   private int portNumber = 3300;
   private Boolean serverRunning = true;
   private String directoryPath = System.getProperty("user.dir");
@@ -21,22 +21,18 @@ public class Server implements Runnable{
           SendInterface sendInterface,
           Router router,
           LoggerInterface logger) {
-    this.logger = new Logger();
-    portNumber = this.setPortNumber(portNumber, args);
-    directoryPath = this.setDirectoryPath(directoryPath, args, logger);
-    //logger.log("Serving directory: " + directoryPath);
-    //this.announceServer(portNumber,this.logger);
-
-    this.requestExecutor = requestExecutor;
+    this.logger = logger;
     this.router = router;
     this.readInterface = readInterface;
     this.sendInterface = sendInterface;
+    this.requestExecutor = requestExecutor;
+    portNumber = this.setPortNumber(portNumber, args);
+    directoryPath = this.setDirectoryPath(directoryPath, args);
     new ConfigRoutes(this.router);
   }
 
   @Override
   public void run() {
-    this.announceServer(portNumber, logger);
     ServerSocket serverSocket;
     try {
       serverSocket = new ServerSocket(portNumber);
@@ -54,19 +50,24 @@ public class Server implements Runnable{
     }
   }
 
-  private void announceServer(int portNumber, Logger logger) {
-    String outputMessage = "com.github.kyleannen.javaserver.Server started at: http://localhost:" +
-            Integer.toString(portNumber);
-    //logger.log(outputMessage);
+  void stop() {
+    serverRunning = false;
   }
 
-  private String setDirectoryPath(String directPath, String[] args, LoggerInterface logger) {
+  String getDirectoryPath() {
+    return this.directoryPath;
+  }
+
+  int getPortNumber() {
+    return this.portNumber;
+  }
+
+  private String setDirectoryPath(String directPath, String[] args) {
     for(int i = 0; i < args.length; i++) {
       if(args[i].equals("-d") && new File(args[i + 1]).isDirectory()) {
         return args[i + 1];
       }
     }
-//    logger.log("No valid directory path provided.");
     return directPath;
   }
 
@@ -77,17 +78,5 @@ public class Server implements Runnable{
       }
     }
     return portNum;
-  }
-
-  int getPortNumber() {
-    return this.portNumber;
-  }
-
-  String getDirectoryPath() {
-    return this.directoryPath;
-  }
-
-  void stop() {
-    serverRunning = false;
   }
 }
