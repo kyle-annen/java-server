@@ -22,7 +22,7 @@ mvn package
 - Run the server, optionally specifying the port and root directory to serve.
 
 ``` bash
-java -jar target/java-server-0.1.jar -p 3030 -d /Root/directory/to/serve 
+java -jar target/java-server-0.5.5.jar -p 3030 -d /Root/directory/to/serve
 ```
 
 ## Run tests
